@@ -106,3 +106,35 @@ class StudentSkill(Base):
         assess_comp = 0.40 * float(self.assessment_rating or 0)
         evidence_comp = 0.40 * float(self.evidence_rating or 0)
         return round(self_comp + assess_comp + evidence_comp, 2)
+
+
+class DependencyType(str, enum.Enum):
+    required = "required"
+    recommended = "recommended"
+    optional = "optional"
+
+
+class SkillDependency(Base):
+    """
+    Prerequisite graph edge: skill_id requires prerequisite_skill_id.
+    Used by the roadmap engine to produce correctly ordered learning phases.
+    """
+    __tablename__ = "skill_dependencies"
+    __table_args__ = (UniqueConstraint("skill_id", "prerequisite_skill_id"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(use_uuid_type(), primary_key=True, default=uuid.uuid4)
+    skill_id: Mapped[uuid.UUID] = mapped_column(
+        use_uuid_type(), ForeignKey("skills.id", ondelete="CASCADE"), index=True
+    )
+    prerequisite_skill_id: Mapped[uuid.UUID] = mapped_column(
+        use_uuid_type(), ForeignKey("skills.id", ondelete="CASCADE"), index=True
+    )
+    dependency_type: Mapped[DependencyType] = mapped_column(
+        Enum(DependencyType, name="dependency_type"), default=DependencyType.required
+    )
+    strength: Mapped[Decimal] = mapped_column(Numeric(3, 2), default=Decimal("0.90"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    skill: Mapped[Skill] = relationship("Skill", foreign_keys=[skill_id])
+    prerequisite: Mapped[Skill] = relationship("Skill", foreign_keys=[prerequisite_skill_id])
+
