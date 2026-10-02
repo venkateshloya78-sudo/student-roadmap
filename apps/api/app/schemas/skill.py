@@ -1,20 +1,30 @@
-from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
+
+
+class SkillBase(BaseModel):
+    name: str
+    slug: str
+
+    model_config = {"from_attributes": True}
 
 
 class SkillOut(BaseModel):
-    id: UUID
+    id: str          # UUIDString returns str on SQLite
     name: str
     slug: str
     category: str
-    description: str | None
     difficulty: str
-    status: str
+    description: str | None = None
 
     model_config = {"from_attributes": True}
+
+
+class SkillDetailOut(SkillOut):
+    prerequisites: List[SkillBase] = []
+    prerequisite_for: List[SkillBase] = []
 
 
 class PaginatedSkills(BaseModel):
@@ -23,23 +33,3 @@ class PaginatedSkills(BaseModel):
     page: int
     size: int
     pages: int
-
-
-class StudentSkillOut(BaseModel):
-    id: UUID
-    skill_id: UUID
-    skill: SkillOut
-    self_rating: int | None
-    assessment_rating: float | None
-    evidence_rating: float | None
-    competency_score: float | None
-    confidence: str
-    source: str
-    last_verified_at: datetime | None
-
-    model_config = {"from_attributes": True}
-
-
-class UpsertSkillRequest(BaseModel):
-    """Body for PUT /skills/mine/{skill_id}. self_rating is 0–10."""
-    self_rating: int

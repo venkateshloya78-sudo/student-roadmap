@@ -10,8 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import create_all_tables
-from app.routers import auth, careers, skills, roadmaps, progress
-
+from app.routers import auth, careers, skills, roadmaps, progress, profile
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,7 +18,6 @@ async def lifespan(app: FastAPI):
     if settings.database_url.startswith("sqlite") or settings.debug:
         await create_all_tables()
     yield
-
 
 app = FastAPI(
     title=settings.app_name,
@@ -51,6 +49,7 @@ app.include_router(careers.router, prefix=API_PREFIX)
 app.include_router(skills.router, prefix=API_PREFIX)
 app.include_router(roadmaps.router, prefix=API_PREFIX)
 app.include_router(progress.router, prefix=API_PREFIX)
+app.include_router(profile.router, prefix=API_PREFIX)
 
 
 # ── Health check ─────────────────────────────────────────────────────────────

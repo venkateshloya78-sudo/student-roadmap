@@ -1,122 +1,169 @@
-import uuid
-
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from sqlalchemy.orm import selectinload
+from typing import List, Dict, Set
+import uuid
 
 from app.database import get_db
 from app.dependencies import get_current_profile
-from app.models.career import CareerRole
 from app.models.profile import StudentProfile
-from app.models.roadmap import ItemStatus, Roadmap, RoadmapItem, RoadmapPhase, RoadmapStatus
-from app.schemas.roadmap import GenerateRoadmapRequest, RoadmapOut, UpdateItemStatusRequest
-from app.services.roadmap_generator import generate_roadmap as _generate
+from app.models.career import CareerRole, CareerRoleSkill
+from app.models.skill import StudentSkill, Skill, SkillDependency
+from app.models.roadmap import Roadmap, RoadmapPhase, RoadmapItem
+from app.schemas.roadmap import RoadmapGenerateIn, RoadmapOut
 
 router = APIRouter(prefix="/roadmaps", tags=["roadmaps"])
 
-
-async def _load_full_roadmap(db: AsyncSession, roadmap_id: uuid.UUID) -> Roadmap | None:
-    """Helper: fetch a roadmap with all nested phases and items eagerly loaded."""
-    result = await db.execute(
-        select(Roadmap)
-        .options(
-            selectinload(Roadmap.career_role),
-            selectinload(Roadmap.phases).selectinload(RoadmapPhase.items),
-        )
-        .where(Roadmap.id == roadmap_id)
-    )
-    return result.scalar_one_or_none()
-
-
-@router.get("/active", response_model=RoadmapOut)
-async def get_active_roadmap(
+@router.post("/generate", response_model=RoadmapOut)
+async def generate_roadmap(
+    body: RoadmapGenerateIn,
     profile: StudentProfile = Depends(get_current_profile),
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_db)
 ):
-    """Return the student's current active roadmap with all phases and items."""
-    result = await db.execute(
-        select(Roadmap)
-        .where(Roadmap.student_id == profile.id, Roadmap.status == RoadmapStatus.active)
-        .order_by(Roadmap.created_at.desc())
-        .limit(1)
+    # 1. Get career role + required skills
+    role_res = await db.execute(
+        select(CareerRole)
+        .options(selectinload(CareerRole.required_skills).selectinload(CareerRoleSkill.skill))
+        .where(CareerRole.slug == body.career_role_slug)
     )
-    roadmap = result.scalar_one_or_none()
-    if not roadmap:
-        raise HTTPException(status_code=404, detail="No active roadmap found. Generate one first.")
-    full = await _load_full_roadmap(db, roadmap.id)
-    return RoadmapOut.model_validate(full)
-
-
-@router.post("/generate", response_model=RoadmapOut, status_code=201)
-async def generate(
-    body: GenerateRoadmapRequest,
-    profile: StudentProfile = Depends(get_current_profile),
-    db: AsyncSession = Depends(get_db),
-):
-    """
-    Generate a new prerequisite-ordered roadmap for the given career role.
-    Any existing active roadmap is automatically archived.
-    """
-    # Verify the career role exists
-    role_check = await db.execute(select(CareerRole).where(CareerRole.id == body.career_role_id))
-    if not role_check.scalar_one_or_none():
+    role = role_res.scalar_one_or_none()
+    if not role:
         raise HTTPException(status_code=404, detail="Career role not found")
 
-    roadmap = await _generate(
-        db=db,
-        student=profile,
-        career_role_id=body.career_role_id,
-        weekly_hours=body.weekly_hours_committed,
-    )
-    full = await _load_full_roadmap(db, roadmap.id)
-    return RoadmapOut.model_validate(full)
+    # 2. Get student's existing skills
+    ss_res = await db.execute(select(StudentSkill).where(StudentSkill.student_id == profile.id))
+    student_skills = {ss.skill_id: ss.competency_score for ss in ss_res.scalars().all()}
 
+    # 3. Compute gaps
+    gaps = []
+    gap_skills = {}
+    for crs in role.required_skills:
+        req_importance = float(crs.importance)
+        student_competency = student_skills.get(crs.skill_id, 0.0)
+        
+        if student_competency < req_importance:
+            score = req_importance * (1.0 - student_competency)
+            gaps.append((score, crs.skill))
+            gap_skills[crs.skill_id] = crs.skill
 
-@router.get("/{roadmap_id}", response_model=RoadmapOut)
-async def get_roadmap(
-    roadmap_id: uuid.UUID,
-    profile: StudentProfile = Depends(get_current_profile),
-    db: AsyncSession = Depends(get_db),
-):
-    """Fetch a specific roadmap by ID (must belong to the authenticated student)."""
-    full = await _load_full_roadmap(db, roadmap_id)
-    if not full or full.student_id != profile.id:
-        raise HTTPException(status_code=404, detail="Roadmap not found")
-    return RoadmapOut.model_validate(full)
+    # 4. Sort gaps by importance * (1 - student_competency) DESC
+    gaps.sort(key=lambda x: x[0], reverse=True)
+    sorted_gap_skills = [g[1] for g in gaps]
+    
+    if not sorted_gap_skills:
+        # No gaps
+        roadmap = Roadmap(student_id=profile.id, career_role_id=role.id, status="active", weekly_hours_committed=body.weekly_hours)
+        db.add(roadmap)
+        await db.commit()
+        await db.refresh(roadmap)
+        return roadmap
 
+    # 5. Resolve prerequisites
+    # simple topological sort
+    deps_res = await db.execute(select(SkillDependency))
+    deps = deps_res.scalars().all()
+    
+    adj = {s.id: [] for s in sorted_gap_skills}
+    for d in deps:
+        if d.skill_id in gap_skills and d.prerequisite_skill_id in gap_skills:
+            adj[d.skill_id].append(d.prerequisite_skill_id)
 
-@router.patch("/{roadmap_id}/items/{item_id}/status", response_model=dict)
-async def update_item_status(
-    roadmap_id: uuid.UUID,
-    item_id: uuid.UUID,
-    body: UpdateItemStatusRequest,
-    profile: StudentProfile = Depends(get_current_profile),
-    db: AsyncSession = Depends(get_db),
-):
-    """Update the completion status of a roadmap item."""
-    # Verify the roadmap belongs to this student
-    rm_result = await db.execute(
-        select(Roadmap).where(Roadmap.id == roadmap_id, Roadmap.student_id == profile.id)
-    )
-    if not rm_result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Roadmap not found")
+    visited = set()
+    temp = set()
+    topo_order = []
 
-    # Fetch the item (verify it belongs to this roadmap via its phase)
-    item_result = await db.execute(
-        select(RoadmapItem)
-        .join(RoadmapPhase, RoadmapItem.phase_id == RoadmapPhase.id)
-        .where(RoadmapItem.id == item_id, RoadmapPhase.roadmap_id == roadmap_id)
-    )
-    item = item_result.scalar_one_or_none()
-    if not item:
-        raise HTTPException(status_code=404, detail="Roadmap item not found")
+    def visit(node_id):
+        if node_id in temp:
+            return # cycle detected
+        if node_id not in visited:
+            temp.add(node_id)
+            for neighbor in adj.get(node_id, []):
+                visit(neighbor)
+            temp.remove(node_id)
+            visited.add(node_id)
+            topo_order.append(gap_skills[node_id])
 
-    try:
-        item.status = ItemStatus(body.status)
-    except ValueError:
-        valid = [s.value for s in ItemStatus]
-        raise HTTPException(status_code=400, detail=f"Invalid status '{body.status}'. Valid values: {valid}")
+    for skill in sorted_gap_skills:
+        if skill.id not in visited:
+            visit(skill.id)
+
+    # 6. Group into phases (2-3 skills per phase, targeting ~weekly_hours)
+    roadmap = Roadmap(student_id=profile.id, career_role_id=role.id, status="active", weekly_hours_committed=body.weekly_hours)
+    db.add(roadmap)
+    await db.flush([roadmap])
+
+    phase_idx = 1
+    current_phase_skills = []
+    current_phase_hours = 0
+    
+    def skill_hours(diff):
+        if diff == "beginner": return 8
+        if diff == "intermediate": return 15
+        return 25
+
+    for skill in topo_order:
+        hrs = skill_hours(skill.difficulty)
+        
+        # If adding this skill exceeds ~weekly_hours and we already have skills, or if we have 3 skills
+        if current_phase_skills and (current_phase_hours + hrs > body.weekly_hours * 2 or len(current_phase_skills) >= 3):
+            # save phase
+            phase = RoadmapPhase(roadmap_id=roadmap.id, phase_number=phase_idx, title=f"Phase {phase_idx}", estimated_hours=current_phase_hours)
+            db.add(phase)
+            await db.flush([phase])
+            
+            for i, s in enumerate(current_phase_skills):
+                item = RoadmapItem(phase_id=phase.id, type="skill", reference_id=s.id, title=f"Learn {s.name}", estimated_hours=skill_hours(s.difficulty), order_index=i)
+                db.add(item)
+            
+            phase_idx += 1
+            current_phase_skills = []
+            current_phase_hours = 0
+            
+        current_phase_skills.append(skill)
+        current_phase_hours += hrs
+
+    if current_phase_skills:
+        phase = RoadmapPhase(roadmap_id=roadmap.id, phase_number=phase_idx, title=f"Phase {phase_idx}", estimated_hours=current_phase_hours)
+        db.add(phase)
+        await db.flush([phase])
+        for i, s in enumerate(current_phase_skills):
+            item = RoadmapItem(phase_id=phase.id, type="skill", reference_id=s.id, title=f"Learn {s.name}", estimated_hours=skill_hours(s.difficulty), order_index=i)
+            db.add(item)
 
     await db.commit()
-    return {"id": str(item.id), "status": item.status.value}
+    
+    res = await db.execute(
+        select(Roadmap)
+        .options(selectinload(Roadmap.phases).selectinload(RoadmapPhase.items))
+        .where(Roadmap.id == roadmap.id)
+    )
+    return res.scalar_one()
+
+@router.get("/", response_model=List[RoadmapOut])
+async def list_roadmaps(
+    profile: StudentProfile = Depends(get_current_profile),
+    db: AsyncSession = Depends(get_db)
+):
+    res = await db.execute(
+        select(Roadmap)
+        .options(selectinload(Roadmap.phases).selectinload(RoadmapPhase.items))
+        .where(Roadmap.student_id == profile.id)
+    )
+    return res.scalars().all()
+
+@router.get("/{id}", response_model=RoadmapOut)
+async def get_roadmap(
+    id: uuid.UUID,
+    profile: StudentProfile = Depends(get_current_profile),
+    db: AsyncSession = Depends(get_db)
+):
+    res = await db.execute(
+        select(Roadmap)
+        .options(selectinload(Roadmap.phases).selectinload(RoadmapPhase.items))
+        .where(Roadmap.id == id, Roadmap.student_id == profile.id)
+    )
+    rm = res.scalar_one_or_none()
+    if not rm:
+        raise HTTPException(status_code=404, detail="Roadmap not found")
+    return rm

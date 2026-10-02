@@ -1,1 +1,1 @@
-# app/routers/__init__.py
+from . import auth, careers, skills, roadmaps, progress, profile

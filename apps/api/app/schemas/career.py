@@ -57,3 +57,21 @@ class PaginatedCareerRoles(BaseModel):
     page: int
     size: int
     pages: int
+
+class CareerRoleBase(BaseModel):
+    title: str
+    slug: str
+
+class SkillGapItemOut(BaseModel):
+    skill: SkillOut
+    required_importance: float
+    student_competency: float
+    gap: float
+    priority_score: float
+    required_level: str
+
+class SkillGapOut(BaseModel):
+    career_role: CareerRoleBase
+    overall_readiness: float
+    gaps: List[SkillGapItemOut]
+
