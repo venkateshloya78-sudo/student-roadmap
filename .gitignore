@@ -80,6 +80,10 @@ logs/
 # Docker
 .docker/
 
+# SQLite local dev database
+apps/api/dev.db
+apps/api/*.db
+
 # Temporary files
 *.tmp
 *.temp

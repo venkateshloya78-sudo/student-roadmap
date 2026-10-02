@@ -3,13 +3,12 @@ from datetime import datetime
 from decimal import Decimal
 
 from sqlalchemy import (
-    Boolean, DateTime, Enum as PgEnum, ForeignKey, Numeric,
+    Boolean, DateTime, Enum, ForeignKey, Numeric,
     SmallInteger, String, Text, UniqueConstraint, func,
 )
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database import Base
+from app.database import Base, use_uuid_type
 import enum
 
 
@@ -48,16 +47,16 @@ class SkillConfidence(str, enum.Enum):
 class Skill(Base):
     __tablename__ = "skills"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(use_uuid_type(), primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String, nullable=False)
     slug: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
-    category: Mapped[SkillCategory] = mapped_column(PgEnum(SkillCategory, name="skill_category_type"))
+    category: Mapped[SkillCategory] = mapped_column(Enum(SkillCategory, name="skill_category_type"))
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     difficulty: Mapped[Difficulty] = mapped_column(
-        PgEnum(Difficulty, name="difficulty_type"), default=Difficulty.beginner
+        Enum(Difficulty, name="difficulty_type"), default=Difficulty.beginner
     )
     status: Mapped[SkillStatus] = mapped_column(
-        PgEnum(SkillStatus, name="skill_status_type"), default=SkillStatus.active
+        Enum(SkillStatus, name="skill_status_type"), default=SkillStatus.active
     )
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
@@ -71,21 +70,21 @@ class StudentSkill(Base):
     __tablename__ = "student_skills"
     __table_args__ = (UniqueConstraint("student_id", "skill_id"),)
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(use_uuid_type(), primary_key=True, default=uuid.uuid4)
     student_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("student_profiles.id", ondelete="CASCADE"), index=True
+        use_uuid_type(), ForeignKey("student_profiles.id", ondelete="CASCADE"), index=True
     )
     skill_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("skills.id", ondelete="CASCADE"), index=True
+        use_uuid_type(), ForeignKey("skills.id", ondelete="CASCADE"), index=True
     )
     self_rating: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     assessment_rating: Mapped[Decimal | None] = mapped_column(Numeric(3, 2), nullable=True)
     evidence_rating: Mapped[Decimal | None] = mapped_column(Numeric(3, 2), nullable=True)
     confidence: Mapped[SkillConfidence] = mapped_column(
-        PgEnum(SkillConfidence, name="confidence_type"), default=SkillConfidence.low
+        Enum(SkillConfidence, name="confidence_type"), default=SkillConfidence.low
     )
     source: Mapped[SkillSource] = mapped_column(
-        PgEnum(SkillSource, name="skill_source_type"), default=SkillSource.self_declared
+        Enum(SkillSource, name="skill_source_type"), default=SkillSource.self_declared
     )
     last_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

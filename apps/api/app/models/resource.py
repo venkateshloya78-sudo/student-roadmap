@@ -5,11 +5,10 @@ Linked to skills; surfaced in roadmap items.
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, Enum as PgEnum, ForeignKey, Numeric, SmallInteger, String, Text, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import DateTime, Enum, ForeignKey, Numeric, SmallInteger, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database import Base
+from app.database import Base, use_uuid_type
 import enum
 
 
@@ -39,15 +38,15 @@ class ResourceProvider(str, enum.Enum):
 class Resource(Base):
     __tablename__ = "resources"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(use_uuid_type(), primary_key=True, default=uuid.uuid4)
     title: Mapped[str] = mapped_column(String, nullable=False)
     url: Mapped[str] = mapped_column(String, nullable=False)
-    type: Mapped[ResourceType] = mapped_column(PgEnum(ResourceType, name="resource_type"))
+    type: Mapped[ResourceType] = mapped_column(Enum(ResourceType, name="resource_type"))
     provider: Mapped[ResourceProvider | None] = mapped_column(
-        PgEnum(ResourceProvider, name="resource_provider_type"), nullable=True
+        Enum(ResourceProvider, name="resource_provider_type"), nullable=True
     )
     skill_id: Mapped[uuid.UUID | None] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("skills.id", ondelete="SET NULL"), nullable=True, index=True
+        use_uuid_type(), ForeignKey("skills.id", ondelete="SET NULL"), nullable=True, index=True
     )
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     duration_hours: Mapped[float | None] = mapped_column(Numeric(5, 1), nullable=True)

@@ -1,11 +1,10 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Enum as PgEnum, String, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Boolean, DateTime, Enum, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database import Base
+from app.database import Base, use_uuid_type
 import enum
 
 
@@ -24,15 +23,15 @@ class UserRole(str, enum.Enum):
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(use_uuid_type(), primary_key=True, default=uuid.uuid4)
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
     password_hash: Mapped[str | None] = mapped_column(String, nullable=True)
     auth_provider: Mapped[AuthProvider] = mapped_column(
-        PgEnum(AuthProvider, name="auth_provider_type"), default=AuthProvider.local
+        Enum(AuthProvider, name="auth_provider_type"), default=AuthProvider.local
     )
     auth_provider_id: Mapped[str | None] = mapped_column(String, nullable=True)
     role: Mapped[UserRole] = mapped_column(
-        PgEnum(UserRole, name="user_role_type"), default=UserRole.student
+        Enum(UserRole, name="user_role_type"), default=UserRole.student
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     email_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
