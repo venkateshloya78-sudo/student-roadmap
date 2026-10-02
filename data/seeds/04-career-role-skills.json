@@ -1,0 +1,175 @@
+{
+  "_comment": "Career role skill requirements. importance: 0.0-1.0. Source: O*NET 31.0 and ESCO v1.2.1 (manually curated for MVP). source_date: 2025-12-01.",
+  "_metadata": {
+    "source": "O*NET 31.0 + ESCO v1.2.1 (manually curated)",
+    "source_date": "2025-12-01",
+    "reviewed_by": "content_team",
+    "review_status": "approved"
+  },
+  "career_role_skills": [
+    {
+      "career_role_slug": "data-analyst",
+      "skills": [
+        { "skill_slug": "sql",               "importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "excel",             "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "statistics",        "importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "python",            "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "power-bi",          "importance": 0.80, "required_level": "beginner"     },
+        { "skill_slug": "data-visualization","importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "communication",     "importance": 0.70, "required_level": "intermediate" },
+        { "skill_slug": "probability",       "importance": 0.55, "required_level": "beginner"     }
+      ]
+    },
+    {
+      "career_role_slug": "data-scientist",
+      "skills": [
+        { "skill_slug": "python",            "importance": 0.98, "required_level": "intermediate" },
+        { "skill_slug": "statistics",        "importance": 0.95, "required_level": "advanced"     },
+        { "skill_slug": "linear-algebra",    "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "probability",       "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "pandas",            "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "scikit-learn",      "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "sql",               "importance": 0.70, "required_level": "intermediate" },
+        { "skill_slug": "data-visualization","importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "git",               "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "communication",     "importance": 0.60, "required_level": "intermediate" }
+      ]
+    },
+    {
+      "career_role_slug": "ml-engineer",
+      "skills": [
+        { "skill_slug": "python",            "importance": 1.0,  "required_level": "advanced"     },
+        { "skill_slug": "linear-algebra",    "importance": 0.95, "required_level": "advanced"     },
+        { "skill_slug": "statistics",        "importance": 0.90, "required_level": "advanced"     },
+        { "skill_slug": "pytorch",           "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "scikit-learn",      "importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "pandas",            "importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "git",               "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "docker",            "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "dsa",               "importance": 0.60, "required_level": "intermediate" },
+        { "skill_slug": "sql",               "importance": 0.55, "required_level": "beginner"     },
+        { "skill_slug": "linux-cli",         "importance": 0.60, "required_level": "beginner"     }
+      ]
+    },
+    {
+      "career_role_slug": "software-developer",
+      "skills": [
+        { "skill_slug": "dsa",               "importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "oop",               "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "git",               "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "python",            "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "sql",               "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "rest-api",          "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "postgresql",        "importance": 0.60, "required_level": "beginner"     },
+        { "skill_slug": "linux-cli",         "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "agile-scrum",       "importance": 0.55, "required_level": "beginner"     }
+      ]
+    },
+    {
+      "career_role_slug": "cloud-engineer",
+      "skills": [
+        { "skill_slug": "linux-cli",         "importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "aws",               "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "docker",            "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "kubernetes",        "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "terraform",         "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "networking-fundamentals","importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "git",               "importance": 0.70, "required_level": "intermediate" },
+        { "skill_slug": "ci-cd",             "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "python",            "importance": 0.55, "required_level": "beginner"     }
+      ]
+    },
+    {
+      "career_role_slug": "cybersecurity-analyst",
+      "skills": [
+        { "skill_slug": "security-fundamentals","importance": 1.0, "required_level": "intermediate" },
+        { "skill_slug": "networking-fundamentals","importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "linux-cli",         "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "ethical-hacking",   "importance": 0.75, "required_level": "beginner"     },
+        { "skill_slug": "siem",              "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "python",            "importance": 0.55, "required_level": "beginner"     },
+        { "skill_slug": "communication",     "importance": 0.60, "required_level": "intermediate" }
+      ]
+    },
+    {
+      "career_role_slug": "ui-ux-designer",
+      "skills": [
+        { "skill_slug": "figma",             "importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "design-thinking",   "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "user-research",     "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "information-architecture","importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "html-css",          "importance": 0.55, "required_level": "beginner"     },
+        { "skill_slug": "communication",     "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "presentation-skills","importance": 0.65, "required_level": "intermediate" }
+      ]
+    },
+    {
+      "career_role_slug": "product-manager",
+      "skills": [
+        { "skill_slug": "product-thinking",  "importance": 1.0,  "required_level": "intermediate" },
+        { "skill_slug": "market-research",   "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "communication",     "importance": 0.90, "required_level": "advanced"     },
+        { "skill_slug": "agile-scrum",       "importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "data-visualization","importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "sql",               "importance": 0.50, "required_level": "beginner"     },
+        { "skill_slug": "presentation-skills","importance": 0.80, "required_level": "advanced"    },
+        { "skill_slug": "user-research",     "importance": 0.75, "required_level": "intermediate" }
+      ]
+    },
+    {
+      "career_role_slug": "business-analyst",
+      "skills": [
+        { "skill_slug": "requirements-analysis","importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "communication",     "importance": 0.90, "required_level": "advanced"     },
+        { "skill_slug": "sql",               "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "excel",             "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "data-visualization","importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "agile-scrum",       "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "presentation-skills","importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "market-research",   "importance": 0.60, "required_level": "beginner"     }
+      ]
+    },
+    {
+      "career_role_slug": "devops-engineer",
+      "skills": [
+        { "skill_slug": "linux-cli",         "importance": 1.0,  "required_level": "advanced"     },
+        { "skill_slug": "docker",            "importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "ci-cd",             "importance": 0.95, "required_level": "intermediate" },
+        { "skill_slug": "kubernetes",        "importance": 0.80, "required_level": "intermediate" },
+        { "skill_slug": "terraform",         "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "aws",               "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "git",               "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "python",            "importance": 0.60, "required_level": "beginner"     },
+        { "skill_slug": "networking-fundamentals","importance": 0.70, "required_level": "intermediate" }
+      ]
+    },
+    {
+      "career_role_slug": "financial-analyst",
+      "skills": [
+        { "skill_slug": "excel",             "importance": 0.95, "required_level": "advanced"     },
+        { "skill_slug": "accounting",        "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "financial-modeling","importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "financial-analysis","importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "statistics",        "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "sql",               "importance": 0.55, "required_level": "beginner"     },
+        { "skill_slug": "power-bi",          "importance": 0.60, "required_level": "beginner"     },
+        { "skill_slug": "communication",     "importance": 0.70, "required_level": "intermediate" },
+        { "skill_slug": "presentation-skills","importance": 0.65, "required_level": "intermediate" }
+      ]
+    },
+    {
+      "career_role_slug": "digital-marketing-analyst",
+      "skills": [
+        { "skill_slug": "google-analytics",  "importance": 0.90, "required_level": "intermediate" },
+        { "skill_slug": "seo-sem",           "importance": 0.85, "required_level": "intermediate" },
+        { "skill_slug": "data-visualization","importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "excel",             "importance": 0.65, "required_level": "intermediate" },
+        { "skill_slug": "social-media-marketing","importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "content-marketing", "importance": 0.65, "required_level": "beginner"     },
+        { "skill_slug": "communication",     "importance": 0.75, "required_level": "intermediate" },
+        { "skill_slug": "market-research",   "importance": 0.70, "required_level": "beginner"     },
+        { "skill_slug": "sql",               "importance": 0.40, "required_level": "beginner"     }
+      ]
+    }
+  ]
+}

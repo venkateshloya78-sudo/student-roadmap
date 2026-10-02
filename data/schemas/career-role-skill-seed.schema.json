@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CareerRoleSkillSeed",
+  "description": "Schema for manually curated career role skill requirements (MVP seed data)",
+  "type": "object",
+  "required": ["career_role_slug", "skill_slug", "importance", "required_level", "source", "source_date", "review_status"],
+  "properties": {
+    "career_role_slug": {
+      "type": "string",
+      "description": "Slug matching career_roles.slug"
+    },
+    "skill_slug": {
+      "type": "string",
+      "description": "Slug matching skills.slug"
+    },
+    "importance": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "How important this skill is for the role (0.0 = nice to have, 1.0 = critical)"
+    },
+    "required_level": {
+      "type": "string",
+      "enum": ["beginner", "intermediate", "advanced", "expert"]
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": ["taxonomy", "job_postings", "survey", "expert_review"],
+      "description": "Type of evidence supporting this requirement"
+    },
+    "source": {
+      "type": "string",
+      "description": "Human-readable source name (e.g., 'O*NET 31.0', 'ESCO v1.2.1')"
+    },
+    "source_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the source data (YYYY-MM-DD)"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "description": "Who reviewed this seed record"
+    },
+    "review_status": {
+      "type": "string",
+      "enum": ["pending", "approved", "needs_update", "deprecated"]
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes on this requirement"
+    }
+  }
+}

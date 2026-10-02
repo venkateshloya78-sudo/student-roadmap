@@ -1,0 +1,172 @@
+{
+  "careers": [
+    {
+      "slug": "software-developer",
+      "title": "Software Developer",
+      "career_path": "software-engineering",
+      "industry": "technology",
+      "description": "Designs, develops, and maintains software applications and systems.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech", "B.Sc CS", "MCA"],
+        "notes": "Strong portfolio can substitute for formal degree"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "data-analyst",
+      "title": "Data Analyst",
+      "career_path": "data-analytics",
+      "industry": "technology",
+      "description": "Analyzes data to generate insights that support business decisions.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech", "B.Sc", "B.Com", "BBA"],
+        "notes": "Strong analytical skills more important than specific degree"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "data-scientist",
+      "title": "Data Scientist",
+      "career_path": "data-science",
+      "industry": "technology",
+      "description": "Builds statistical models and machine learning systems to extract insights from data.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech CSE", "B.Sc Mathematics", "B.Sc Statistics", "M.Sc"],
+        "notes": "Strong mathematics background is important"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "ml-engineer",
+      "title": "AI/ML Engineer",
+      "career_path": "ai-ml",
+      "industry": "technology",
+      "description": "Builds, trains, and deploys machine learning models in production systems.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech CSE", "B.Tech AI/ML", "M.Tech"],
+        "notes": "Strong Python, mathematics, and systems skills required"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "cloud-engineer",
+      "title": "Cloud Engineer",
+      "career_path": "cloud-devops",
+      "industry": "technology",
+      "description": "Designs, builds, and maintains cloud infrastructure and services.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech", "B.Sc CS"],
+        "notes": "Cloud certifications (AWS/GCP/Azure) are highly valued"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "cybersecurity-analyst",
+      "title": "Cybersecurity Analyst",
+      "career_path": "cybersecurity",
+      "industry": "technology",
+      "description": "Protects systems and networks from digital attacks and vulnerabilities.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech CSE", "B.Tech IT", "B.Sc CS"],
+        "notes": "Security certifications (CompTIA Security+, CEH) valued"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "ui-ux-designer",
+      "title": "UI/UX Designer",
+      "career_path": "design",
+      "industry": "technology",
+      "description": "Designs user interfaces and experiences for digital products.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Des", "B.Tech CSE", "BCA", "Any degree"],
+        "notes": "Portfolio is the primary evaluation criterion"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "product-manager",
+      "title": "Product Manager",
+      "career_path": "product-management",
+      "industry": "technology",
+      "description": "Defines and drives the development of products from conception to launch.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech", "BBA", "B.Com", "Any degree"],
+        "notes": "Typically requires internship or APM program for entry level"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "business-analyst",
+      "title": "Business Analyst",
+      "career_path": "business-analysis",
+      "industry": "technology",
+      "description": "Bridges business needs and technical solutions by analyzing processes and requirements.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["BBA", "B.Com", "B.Tech", "MBA"],
+        "notes": "Communication and analytical skills are critical"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "devops-engineer",
+      "title": "DevOps Engineer",
+      "career_path": "cloud-devops",
+      "industry": "technology",
+      "description": "Bridges development and operations to automate and streamline software delivery.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Tech CSE", "B.Tech IT"],
+        "notes": "Practical experience with Linux, CI/CD, and containers is essential"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "financial-analyst",
+      "title": "Financial Analyst",
+      "career_path": "finance",
+      "industry": "finance",
+      "description": "Analyzes financial data to support investment decisions and business planning.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["B.Com", "BBA Finance", "B.Sc Economics", "CA"],
+        "notes": "CFA designation valued for advancement"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    },
+    {
+      "slug": "digital-marketing-analyst",
+      "title": "Digital Marketing Analyst",
+      "career_path": "marketing",
+      "industry": "marketing",
+      "description": "Analyzes digital marketing campaigns and drives data-driven marketing decisions.",
+      "entry_level_experience_years": 0,
+      "education_requirements": {
+        "preferred_degrees": ["BBA Marketing", "B.Com", "B.Tech", "Any degree"],
+        "notes": "Digital certifications (Google Analytics, Meta Blueprint) valued"
+      },
+      "seniority_level": "entry",
+      "status": "active"
+    }
+  ]
+}
