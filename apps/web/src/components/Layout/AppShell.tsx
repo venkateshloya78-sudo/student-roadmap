@@ -1,7 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import api from '../lib/api'
-import { clearToken, isLoggedIn } from '../lib/auth'
+import api from '../../lib/api'
+import { clearToken, isLoggedIn } from '../../lib/auth'
 import { useEffect } from 'react'
 
 const navItems = [
