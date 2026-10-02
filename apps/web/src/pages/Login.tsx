@@ -1,80 +1,79 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { GraduationCap } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { LoadingSpinner } from '../components/UI/LoadingSpinner';
+import { useNavigate, Link } from 'react-router-dom';
+import api from '../lib/api';
+import { setToken } from '../lib/auth';
 
-export const Login = () => {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const [email,    setEmail]    = useState('');
+export default function Login() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error,    setError]    = useState('');
-  const [loading,  setLoading]  = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
     try {
-      await login(email, password);
+      const params = new URLSearchParams();
+      params.append('username', email);
+      params.append('password', password);
+
+      const res = await api.post('/auth/login', params, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+      setToken(res.data.access_token);
       navigate('/dashboard');
-    } catch (err: unknown) {
-      const detail = (err as { response?: { data?: { detail?: string } } })
-        ?.response?.data?.detail;
-      setError(detail || 'Invalid email or password.');
-    } finally {
-      setLoading(false);
+    } catch (err: any) {
+      setError(err.response?.data?.detail || 'Login failed');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-50 to-purple-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-bold text-xl text-gray-900">
-              Student<span className="text-brand-600">Roadmap</span>
-            </span>
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-          <p className="text-gray-500 mt-1">Sign in to continue your roadmap</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         </div>
-
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
-                {error}
-              </div>
-            )}
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          {error && <div className="text-red-500 text-center">{error}</div>}
+          <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
               <input
-                type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="input" placeholder="you@college.edu" required
+                name="email"
+                type="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
               <input
-                type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                className="input" placeholder="••••••••" required
+                name="password"
+                type="password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full gap-2">
-              {loading ? <LoadingSpinner size="sm" /> : 'Sign in'}
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
             </button>
-          </form>
-          <p className="text-center text-sm text-gray-500 mt-5">
-            No account?{' '}
-            <Link to="/register" className="text-brand-600 font-medium hover:underline">Create one free</Link>
-          </p>
-        </div>
+          </div>
+          <div className="text-center">
+            <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Need an account? Register
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );
-};
+}

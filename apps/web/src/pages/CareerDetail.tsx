@@ -1,118 +1,93 @@
 import React from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Map, Clock, BookOpen } from 'lucide-react';
-import { careersApi } from '../api/careers';
-import { SkillBadge } from '../components/UI/SkillBadge';
-import { LoadingSpinner } from '../components/UI/LoadingSpinner';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import api from '../lib/api';
+import { isLoggedIn } from '../lib/auth';
 
-export const CareerDetailPage = () => {
-  const { slug } = useParams<{ slug: string }>();
+export default function CareerDetail() {
+  const { slug } = useParams();
   const navigate = useNavigate();
 
-  const { data: role, isLoading } = useQuery({
+  const { data: career, isLoading } = useQuery({
     queryKey: ['career', slug],
-    queryFn: () => careersApi.get(slug!),
-    enabled: !!slug,
+    queryFn: async () => {
+      const res = await api.get(`/careers/${slug}`);
+      return res.data;
+    }
   });
 
-  if (isLoading) return <div className="flex justify-center py-20"><LoadingSpinner size="lg" /></div>;
-  if (!role)     return <div className="text-center py-20 text-gray-500">Career path not found.</div>;
+  const generateRoadmap = useMutation({
+    mutationFn: async () => {
+      const res = await api.post('/roadmaps/generate', {
+        career_role_slug: slug,
+        weekly_hours: 10
+      });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      navigate(`/roadmaps/${data.id}`);
+    }
+  });
+
+  if (isLoading) return <div className="p-8">Loading...</div>;
+  if (!career) return <div className="p-8">Career not found</div>;
 
   return (
-    <div>
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-800 mb-6 transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" /> Back to careers
-      </button>
-
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Overview */}
-          <div className="card">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">{role.title}</h1>
-            <p className="text-gray-600 leading-relaxed">{role.description}</p>
-            <div className="flex flex-wrap gap-3 mt-4">
-              <span className="badge bg-gray-100 text-gray-700 gap-1.5">
-                <Clock className="w-3 h-3" />
-                {role.entry_level_experience_years === 0
-                  ? 'No prior experience needed'
-                  : `${role.entry_level_experience_years}+ yrs experience`}
-              </span>
-              <span className="badge bg-gray-100 text-gray-700 capitalize">
-                {role.seniority_level} level
-              </span>
-              {role.industry && (
-                <span className="badge bg-gray-100 text-gray-700">{role.industry.name}</span>
-              )}
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="bg-white p-8 rounded-lg shadow">
+          <h1 className="text-3xl font-bold">{career.title}</h1>
+          <p className="text-sm text-indigo-500 font-semibold mb-4">{career.industry}</p>
+          <p className="text-gray-700">{career.description}</p>
+          
+          <div className="mt-8">
+            <h2 className="text-2xl font-semibold mb-4">Required Skills</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Skill</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Importance</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {career.required_skills?.map((rs: any) => (
+                    <tr key={rs.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{rs.skill.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                          <div className="bg-indigo-600 h-2.5 rounded-full" style={{ width: `${rs.importance * 10}%` }}></div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{rs.required_level}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-
-          {/* Required skills */}
-          {role.required_skills && role.required_skills.length > 0 && (
-            <div className="card">
-              <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-brand-600" /> Required Skills
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {role.required_skills.map((rs) => (
-                  <SkillBadge
-                    key={rs.id}
-                    name={rs.skill.name}
-                    category={rs.skill.category}
-                    difficulty={rs.required_level}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Education requirements */}
-          {role.education_requirements && Object.keys(role.education_requirements).length > 0 && (
-            <div className="card">
-              <h2 className="font-semibold text-gray-900 mb-3">Education Requirements</h2>
-              {(role.education_requirements.preferred_degrees as string[] | undefined) && (
-                <div className="mb-2">
-                  <p className="text-xs text-gray-500 mb-1">Preferred degrees</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {(role.education_requirements.preferred_degrees as string[]).map((d) => (
-                      <span key={d} className="badge bg-gray-100 text-gray-700">{d}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {role.education_requirements.notes && (
-                <p className="text-sm text-gray-500 mt-2">{role.education_requirements.notes as string}</p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* CTA sidebar */}
-        <div className="space-y-4">
-          <div className="card border-brand-200 bg-brand-50">
-            <h3 className="font-semibold text-brand-900 mb-2">Ready to start?</h3>
-            <p className="text-sm text-brand-700 mb-4">
-              Generate your personalised roadmap for this career path.
-            </p>
-            <Link to="/onboarding" className="btn-primary w-full text-sm gap-2">
-              <Map className="w-4 h-4" /> Build my roadmap
-            </Link>
-          </div>
-
-          <div className="card">
-            <h3 className="font-semibold text-gray-900 mb-3">Next steps</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>1. Complete your 5-min onboarding profile</p>
-              <p>2. Review your personalised skill gap report</p>
-              <p>3. Start Phase 1 of your roadmap</p>
-              <p>4. Submit evidence to earn competency scores</p>
-            </div>
+          
+          <div className="mt-8 border-t pt-8">
+            {isLoggedIn() ? (
+              <button
+                onClick={() => generateRoadmap.mutate()}
+                disabled={generateRoadmap.isPending}
+                className="w-full sm:w-auto px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+              >
+                {generateRoadmap.isPending ? 'Generating...' : 'Generate My Roadmap'}
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                className="w-full sm:w-auto px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200"
+              >
+                Login to Generate Roadmap
+              </button>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
