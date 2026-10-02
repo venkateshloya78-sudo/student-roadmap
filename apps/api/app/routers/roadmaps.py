@@ -119,7 +119,7 @@ async def generate_roadmap(
             db.add(phase)
             await db.flush([phase])
             for i, s in enumerate(current_skills):
-                db.add(RoadmapItem(
+                item = RoadmapItem(
                     id=str(uuid.uuid4()),
                     phase_id=str(phase.id),
                     type="skill",
@@ -128,7 +128,9 @@ async def generate_roadmap(
                     estimated_hours=skill_hours(str(s.difficulty)),
                     order_index=i,
                     status="not_started",
-                ))
+                )
+                db.add(item)
+                await db.flush([item])
             phase_idx += 1
             current_skills = []
             current_hours = 0
@@ -147,7 +149,7 @@ async def generate_roadmap(
         db.add(phase)
         await db.flush([phase])
         for i, s in enumerate(current_skills):
-            db.add(RoadmapItem(
+            item = RoadmapItem(
                 id=str(uuid.uuid4()),
                 phase_id=str(phase.id),
                 type="skill",
@@ -156,7 +158,11 @@ async def generate_roadmap(
                 estimated_hours=skill_hours(str(s.difficulty)),
                 order_index=i,
                 status="not_started",
-            ))
+            )
+            db.add(item)
+            await db.flush([item])
+
+
 
     await db.commit()
 
