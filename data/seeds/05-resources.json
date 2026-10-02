@@ -1,0 +1,442 @@
+{
+  "resources": [
+    {
+      "skill_slug": "python",
+      "items": [
+        {"title": "Python – Wikipedia", "url": "https://en.wikipedia.org/wiki/Python_(programming_language)", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Python for Everybody (Full Course) – freeCodeCamp", "url": "https://www.youtube.com/watch?v=8DvywoWv6fI", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Official Python Tutorial", "url": "https://docs.python.org/3/tutorial/", "type": "documentation", "provider": "Python.org", "cost": "free"},
+        {"title": "Automate the Boring Stuff with Python (Free Book)", "url": "https://automatetheboringstuff.com/", "type": "book", "provider": "Al Sweigart", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "sql",
+      "items": [
+        {"title": "SQL – Wikipedia", "url": "https://en.wikipedia.org/wiki/SQL", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "SQL Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "SQLBolt – Interactive SQL Lessons", "url": "https://sqlbolt.com/", "type": "practice", "provider": "SQLBolt", "cost": "free"},
+        {"title": "W3Schools SQL Tutorial", "url": "https://www.w3schools.com/sql/", "type": "documentation", "provider": "W3Schools", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "statistics",
+      "items": [
+        {"title": "Statistics – Wikipedia", "url": "https://en.wikipedia.org/wiki/Statistics", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Statistics Full Course – Khan Academy", "url": "https://www.khanacademy.org/math/statistics-probability", "type": "course", "provider": "Khan Academy", "cost": "free"},
+        {"title": "Statistics and Probability – MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/18-650-statistics-for-applications-fall-2016/", "type": "course", "provider": "MIT OCW", "cost": "free"},
+        {"title": "Think Stats (Free PDF)", "url": "https://greenteapress.com/thinkstats2/thinkstats2.pdf", "type": "book", "provider": "Allen Downey", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "linear-algebra",
+      "items": [
+        {"title": "Linear Algebra – Wikipedia", "url": "https://en.wikipedia.org/wiki/Linear_algebra", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Essence of Linear Algebra – 3Blue1Brown", "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab", "type": "video", "provider": "3Blue1Brown", "cost": "free"},
+        {"title": "Linear Algebra – MIT OpenCourseWare (Gilbert Strang)", "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/", "type": "course", "provider": "MIT OCW", "cost": "free"},
+        {"title": "Interactive Linear Algebra (Free Textbook)", "url": "https://textbooks.math.gatech.edu/ila/", "type": "book", "provider": "Georgia Tech", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "excel",
+      "items": [
+        {"title": "Microsoft Excel – Wikipedia", "url": "https://en.wikipedia.org/wiki/Microsoft_Excel", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Excel Full Course for Beginners – freeCodeCamp", "url": "https://www.youtube.com/watch?v=Vl0H-qTclOg", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Excel Tutorial – W3Schools", "url": "https://www.w3schools.com/excel/", "type": "documentation", "provider": "W3Schools", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "power-bi",
+      "items": [
+        {"title": "Power BI – Wikipedia", "url": "https://en.wikipedia.org/wiki/Microsoft_Power_BI", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Power BI Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=NNSHu0rkew8", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Microsoft Power BI Learning Path", "url": "https://learn.microsoft.com/en-us/training/powerplatform/power-bi", "type": "course", "provider": "Microsoft Learn", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "tableau",
+      "items": [
+        {"title": "Tableau – Wikipedia", "url": "https://en.wikipedia.org/wiki/Tableau_Software", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Tableau Full Course – Simplilearn", "url": "https://www.youtube.com/watch?v=aHaOIvR00So", "type": "video", "provider": "Simplilearn", "cost": "free"},
+        {"title": "Tableau Free Training Videos", "url": "https://www.tableau.com/learn/training", "type": "course", "provider": "Tableau", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "pandas",
+      "items": [
+        {"title": "Pandas – Wikipedia", "url": "https://en.wikipedia.org/wiki/Pandas_(software)", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Pandas Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=gtjxAH8uaP0", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Pandas Official Documentation", "url": "https://pandas.pydata.org/docs/getting_started/", "type": "documentation", "provider": "Pandas", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "numpy",
+      "items": [
+        {"title": "NumPy – Wikipedia", "url": "https://en.wikipedia.org/wiki/NumPy", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "NumPy Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=QUT1VHiLmmI", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "NumPy Official Documentation", "url": "https://numpy.org/doc/stable/user/quickstart.html", "type": "documentation", "provider": "NumPy", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "matplotlib",
+      "items": [
+        {"title": "Matplotlib – Wikipedia", "url": "https://en.wikipedia.org/wiki/Matplotlib", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Matplotlib Crash Course – Corey Schafer", "url": "https://www.youtube.com/watch?v=UO98lJQ3QGI", "type": "video", "provider": "Corey Schafer", "cost": "free"},
+        {"title": "Matplotlib Official Tutorials", "url": "https://matplotlib.org/stable/tutorials/index.html", "type": "documentation", "provider": "Matplotlib", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "scikit-learn",
+      "items": [
+        {"title": "scikit-learn – Wikipedia", "url": "https://en.wikipedia.org/wiki/Scikit-learn", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Machine Learning with scikit-learn – freeCodeCamp", "url": "https://www.youtube.com/watch?v=pqNCD_5r0IU", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "scikit-learn Official User Guide", "url": "https://scikit-learn.org/stable/user_guide.html", "type": "documentation", "provider": "scikit-learn", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "tensorflow",
+      "items": [
+        {"title": "TensorFlow – Wikipedia", "url": "https://en.wikipedia.org/wiki/TensorFlow", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "TensorFlow 2.0 Complete Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=tPYj3fFJGjk", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "TensorFlow Official Tutorials", "url": "https://www.tensorflow.org/tutorials", "type": "documentation", "provider": "TensorFlow", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "pytorch",
+      "items": [
+        {"title": "PyTorch – Wikipedia", "url": "https://en.wikipedia.org/wiki/PyTorch", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "PyTorch Deep Learning – freeCodeCamp", "url": "https://www.youtube.com/watch?v=GIsg-ZUy0MY", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "PyTorch Official Tutorials", "url": "https://pytorch.org/tutorials/", "type": "documentation", "provider": "PyTorch", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "javascript",
+      "items": [
+        {"title": "JavaScript – Wikipedia", "url": "https://en.wikipedia.org/wiki/JavaScript", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "JavaScript Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=PkZNo7MFNFg", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "The Modern JavaScript Tutorial", "url": "https://javascript.info/", "type": "documentation", "provider": "javascript.info", "cost": "free"},
+        {"title": "Eloquent JavaScript (Free Book)", "url": "https://eloquentjavascript.net/", "type": "book", "provider": "Marijn Haverbeke", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "typescript",
+      "items": [
+        {"title": "TypeScript – Wikipedia", "url": "https://en.wikipedia.org/wiki/TypeScript", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "TypeScript Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=30LWjhZzg50", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "TypeScript Official Handbook", "url": "https://www.typescriptlang.org/docs/handbook/", "type": "documentation", "provider": "TypeScript", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "react",
+      "items": [
+        {"title": "React (JavaScript library) – Wikipedia", "url": "https://en.wikipedia.org/wiki/React_(JavaScript_library)", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "React Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=bMknfKXIFA8", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "React Official Documentation", "url": "https://react.dev/learn", "type": "documentation", "provider": "React", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "html-css",
+      "items": [
+        {"title": "HTML – Wikipedia", "url": "https://en.wikipedia.org/wiki/HTML", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "HTML & CSS Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=mU6anWqZJcc", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "MDN Web Docs – HTML", "url": "https://developer.mozilla.org/en-US/docs/Learn/HTML", "type": "documentation", "provider": "MDN", "cost": "free"},
+        {"title": "MDN Web Docs – CSS", "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS", "type": "documentation", "provider": "MDN", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "git",
+      "items": [
+        {"title": "Git – Wikipedia", "url": "https://en.wikipedia.org/wiki/Git", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Git & GitHub Crash Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=RGOj5yH7evk", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Pro Git Book (Free)", "url": "https://git-scm.com/book/en/v2", "type": "book", "provider": "Scott Chacon", "cost": "free"},
+        {"title": "Learn Git Branching (Interactive)", "url": "https://learngitbranching.js.org/", "type": "practice", "provider": "learngitbranching.js.org", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "linux-cli",
+      "items": [
+        {"title": "Linux – Wikipedia", "url": "https://en.wikipedia.org/wiki/Linux", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Linux Command Line Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=ZtqBQ68cfJc", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "The Linux Command Line (Free Book)", "url": "https://linuxcommand.org/tlcl.php", "type": "book", "provider": "William Shotts", "cost": "free"},
+        {"title": "Linux Journey (Interactive)", "url": "https://linuxjourney.com/", "type": "practice", "provider": "Linux Journey", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "docker",
+      "items": [
+        {"title": "Docker – Wikipedia", "url": "https://en.wikipedia.org/wiki/Docker_(software)", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Docker Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=fqMOX6JJhGo", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Docker Official Documentation", "url": "https://docs.docker.com/get-started/", "type": "documentation", "provider": "Docker", "cost": "free"},
+        {"title": "Play with Docker (Interactive Labs)", "url": "https://labs.play-with-docker.com/", "type": "practice", "provider": "Docker", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "kubernetes",
+      "items": [
+        {"title": "Kubernetes – Wikipedia", "url": "https://en.wikipedia.org/wiki/Kubernetes", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Kubernetes Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=d6WC5n9G_sM", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Kubernetes Official Documentation", "url": "https://kubernetes.io/docs/tutorials/", "type": "documentation", "provider": "Kubernetes", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "aws",
+      "items": [
+        {"title": "Amazon Web Services – Wikipedia", "url": "https://en.wikipedia.org/wiki/Amazon_Web_Services", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "AWS Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=ulprqHHWlng", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "AWS Skill Builder (Free Courses)", "url": "https://explore.skillbuilder.aws/learn", "type": "course", "provider": "AWS", "cost": "free"},
+        {"title": "AWS Well-Architected Framework (PDF)", "url": "https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf", "type": "book", "provider": "AWS", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "gcp",
+      "items": [
+        {"title": "Google Cloud Platform – Wikipedia", "url": "https://en.wikipedia.org/wiki/Google_Cloud_Platform", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Google Cloud Skills Boost (Free Courses)", "url": "https://www.cloudskillsboost.google/", "type": "course", "provider": "Google", "cost": "free"},
+        {"title": "GCP Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=jpno8FSqpc8", "type": "video", "provider": "freeCodeCamp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "azure",
+      "items": [
+        {"title": "Microsoft Azure – Wikipedia", "url": "https://en.wikipedia.org/wiki/Microsoft_Azure", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Azure Fundamentals – Microsoft Learn", "url": "https://learn.microsoft.com/en-us/training/paths/azure-fundamentals/", "type": "course", "provider": "Microsoft Learn", "cost": "free"},
+        {"title": "Azure Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=NKEFWyqJ5XA", "type": "video", "provider": "freeCodeCamp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "terraform",
+      "items": [
+        {"title": "Terraform – Wikipedia", "url": "https://en.wikipedia.org/wiki/Terraform_(software)", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Terraform Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=SLB_c_ayRMo", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Terraform Official Tutorials", "url": "https://developer.hashicorp.com/terraform/tutorials", "type": "documentation", "provider": "HashiCorp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "ci-cd",
+      "items": [
+        {"title": "Continuous Integration – Wikipedia", "url": "https://en.wikipedia.org/wiki/Continuous_integration", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "GitHub Actions Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=R8_veQiYBjI", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "GitHub Actions Official Documentation", "url": "https://docs.github.com/en/actions/learn-github-actions", "type": "documentation", "provider": "GitHub", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "networking-fundamentals",
+      "items": [
+        {"title": "Computer Network – Wikipedia", "url": "https://en.wikipedia.org/wiki/Computer_network", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Computer Networking Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=qiQR5rTSshw", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Computer Networks: A Top-Down Approach (Lecture Slides)", "url": "https://gaia.cs.umass.edu/kurose_ross/lectures.php", "type": "book", "provider": "Kurose & Ross", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "security-fundamentals",
+      "items": [
+        {"title": "Computer Security – Wikipedia", "url": "https://en.wikipedia.org/wiki/Computer_security", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "CS50 Cybersecurity (Free Course)", "url": "https://cs50.harvard.edu/cybersecurity/", "type": "course", "provider": "Harvard CS50", "cost": "free"},
+        {"title": "Cybersecurity Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=hXSFdwIOfnE", "type": "video", "provider": "freeCodeCamp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "ethical-hacking",
+      "items": [
+        {"title": "Ethical Hacking – Wikipedia", "url": "https://en.wikipedia.org/wiki/Penetration_testing", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Ethical Hacking Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=3Kq1MIfTWCE", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "TryHackMe – Free Rooms", "url": "https://tryhackme.com/", "type": "practice", "provider": "TryHackMe", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "siem",
+      "items": [
+        {"title": "Security Information and Event Management – Wikipedia", "url": "https://en.wikipedia.org/wiki/Security_information_and_event_management", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Splunk Free Training", "url": "https://www.splunk.com/en_us/training/free-courses/overview.html", "type": "course", "provider": "Splunk", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "figma",
+      "items": [
+        {"title": "Figma – Wikipedia", "url": "https://en.wikipedia.org/wiki/Figma", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Figma Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=jwCmIBJ8Jtc", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Figma Official Learning Resources", "url": "https://www.figma.com/resources/learn-design/", "type": "course", "provider": "Figma", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "design-thinking",
+      "items": [
+        {"title": "Design Thinking – Wikipedia", "url": "https://en.wikipedia.org/wiki/Design_thinking", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Design Thinking – IDEO (Free Course)", "url": "https://www.ideou.com/pages/design-thinking", "type": "course", "provider": "IDEO", "cost": "free"},
+        {"title": "Introduction to Design Thinking – Stanford d.school", "url": "https://dschool.stanford.edu/resources/getting-started-with-design-thinking", "type": "documentation", "provider": "Stanford d.school", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "user-research",
+      "items": [
+        {"title": "User Research – Wikipedia", "url": "https://en.wikipedia.org/wiki/User_research", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "User Research Methods – NNGroup", "url": "https://www.nngroup.com/articles/which-ux-research-methods/", "type": "documentation", "provider": "Nielsen Norman Group", "cost": "free"},
+        {"title": "UX Research Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=Ovj-i80CqHs", "type": "video", "provider": "freeCodeCamp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "information-architecture",
+      "items": [
+        {"title": "Information Architecture – Wikipedia", "url": "https://en.wikipedia.org/wiki/Information_architecture", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Information Architecture Basics – Usability.gov", "url": "https://www.usability.gov/what-and-why/information-architecture.html", "type": "documentation", "provider": "Usability.gov", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "product-thinking",
+      "items": [
+        {"title": "Product Management – Wikipedia", "url": "https://en.wikipedia.org/wiki/Product_management", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Product Management Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=N5bJM8nE4bw", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Inspired: How to Create Tech Products (Summary)", "url": "https://www.svpg.com/inspired-how-to-create-tech-products-customers-love/", "type": "book", "provider": "Marty Cagan / SVPG", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "agile-scrum",
+      "items": [
+        {"title": "Scrum – Wikipedia", "url": "https://en.wikipedia.org/wiki/Scrum_(software_development)", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Scrum Guide (Official Free PDF)", "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf", "type": "book", "provider": "Scrum.org", "cost": "free"},
+        {"title": "Agile & Scrum Full Course – Simplilearn", "url": "https://www.youtube.com/watch?v=I7sCPdX-XDQ", "type": "video", "provider": "Simplilearn", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "market-research",
+      "items": [
+        {"title": "Market Research – Wikipedia", "url": "https://en.wikipedia.org/wiki/Market_research", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Market Research Basics – Google Digital Garage", "url": "https://learndigital.withgoogle.com/digitalgarage/course/digital-marketing", "type": "course", "provider": "Google Digital Garage", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "requirements-analysis",
+      "items": [
+        {"title": "Requirements Analysis – Wikipedia", "url": "https://en.wikipedia.org/wiki/Requirements_analysis", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Software Requirements (Free IEEE Guide)", "url": "https://www.computer.org/publications/tech-news/trends/ieee-swebok", "type": "documentation", "provider": "IEEE", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "dsa",
+      "items": [
+        {"title": "Data Structures – Wikipedia", "url": "https://en.wikipedia.org/wiki/Data_structure", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Data Structures Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=8hly31xKli0", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "CS50 – Introduction to Computer Science (Free)", "url": "https://cs50.harvard.edu/x/", "type": "course", "provider": "Harvard CS50", "cost": "free"},
+        {"title": "Algorithms by Sedgewick – Part 1 (Free Audit)", "url": "https://www.coursera.org/learn/algorithms-part1", "type": "course", "provider": "Princeton / Coursera", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "oop",
+      "items": [
+        {"title": "Object-Oriented Programming – Wikipedia", "url": "https://en.wikipedia.org/wiki/Object-oriented_programming", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "OOP with Python – freeCodeCamp", "url": "https://www.youtube.com/watch?v=Ej_02ICOIgs", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Head First Object-Oriented Analysis & Design (Summary)", "url": "https://en.wikipedia.org/wiki/Head_First_(book_series)", "type": "book", "provider": "O'Reilly", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "rest-api",
+      "items": [
+        {"title": "REST – Wikipedia", "url": "https://en.wikipedia.org/wiki/REST", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "REST API Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=-MTSQjw5DrM", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "RESTful API Design – Microsoft Guidelines", "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design", "type": "documentation", "provider": "Microsoft", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "postgresql",
+      "items": [
+        {"title": "PostgreSQL – Wikipedia", "url": "https://en.wikipedia.org/wiki/PostgreSQL", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "PostgreSQL Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=qw--VYLpxG4", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "PostgreSQL Official Tutorial", "url": "https://www.postgresql.org/docs/current/tutorial.html", "type": "documentation", "provider": "PostgreSQL", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "mongodb",
+      "items": [
+        {"title": "MongoDB – Wikipedia", "url": "https://en.wikipedia.org/wiki/MongoDB", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "MongoDB Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=ofme2o29ngU", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "MongoDB University (Free Courses)", "url": "https://learn.mongodb.com/", "type": "course", "provider": "MongoDB", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "financial-modeling",
+      "items": [
+        {"title": "Financial Modeling – Wikipedia", "url": "https://en.wikipedia.org/wiki/Financial_modeling", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Financial Modeling – CFI Free Course", "url": "https://corporatefinanceinstitute.com/resources/financial-modeling/financial-modeling-guide/", "type": "documentation", "provider": "CFI", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "accounting",
+      "items": [
+        {"title": "Accounting – Wikipedia", "url": "https://en.wikipedia.org/wiki/Accounting", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Accounting & Financial Statements – Khan Academy", "url": "https://www.khanacademy.org/economics-finance-domain/core-finance/accounting-and-financial-stateme", "type": "course", "provider": "Khan Academy", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "financial-analysis",
+      "items": [
+        {"title": "Financial Analysis – Wikipedia", "url": "https://en.wikipedia.org/wiki/Financial_analysis", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Financial Analysis Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=lB_RkEpUMPE", "type": "video", "provider": "freeCodeCamp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "ms-office",
+      "items": [
+        {"title": "Microsoft Office – Wikipedia", "url": "https://en.wikipedia.org/wiki/Microsoft_Office", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Microsoft Office Free Training", "url": "https://support.microsoft.com/en-us/training", "type": "course", "provider": "Microsoft", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "communication",
+      "items": [
+        {"title": "Business Communication – Wikipedia", "url": "https://en.wikipedia.org/wiki/Business_communication", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "English Communication Skills – British Council (Free)", "url": "https://www.futurelearn.com/courses/explore-english-language-culture", "type": "course", "provider": "FutureLearn", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "presentation-skills",
+      "items": [
+        {"title": "Presentation – Wikipedia", "url": "https://en.wikipedia.org/wiki/Presentation", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Public Speaking – Toastmasters Free Resources", "url": "https://www.toastmasters.org/resources/public-speaking-tips", "type": "documentation", "provider": "Toastmasters", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "seo-sem",
+      "items": [
+        {"title": "Search Engine Optimization – Wikipedia", "url": "https://en.wikipedia.org/wiki/Search_engine_optimization", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "SEO Starter Guide – Google", "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide", "type": "documentation", "provider": "Google", "cost": "free"},
+        {"title": "SEO Full Course – freeCodeCamp", "url": "https://www.youtube.com/watch?v=SnxeXZpZkI0", "type": "video", "provider": "freeCodeCamp", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "google-analytics",
+      "items": [
+        {"title": "Google Analytics – Wikipedia", "url": "https://en.wikipedia.org/wiki/Google_Analytics", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Google Analytics Academy (Free)", "url": "https://analytics.google.com/analytics/academy/", "type": "course", "provider": "Google", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "social-media-marketing",
+      "items": [
+        {"title": "Social Media Marketing – Wikipedia", "url": "https://en.wikipedia.org/wiki/Social_media_marketing", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Social Media Marketing Course – HubSpot Academy", "url": "https://academy.hubspot.com/courses/social-media", "type": "course", "provider": "HubSpot", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "content-marketing",
+      "items": [
+        {"title": "Content Marketing – Wikipedia", "url": "https://en.wikipedia.org/wiki/Content_marketing", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Content Marketing Certification – HubSpot Academy", "url": "https://academy.hubspot.com/courses/content-marketing", "type": "course", "provider": "HubSpot", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "data-visualization",
+      "items": [
+        {"title": "Data Visualization – Wikipedia", "url": "https://en.wikipedia.org/wiki/Data_visualization", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Data Visualization with D3 – freeCodeCamp", "url": "https://www.youtube.com/watch?v=_8V5o2UHG0E", "type": "video", "provider": "freeCodeCamp", "cost": "free"},
+        {"title": "Fundamentals of Data Visualization (Free Book)", "url": "https://clauswilke.com/dataviz/", "type": "book", "provider": "Claus Wilke", "cost": "free"}
+      ]
+    },
+    {
+      "skill_slug": "probability",
+      "items": [
+        {"title": "Probability Theory – Wikipedia", "url": "https://en.wikipedia.org/wiki/Probability_theory", "type": "documentation", "provider": "Wikipedia", "cost": "free"},
+        {"title": "Probability – Khan Academy", "url": "https://www.khanacademy.org/math/statistics-probability/probability-library", "type": "course", "provider": "Khan Academy", "cost": "free"},
+        {"title": "Introduction to Probability (Free PDF) – Blitzstein", "url": "https://projects.iq.harvard.edu/stat110/strategic-practice-problems", "type": "book", "provider": "Harvard", "cost": "free"}
+      ]
+    }
+  ]
+}
