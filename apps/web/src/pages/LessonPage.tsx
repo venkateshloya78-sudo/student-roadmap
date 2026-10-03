@@ -17,6 +17,8 @@ import LessonVoicePlayer from '../components/Course/LessonVoicePlayer';
 import CourseVideoPlayer from '../components/Course/CourseVideoPlayer';
 import { Menu, BookOpen, Terminal, Building2, Award, Sparkles, Download, Bookmark, Volume2, Video } from 'lucide-react';
 import { FloatingAssistantWidget } from '../components/Assistant/FloatingAssistantWidget';
+import { useLanguage } from '../i18n/LanguageContext';
+import LanguageSelector from '../components/Common/LanguageSelector';
 
 type TabType = 'notes' | 'video' | 'playground' | 'casestudies' | 'interview' | 'flashcards' | 'export';
 
@@ -24,6 +26,7 @@ export default function LessonPage() {
   const { slug, lessonId } = useParams<{ slug: string, lessonId: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('notes');
 
@@ -119,7 +122,7 @@ export default function LessonPage() {
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="hidden md:flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500">Progress</span>
+            <span className="text-xs font-semibold text-slate-500">{t('common.progress', 'Progress')}</span>
             <div className="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-indigo-600 rounded-full transition-all" 
@@ -129,6 +132,9 @@ export default function LessonPage() {
             <span className="text-xs font-bold text-indigo-600">{Math.round(course.progress_pct)}%</span>
           </div>
 
+          {/* Language Selector */}
+          <LanguageSelector variant="compact" />
+
           <button
             onClick={toggleBookmark}
             className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all ${
@@ -136,17 +142,17 @@ export default function LessonPage() {
                 ? 'bg-amber-50 border-amber-300 text-amber-700 shadow-xs'
                 : 'bg-white border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-50'
             }`}
-            title={isBookmarked ? 'Bookmarked' : 'Bookmark this lesson'}
+            title={isBookmarked ? t('lesson.bookmarked', 'Bookmarked') : t('lesson.bookmark', 'Bookmark this lesson')}
           >
             <Bookmark size={15} className={isBookmarked ? 'fill-amber-500 text-amber-500' : ''} />
-            <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+            <span className="hidden sm:inline">{isBookmarked ? t('lesson.bookmarked', 'Bookmarked') : t('lesson.bookmark', 'Bookmark')}</span>
           </button>
 
           <button 
             onClick={() => navigate(`/courses/${slug}`)}
             className="text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
           >
-            Exit
+            {t('lesson.exit', 'Exit')}
           </button>
         </div>
       </header>
@@ -228,7 +234,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <BookOpen size={16} />
-                    <span>📖 Deep Notes</span>
+                    <span>📖 {t('lesson.deepNotes', 'Deep Notes')}</span>
                   </button>
 
                   <button
@@ -240,7 +246,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <Video size={16} className={activeTab === 'video' ? 'text-white' : 'text-red-500'} />
-                    <span>🎥 Video Class</span>
+                    <span>🎥 {t('lesson.videoClass', 'Video Class')}</span>
                   </button>
 
                   <button
@@ -252,7 +258,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <Terminal size={16} />
-                    <span>💻 Code Playground</span>
+                    <span>💻 {t('lesson.codePlayground', 'Code Playground')}</span>
                   </button>
 
                   <button
@@ -264,7 +270,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <Building2 size={16} />
-                    <span>🏢 Case Studies</span>
+                    <span>🏢 {t('lesson.caseStudies', 'Case Studies')}</span>
                   </button>
 
                   <button
@@ -276,7 +282,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <Award size={16} />
-                    <span>🎯 FAANG Interview Vault</span>
+                    <span>🎯 {t('lesson.interviewVault', 'FAANG Interview Vault')}</span>
                   </button>
 
                   <button
@@ -288,7 +294,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <Sparkles size={16} />
-                    <span>🗂️ Flashcards</span>
+                    <span>🗂️ {t('lesson.flashcards', 'Flashcards')}</span>
                   </button>
 
                   <button
@@ -300,7 +306,7 @@ export default function LessonPage() {
                     }`}
                   >
                     <Download size={16} />
-                    <span>📥 Download PDF Notes</span>
+                    <span>📥 {t('lesson.downloadPDF', 'Download PDF Notes')}</span>
                   </button>
                 </div>
 

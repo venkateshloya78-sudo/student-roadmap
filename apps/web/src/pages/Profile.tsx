@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
+import { useLanguage } from '../i18n/LanguageContext'
+import LanguageSelector from '../components/Common/LanguageSelector'
 
 const degrees = ['btech', 'bsc', 'bcom', 'ba', 'mtech', 'msc', 'other']
 const years = [1, 2, 3, 4]
@@ -10,6 +12,7 @@ const hours = [5, 10, 15, 20, 25, 30]
 
 export default function Profile() {
   const qc = useQueryClient()
+  const { t } = useLanguage()
   const [saved, setSaved] = useState(false)
   const [form, setForm] = useState<Record<string, any>>({})
 
@@ -52,8 +55,8 @@ export default function Profile() {
     <AppShell>
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-900 mb-1">Your profile</h1>
-          <p className="text-sm text-slate-500">This info personalises your skill-gap analysis and roadmap.</p>
+          <h1 className="text-2xl font-bold text-slate-900 mb-1">{t('profile.title', 'Your profile')}</h1>
+          <p className="text-sm text-slate-500">{t('profile.subtitle', 'This info personalises your skill-gap analysis and roadmap.')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -130,6 +133,14 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* Language & Regional Settings */}
+          <div className="card p-6">
+            <h2 className="text-sm font-semibold text-slate-900 mb-5 flex items-center gap-2">
+              <span>🌐</span> {t('profile.languageSettings', 'Language & Regional Settings')}
+            </h2>
+            <LanguageSelector variant="profile" />
+          </div>
+
           {/* Goal */}
           <div className="card p-6">
             <h2 className="text-sm font-semibold text-slate-900 mb-5 flex items-center gap-2">
@@ -159,18 +170,18 @@ export default function Profile() {
           {/* Save */}
           <div className="flex items-center gap-3">
             <button type="submit" disabled={updateProfile.isPending} className="btn-primary px-6 py-2.5">
-              {updateProfile.isPending ? 'Saving...' : 'Save profile'}
+              {updateProfile.isPending ? t('common.loading', 'Saving...') : t('common.save', 'Save profile')}
             </button>
             {saved && (
               <span className="text-sm text-emerald-600 font-medium flex items-center gap-1.5">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Saved!
+                {t('common.saved', 'Saved!')}
               </span>
             )}
             {updateProfile.isError && (
-              <span className="text-sm text-red-500">Failed to save. Try again.</span>
+              <span className="text-sm text-red-500">{t('common.error', 'Failed to save. Try again.')}</span>
             )}
           </div>
         </form>

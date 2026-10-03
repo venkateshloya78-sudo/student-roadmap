@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Clock, BarChart, ArrowRight, Search } from 'lucide-react';
 import { CourseOut } from '../types/course';
 import ProgressBar from '../components/Course/ProgressBar';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const categoryIcons: Record<string, string> = {
   'programming': '💻',
@@ -25,6 +26,7 @@ const difficultyColors: Record<string, string> = {
 
 
 export default function CourseCatalog() {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -49,15 +51,14 @@ export default function CourseCatalog() {
         {/* Hero Section */}
         <div className="bg-indigo-600 rounded-2xl p-8 sm:p-12 text-white mb-8 relative overflow-hidden shadow-xl">
           <div className="relative z-10 max-w-2xl">
-            <h1 className="text-3xl sm:text-4xl font-extrabold mb-4">Build Your Career Skills</h1>
+            <h1 className="text-3xl sm:text-4xl font-extrabold mb-4">{t('courses.title', 'Build Your Career Skills')}</h1>
             <p className="text-indigo-100 text-lg mb-8">
-              Master the most in-demand skills with our interactive, project-based courses. 
-              Start learning today and track your progress along the way.
+              {t('courses.subtitle', 'Master the most in-demand skills with our interactive, project-based courses. Start learning today and track your progress along the way.')}
             </p>
             <div className="flex gap-4">
               <div className="bg-white/10 backdrop-blur rounded-xl px-6 py-3 border border-white/20">
                 <div className="text-2xl font-bold">{courses.length}</div>
-                <div className="text-indigo-200 text-sm">Active Courses</div>
+                <div className="text-indigo-200 text-sm">{t('courses.allCourses', 'Active Courses')}</div>
               </div>
             </div>
           </div>
@@ -179,14 +180,14 @@ export default function CourseCatalog() {
                   <div className="space-y-3 pt-4 border-t border-slate-100">
                     <ProgressBar pct={course.progress_pct} color="bg-indigo-500" />
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-indigo-600">Continue Learning</span>
+                      <span className="text-xs font-bold text-indigo-600">{t('courses.continueCourse', 'Continue Learning')}</span>
                       <ArrowRight size={16} className="text-indigo-600 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 ) : (
                   <div className="pt-4 border-t border-slate-100">
                     <div className="flex items-center justify-between text-slate-700 group-hover:text-indigo-600 font-bold text-sm transition-colors">
-                      Start Learning
+                      {t('courses.startCourse', 'Start Learning')}
                       <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>

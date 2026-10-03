@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
+import { useLanguage } from '../i18n/LanguageContext'
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub: string; color: string }) {
   return (
@@ -15,6 +16,7 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
 }
 
 export default function Dashboard() {
+  const { t } = useLanguage()
   const { data: me, isLoading } = useQuery({
     queryKey: ['me'],
     queryFn: () => api.get('/auth/me').then(r => r.data),
@@ -61,9 +63,9 @@ export default function Dashboard() {
 
         {/* Header */}
         <div className="mb-8">
-          <p className="text-sm text-slate-500 mb-1">Welcome back 👋</p>
+          <p className="text-sm text-slate-500 mb-1">{t('dashboard.welcome', 'Welcome back')} 👋</p>
           <h1 className="text-2xl font-bold text-slate-900">
-            {isLoading ? 'Loading...' : me?.user?.email?.split('@')[0] || 'Student'}
+            {isLoading ? t('common.loading', 'Loading...') : me?.user?.email?.split('@')[0] || 'Student'}
           </h1>
         </div>
 
@@ -86,11 +88,11 @@ export default function Dashboard() {
           <div className="mb-6 flex items-center gap-4 p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
             <div className="text-2xl">📖</div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-indigo-900">Continue where you left off</p>
+              <p className="text-sm font-semibold text-indigo-900">{t('dashboard.continueLearning', 'Continue where you left off')}</p>
               <p className="text-xs text-indigo-600 mt-0.5 truncate">{inProgressCourse.title} — {Math.round(inProgressCourse.progress_pct)}% complete</p>
             </div>
             <Link to={`/courses/${inProgressCourse.slug}`} className="btn-primary text-xs py-2 px-3 whitespace-nowrap">
-              Continue →
+              {t('common.next', 'Continue')} →
             </Link>
           </div>
         )}
@@ -98,15 +100,15 @@ export default function Dashboard() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <StatCard
-            label="Career Path"
+            label={t('nav.careers', 'Career Path')}
             value={hasRoadmap ? '1' : '—'}
-            sub={hasRoadmap ? 'roadmap active' : 'not started'}
+            sub={hasRoadmap ? 'roadmap active' : t('common.notStarted', 'not started')}
             color="text-indigo-600"
           />
           <StatCard
-            label="Courses"
+            label={t('nav.courses', 'Courses')}
             value={String(enrolledCourses.length || (courses?.length ?? 0))}
-            sub={enrolledCourses.length > 0 ? `${enrolledCourses.length} enrolled` : 'available'}
+            sub={enrolledCourses.length > 0 ? `${enrolledCourses.length} enrolled` : t('common.all', 'available')}
             color="text-purple-600"
           />
           <StatCard
@@ -130,7 +132,7 @@ export default function Dashboard() {
           <div className="card p-6">
             <div className="text-2xl mb-3">🗺️</div>
             <h3 className="font-semibold text-slate-900 mb-1">
-              {hasRoadmap ? 'Continue your roadmap' : 'Generate your roadmap'}
+              {hasRoadmap ? t('roadmap.title', 'Continue your roadmap') : t('careers.generateRoadmap', 'Generate your roadmap')}
             </h3>
             <p className="text-sm text-slate-500 mb-4">
               {hasRoadmap
@@ -138,15 +140,15 @@ export default function Dashboard() {
                 : 'Select a career and get a personalised learning plan.'}
             </p>
             {hasRoadmap
-              ? <Link to={`/roadmaps/${activeRoadmap.id}`} className="btn-primary text-sm">View roadmap →</Link>
-              : <Link to="/careers" className="btn-primary text-sm">Get started →</Link>}
+              ? <Link to={`/roadmaps/${activeRoadmap.id}`} className="btn-primary text-sm">{t('nav.roadmap', 'View roadmap')} →</Link>
+              : <Link to="/careers" className="btn-primary text-sm">{t('dashboard.exploreCareers', 'Get started')} →</Link>}
           </div>
 
           {/* Courses card */}
           <div className="card p-6">
             <div className="text-2xl mb-3">📚</div>
             <h3 className="font-semibold text-slate-900 mb-1">
-              {inProgressCourse ? 'Resume learning' : 'Start a course'}
+              {inProgressCourse ? t('courses.continueCourse', 'Resume learning') : t('courses.startCourse', 'Start a course')}
             </h3>
             <p className="text-sm text-slate-500 mb-4">
               {inProgressCourse
@@ -157,18 +159,18 @@ export default function Dashboard() {
               to={inProgressCourse ? `/courses/${inProgressCourse.slug}` : '/courses'}
               className="btn-primary text-sm"
             >
-              {inProgressCourse ? 'Resume →' : 'Browse courses →'}
+              {inProgressCourse ? `${t('courses.continueCourse', 'Resume')} →` : `${t('dashboard.exploreCourses', 'Browse courses')} →`}
             </Link>
           </div>
 
           {/* Skills / Explore card */}
           <div className="card p-6">
             <div className="text-2xl mb-3">🎯</div>
-            <h3 className="font-semibold text-slate-900 mb-1">Explore careers</h3>
+            <h3 className="font-semibold text-slate-900 mb-1">{t('dashboard.exploreCareers', 'Explore careers')}</h3>
             <p className="text-sm text-slate-500 mb-4">
-              Browse 12 career roles. See required skills, salaries, and growth paths.
+              {t('careers.subtitle', 'Browse 12 career roles. See required skills, salaries, and growth paths.')}
             </p>
-            <Link to="/careers" className="btn-secondary text-sm">Browse careers →</Link>
+            <Link to="/careers" className="btn-secondary text-sm">{t('dashboard.exploreCareers', 'Browse careers')} →</Link>
           </div>
 
         </div>

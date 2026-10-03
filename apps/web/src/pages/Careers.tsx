@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
+import { useLanguage } from '../i18n/LanguageContext'
 
 const categoryColors: Record<string, string> = {
   technical: 'bg-blue-50 text-blue-700',
@@ -19,6 +20,7 @@ const gradients = [
 ]
 
 export default function Careers() {
+  const { t } = useLanguage()
   const [search, setSearch] = useState('')
   const { data, isLoading } = useQuery({
     queryKey: ['careers', search],
@@ -31,8 +33,8 @@ export default function Careers() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-900 mb-1">Career paths</h1>
-          <p className="text-slate-500 text-sm">Choose a career to see required skills and generate your roadmap.</p>
+          <h1 className="text-2xl font-bold text-slate-900 mb-1">{t('careers.title', 'Career paths')}</h1>
+          <p className="text-slate-500 text-sm">{t('careers.subtitle', 'Choose a career to see required skills and generate your roadmap.')}</p>
         </div>
 
         {/* Search */}
@@ -41,7 +43,7 @@ export default function Careers() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Search careers (e.g. data, cloud, design)..."
+            placeholder={t('careers.searchPlaceholder', 'Search careers (e.g. data, cloud, design)...')}
             className="input pl-10" />
         </div>
 

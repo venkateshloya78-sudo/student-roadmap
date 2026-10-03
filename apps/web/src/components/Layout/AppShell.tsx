@@ -4,19 +4,21 @@ import api from '../../lib/api'
 import { clearToken, isLoggedIn } from '../../lib/auth'
 import { useEffect } from 'react'
 import { FloatingAssistantWidget } from '../Assistant/FloatingAssistantWidget'
-
-const navItems = [
-  { label: 'Dashboard', href: '/dashboard', icon: '⊞' },
-  { label: 'Careers', href: '/careers', icon: '🎯' },
-  { label: 'My Roadmap', href: '/roadmaps', icon: '🗺️' },
-  { label: 'Courses', href: '/courses', icon: '📚' },
-  { label: 'AI Assistant', href: '/assistant', icon: '✨' },
-  { label: 'Profile', href: '/profile', icon: '👤' },
-]
-
+import { useLanguage } from '../../i18n/LanguageContext'
+import LanguageSelector from '../Common/LanguageSelector'
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
+  const { t } = useLanguage()
+
+  const navItems = [
+    { label: t('nav.dashboard', 'Dashboard'), href: '/dashboard', icon: '⊞' },
+    { label: t('nav.careers', 'Careers'), href: '/careers', icon: '🎯' },
+    { label: t('nav.roadmap', 'My Roadmap'), href: '/roadmaps', icon: '🗺️' },
+    { label: t('nav.courses', 'Courses'), href: '/courses', icon: '📚' },
+    { label: t('nav.assistant', 'AI Assistant'), href: '/assistant', icon: '✨' },
+    { label: t('nav.profile', 'Profile'), href: '/profile', icon: '👤' },
+  ]
 
   useEffect(() => {
     if (!isLoggedIn()) navigate('/login')
@@ -54,6 +56,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
+
+        {/* Language Selector in Sidebar */}
+        <div className="px-3 py-2 border-t border-slate-100">
+          <LanguageSelector variant="sidebar" />
+        </div>
+
         <div className="p-4 border-t border-slate-100">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-xs font-bold">
@@ -65,13 +73,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <button onClick={handleLogout} className="w-full text-left text-xs text-slate-400 hover:text-red-500 transition-colors px-1">
-            Sign out
+            {t('nav.signOut', 'Sign out')}
           </button>
         </div>
       </aside>
 
       {/* Mobile topbar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-slate-100 h-14 flex items-center px-4 gap-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-slate-100 h-14 flex items-center px-4 gap-2">
         <Link to="/dashboard" className="flex items-center gap-2">
           <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
             <span className="text-white text-xs font-bold">SR</span>
@@ -79,7 +87,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <span className="font-bold text-slate-900 text-sm">StudentRoadmap</span>
         </Link>
         <div className="flex-1" />
-        <button onClick={handleLogout} className="text-xs text-slate-400">Sign out</button>
+        <LanguageSelector variant="compact" />
+        <button onClick={handleLogout} className="text-xs text-slate-400 ml-1">{t('nav.signOut', 'Sign out')}</button>
       </div>
 
       {/* Mobile bottom nav */}
@@ -87,7 +96,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {navItems.map(item => (
           <Link key={item.href} to={item.href} className="flex-1 flex flex-col items-center py-2 text-slate-500 hover:text-indigo-600 text-xs gap-0.5">
             <span className="text-lg leading-none">{item.icon}</span>
-            <span>{item.label.split(' ')[0]}</span>
+            <span className="truncate max-w-[50px]">{item.label}</span>
           </Link>
         ))}
       </div>
