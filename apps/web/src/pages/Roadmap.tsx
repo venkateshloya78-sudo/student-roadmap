@@ -121,9 +121,13 @@ function RoadmapItemRow({ item, onToggle }: { item: any; onToggle: (id: string, 
 
         {/* Title */}
         <div className="flex-1 min-w-0">
-          <p className={`text-sm font-medium ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+          <Link
+            to={`/skills/${skillSlug}`}
+            className={`text-sm font-medium hover:text-indigo-600 transition-colors
+              ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}
+          >
             {item.title}
-          </p>
+          </Link>
         </div>
 
         {/* Right side */}

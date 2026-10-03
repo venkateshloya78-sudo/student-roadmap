@@ -1,0 +1,221 @@
+{
+  "topics": {
+    "python": {
+      "description": "Python is a high-level, general-purpose programming language known for its readability and versatility. It is the most-used language in data science, AI/ML, automation, and web backend development.",
+      "curriculum": [
+        { "week": 1, "title": "Python Basics", "items": ["Variables & Data Types (int, str, float, bool, list, dict, tuple, set)", "Operators & Expressions", "Input/Output (print, input)", "Comments & Code Style (PEP 8)"] },
+        { "week": 2, "title": "Control Flow", "items": ["if / elif / else statements", "for loops & while loops", "break, continue, pass", "List comprehensions"] },
+        { "week": 3, "title": "Functions & Modules", "items": ["Defining functions (def, return)", "Arguments: positional, keyword, *args, **kwargs", "Lambda functions", "Importing modules (math, os, sys, random)"] },
+        { "week": 4, "title": "Data Structures", "items": ["Lists — indexing, slicing, methods", "Dictionaries — CRUD operations", "Sets & Tuples", "Nested data structures"] },
+        { "week": 5, "title": "File Handling & Exceptions", "items": ["Reading & writing files (open, read, write, close)", "with statement (context managers)", "try / except / finally", "Custom exceptions"] },
+        { "week": 6, "title": "Object-Oriented Python", "items": ["Classes & objects", "Constructor (__init__)", "Inheritance & method overriding", "Dunder methods (__str__, __repr__, __len__)"] },
+        { "week": 7, "title": "Standard Library & Tools", "items": ["datetime, json, re (regex)", "Virtual environments (venv)", "pip & requirements.txt", "Debugging with pdb / VS Code"] },
+        { "week": 8, "title": "Projects", "items": ["Automation script (file organiser, web scraper)", "CLI tool with argparse", "Simple REST API client", "Data analysis with CSV files"] }
+      ]
+    },
+    "sql": {
+      "description": "SQL (Structured Query Language) is the standard language for relational databases. Every data role requires SQL — it's the fastest way to extract insights from data.",
+      "curriculum": [
+        { "week": 1, "title": "SQL Fundamentals", "items": ["What is a relational database?", "Tables, rows, columns, primary keys", "SELECT, FROM, WHERE basics", "ORDER BY, LIMIT, DISTINCT"] },
+        { "week": 2, "title": "Filtering & Functions", "items": ["Comparison & logical operators (AND, OR, NOT, IN, BETWEEN, LIKE)", "Aggregate functions (COUNT, SUM, AVG, MIN, MAX)", "GROUP BY & HAVING", "NULL handling (IS NULL, COALESCE)"] },
+        { "week": 3, "title": "Joins", "items": ["INNER JOIN — matching rows", "LEFT / RIGHT JOIN — all rows from one side", "FULL OUTER JOIN", "Self-joins & cross-joins"] },
+        { "week": 4, "title": "Subqueries & CTEs", "items": ["Subqueries in WHERE, FROM, SELECT", "Common Table Expressions (WITH clause)", "Correlated subqueries", "EXISTS vs IN"] },
+        { "week": 5, "title": "Window Functions", "items": ["ROW_NUMBER(), RANK(), DENSE_RANK()", "LEAD(), LAG()", "SUM/AVG OVER (PARTITION BY ...)", "Running totals & moving averages"] },
+        { "week": 6, "title": "Data Modification & DDL", "items": ["INSERT, UPDATE, DELETE", "CREATE TABLE, ALTER TABLE, DROP TABLE", "Constraints (NOT NULL, UNIQUE, CHECK, FK)", "Indexes — what they are and when to use them"] },
+        { "week": 7, "title": "Advanced Topics", "items": ["Transactions (BEGIN, COMMIT, ROLLBACK)", "Views & materialised views", "Stored procedures & functions (PostgreSQL)", "EXPLAIN / query performance"] },
+        { "week": 8, "title": "Practice", "items": ["LeetCode SQL 50 problems", "Mode Analytics SQL tutorial", "Build a sales analytics dashboard with SQL", "Optimise slow queries using indexes"] }
+      ]
+    },
+    "statistics": {
+      "description": "Statistics is the science of collecting, analysing, and interpreting data. It is the mathematical backbone of machine learning, data science, and evidence-based decision making.",
+      "curriculum": [
+        { "week": 1, "title": "Descriptive Statistics", "items": ["Mean, Median, Mode", "Variance & Standard Deviation", "Percentiles & IQR", "Data distributions (symmetric, skewed)"] },
+        { "week": 2, "title": "Probability Foundations", "items": ["Sample spaces & events", "Probability rules (addition, multiplication)", "Conditional probability", "Bayes' Theorem"] },
+        { "week": 3, "title": "Probability Distributions", "items": ["Discrete: Binomial, Poisson", "Continuous: Normal, Uniform, Exponential", "Central Limit Theorem", "Z-scores & standardisation"] },
+        { "week": 4, "title": "Sampling & Estimation", "items": ["Population vs Sample", "Sampling methods (random, stratified, cluster)", "Point estimates vs confidence intervals", "Standard error"] },
+        { "week": 5, "title": "Hypothesis Testing", "items": ["Null vs Alternative hypothesis", "p-values & significance level (α)", "t-tests (one-sample, two-sample, paired)", "Chi-square test, ANOVA"] },
+        { "week": 6, "title": "Regression", "items": ["Simple linear regression", "Multiple linear regression", "R-squared & residuals", "Logistic regression basics"] },
+        { "week": 7, "title": "Applied Statistics", "items": ["A/B testing methodology", "Effect size & statistical power", "Correlation vs Causation", "Common statistical mistakes"] },
+        { "week": 8, "title": "Practice", "items": ["Analyse real datasets (Kaggle, UCI)", "Run A/B test analysis in Python", "Replicate published study results", "Build a statistical report"] }
+      ]
+    },
+    "linear-algebra": {
+      "description": "Linear algebra is the branch of mathematics concerning linear equations, matrices, and vector spaces. It is the mathematical foundation of machine learning, computer graphics, and data science.",
+      "curriculum": [
+        { "week": 1, "title": "Vectors", "items": ["Vector definition & notation", "Vector addition & scalar multiplication", "Dot product & cross product", "Vector norm (magnitude)"] },
+        { "week": 2, "title": "Matrices", "items": ["Matrix notation & dimensions", "Matrix addition & scalar multiplication", "Matrix multiplication", "Transpose & identity matrix"] },
+        { "week": 3, "title": "Systems of Linear Equations", "items": ["Row reduction (Gaussian elimination)", "Echelon & reduced row echelon form", "Inconsistent vs dependent systems", "LU decomposition"] },
+        { "week": 4, "title": "Determinants & Inverses", "items": ["Determinant calculation (2×2, 3×3)", "Singular vs invertible matrices", "Matrix inverse", "Cramer's rule"] },
+        { "week": 5, "title": "Vector Spaces", "items": ["Span, basis, and dimension", "Linear independence", "Null space & column space", "Rank-nullity theorem"] },
+        { "week": 6, "title": "Eigenvalues & Eigenvectors", "items": ["What are eigenvalues/eigenvectors?", "Characteristic polynomial", "Diagonalisation", "Applications in PCA, Google PageRank"] },
+        { "week": 7, "title": "Matrix Decompositions", "items": ["SVD (Singular Value Decomposition)", "QR decomposition", "Cholesky decomposition", "Applications in ML & data compression"] },
+        { "week": 8, "title": "Applications", "items": ["Implement PCA from scratch in NumPy", "Solve least squares regression with matrices", "Image compression using SVD", "Build a recommendation system foundation"] }
+      ]
+    },
+    "git": {
+      "description": "Git is the world's most widely used distributed version control system. Every software developer, data scientist, and ML engineer needs Git to collaborate, track changes, and ship code safely.",
+      "curriculum": [
+        { "week": 1, "title": "Git Fundamentals", "items": ["What is version control?", "Installing Git & initial configuration", "git init, git status, git add, git commit", "Writing good commit messages"] },
+        { "week": 2, "title": "Working with Branches", "items": ["git branch — creating & listing", "git checkout / git switch", "git merge — fast-forward & 3-way", "Resolving merge conflicts"] },
+        { "week": 3, "title": "Remote Repositories (GitHub)", "items": ["git remote, git clone", "git push & git pull", "git fetch vs git pull", "Pull requests & code review workflow"] },
+        { "week": 4, "title": "Intermediate Git", "items": ["git log — history & filtering", "git diff — comparing changes", "git stash — saving work temporarily", "git tag — marking releases"] },
+        { "week": 5, "title": "Advanced Git", "items": ["git rebase — linear history", "Interactive rebase (squash, edit, drop)", "git cherry-pick", "git bisect — finding bugs"] },
+        { "week": 6, "title": "Git Workflows", "items": ["Git Flow (feature, develop, main)", "GitHub Flow (trunk-based)", "Forking workflow (open source)", ".gitignore best practices"] }
+      ]
+    },
+    "linux-cli": {
+      "description": "Linux is the operating system that powers 96% of the world's servers, all cloud platforms, and most developer environments. Command-line proficiency is essential for DevOps, cloud engineering, and backend development.",
+      "curriculum": [
+        { "week": 1, "title": "Shell Basics", "items": ["What is a shell? (bash, zsh, sh)", "Navigating directories (pwd, ls, cd)", "File operations (cp, mv, rm, mkdir, touch)", "Getting help (man, --help, info)"] },
+        { "week": 2, "title": "File System & Permissions", "items": ["Linux file system hierarchy (/etc, /var, /home, /usr)", "File permissions (rwx) & chmod", "Ownership (chown, chgrp)", "Hard links & symbolic links (ln)"] },
+        { "week": 3, "title": "Text Processing", "items": ["Viewing files (cat, less, head, tail)", "Searching: grep, find, locate", "Text transformation: sed, awk, cut, sort, uniq", "Redirects (>, >>, <) & pipes (|)"] },
+        { "week": 4, "title": "Process Management", "items": ["ps, top, htop — viewing processes", "kill, pkill, killall", "Background jobs (&, fg, bg, nohup)", "cron — scheduling tasks"] },
+        { "week": 5, "title": "Networking Commands", "items": ["ping, curl, wget", "ssh — remote access & key-based auth", "scp, rsync — file transfer", "netstat, ss, nmap — network inspection"] },
+        { "week": 6, "title": "Shell Scripting", "items": ["Writing bash scripts (.sh files)", "Variables, conditionals, loops", "Functions in bash", "Error handling & exit codes"] }
+      ]
+    },
+    "docker": {
+      "description": "Docker is the industry-standard platform for containerisation — packaging applications and their dependencies into portable, isolated containers. Essential for DevOps, cloud, and modern backend development.",
+      "curriculum": [
+        { "week": 1, "title": "Container Concepts", "items": ["VMs vs Containers — key differences", "Docker architecture (daemon, client, registry)", "docker pull, docker run, docker ps", "Container lifecycle (create, start, stop, remove)"] },
+        { "week": 2, "title": "Docker Images", "items": ["Dockerfile syntax (FROM, RUN, COPY, CMD, EXPOSE)", "Building images (docker build)", "Layers & caching optimisation", "Tagging & pushing to Docker Hub"] },
+        { "week": 3, "title": "Volumes & Networking", "items": ["Bind mounts vs named volumes", "docker volume create, inspect", "Docker networking (bridge, host, overlay)", "Container-to-container communication"] },
+        { "week": 4, "title": "Docker Compose", "items": ["docker-compose.yml syntax", "Multi-container apps (web + db + cache)", "Environment variables & secrets", "docker compose up/down/logs"] },
+        { "week": 5, "title": "Production Best Practices", "items": ["Multi-stage builds (smaller images)", "Non-root users in containers", "Health checks (HEALTHCHECK)", ".dockerignore file"] },
+        { "week": 6, "title": "Projects", "items": ["Containerise a Python/Node.js app", "Set up a multi-container stack (app + PostgreSQL + Redis)", "Push image to Docker Hub / GitHub Container Registry", "Deploy container to cloud"] }
+      ]
+    },
+    "dsa": {
+      "description": "Data Structures & Algorithms is the core of computer science — it determines how efficiently a program solves problems. Essential for software engineering interviews and writing performant code.",
+      "curriculum": [
+        { "week": 1, "title": "Complexity Analysis", "items": ["Big-O notation (O(1), O(n), O(n²), O(log n))", "Time vs Space complexity", "Best, worst, average case", "Amortised analysis"] },
+        { "week": 2, "title": "Arrays & Strings", "items": ["Array operations & two-pointer technique", "Sliding window", "Prefix sums", "String manipulation & hashing"] },
+        { "week": 3, "title": "Linked Lists", "items": ["Singly & doubly linked lists", "Insertion, deletion, reversal", "Floyd's cycle detection", "Fast & slow pointers"] },
+        { "week": 4, "title": "Stacks & Queues", "items": ["Stack: LIFO, push/pop, applications", "Queue: FIFO, enqueue/dequeue", "Monotonic stack", "Priority queue (min-heap, max-heap)"] },
+        { "week": 5, "title": "Trees", "items": ["Binary trees & binary search trees", "Tree traversals (inorder, preorder, postorder, BFS)", "Balanced trees (AVL, Red-Black — conceptual)", "Tries & segment trees"] },
+        { "week": 6, "title": "Graphs", "items": ["Representations (adjacency list/matrix)", "BFS & DFS", "Dijkstra's shortest path", "Topological sort & union-find"] },
+        { "week": 7, "title": "Sorting & Searching", "items": ["Merge sort, Quick sort, Heap sort", "Binary search (templates)", "Counting sort & radix sort", "Dutch national flag problem"] },
+        { "week": 8, "title": "Dynamic Programming", "items": ["Memoisation vs tabulation", "1D DP (Fibonacci, climbing stairs)", "2D DP (longest common subsequence, knapsack)", "DP on trees & graphs"] }
+      ]
+    },
+    "javascript": {
+      "description": "JavaScript is the programming language of the web — the only language that runs natively in all browsers. It is also used for backend (Node.js), mobile (React Native), and desktop (Electron) development.",
+      "curriculum": [
+        { "week": 1, "title": "JS Fundamentals", "items": ["Variables: var, let, const", "Data types & type coercion", "Operators, conditionals, loops", "Functions (declarations, expressions, arrow)"] },
+        { "week": 2, "title": "Arrays & Objects", "items": ["Array methods: map, filter, reduce, forEach", "Object literals & property access", "Destructuring (arrays & objects)", "Spread & rest operators"] },
+        { "week": 3, "title": "DOM Manipulation", "items": ["Selecting elements (querySelector)", "Event listeners & event propagation", "Creating & modifying DOM nodes", "Forms & user input"] },
+        { "week": 4, "title": "Async JavaScript", "items": ["Callbacks & callback hell", "Promises (.then, .catch, .finally)", "async / await", "Fetch API & HTTP requests"] },
+        { "week": 5, "title": "Modern JS (ES6+)", "items": ["Modules (import / export)", "Classes & inheritance", "Generators & iterators", "Optional chaining (?.) & nullish coalescing (??)"] },
+        { "week": 6, "title": "Browser APIs & Tooling", "items": ["localStorage, sessionStorage, cookies", "Web Workers & Service Workers", "npm, Vite/Webpack basics", "ESLint & Prettier"] },
+        { "week": 7, "title": "Node.js Basics", "items": ["Node.js runtime & event loop", "Built-in modules (fs, path, http)", "npm package management", "Building a simple HTTP server"] }
+      ]
+    },
+    "react": {
+      "description": "React is the most popular JavaScript library for building user interfaces — used by Facebook, Instagram, Airbnb, Netflix, and thousands of companies worldwide.",
+      "curriculum": [
+        { "week": 1, "title": "React Fundamentals", "items": ["JSX syntax", "Components: functional vs class", "Props — passing data down", "Rendering lists & conditional rendering"] },
+        { "week": 2, "title": "State & Events", "items": ["useState hook", "Event handlers in React", "Controlled vs uncontrolled inputs", "Lifting state up"] },
+        { "week": 3, "title": "Side Effects & Lifecycle", "items": ["useEffect hook", "Fetching data from an API", "Cleanup functions", "Dependency array patterns"] },
+        { "week": 4, "title": "Advanced Hooks", "items": ["useRef — DOM access & storing values", "useContext — avoiding prop drilling", "useReducer — complex state logic", "Custom hooks"] },
+        { "week": 5, "title": "Routing & Navigation", "items": ["React Router v6", "Route parameters & nested routes", "Programmatic navigation (useNavigate)", "Protected routes"] },
+        { "week": 6, "title": "State Management", "items": ["Context API for global state", "TanStack Query (server state)", "Zustand / Redux Toolkit (client state)", "Optimistic updates"] },
+        { "week": 7, "title": "Performance & Patterns", "items": ["React.memo & useMemo", "Code splitting & lazy loading", "Error boundaries", "Component composition patterns"] }
+      ]
+    },
+    "aws": {
+      "description": "Amazon Web Services is the world's largest cloud platform with 200+ services. AWS skills are required for cloud engineering, DevOps, backend, and data engineering roles.",
+      "curriculum": [
+        { "week": 1, "title": "Cloud & AWS Fundamentals", "items": ["What is cloud computing? (IaaS, PaaS, SaaS)", "AWS global infrastructure (regions, AZs)", "AWS Management Console & CLI setup", "IAM — users, groups, roles, policies"] },
+        { "week": 2, "title": "Compute", "items": ["EC2 — instance types, AMIs, key pairs", "Auto Scaling Groups", "Elastic Load Balancer (ALB/NLB)", "Lambda — serverless functions"] },
+        { "week": 3, "title": "Storage", "items": ["S3 — buckets, objects, versioning, lifecycle", "EBS — block storage for EC2", "EFS — shared file system", "S3 Glacier — archival storage"] },
+        { "week": 4, "title": "Databases", "items": ["RDS — managed relational DB (PostgreSQL, MySQL)", "DynamoDB — NoSQL key-value store", "ElastiCache — Redis/Memcached", "Aurora — high-performance managed SQL"] },
+        { "week": 5, "title": "Networking", "items": ["VPC — subnets, route tables, internet gateway", "Security groups & NACLs", "CloudFront — CDN", "Route 53 — DNS service"] },
+        { "week": 6, "title": "DevOps & Monitoring", "items": ["CodePipeline, CodeBuild, CodeDeploy", "CloudWatch — metrics, logs, alarms", "CloudFormation / SAM", "Cost optimisation (Savings Plans, Spot)"] }
+      ]
+    },
+    "postgresql": {
+      "description": "PostgreSQL is the world's most advanced open-source relational database. It powers production systems at Apple, Instagram, Reddit, and thousands of enterprises.",
+      "curriculum": [
+        { "week": 1, "title": "PostgreSQL Setup", "items": ["Installing PostgreSQL & pgAdmin", "psql CLI — connecting, basic commands", "Creating databases & users", "pg_hba.conf & connection strings"] },
+        { "week": 2, "title": "Data Types & DDL", "items": ["PostgreSQL-specific types (UUID, JSONB, ARRAY, HSTORE)", "CREATE TABLE with constraints", "ALTER TABLE — adding columns, types", "Sequences & SERIAL / BIGSERIAL"] },
+        { "week": 3, "title": "Advanced Queries", "items": ["Window functions (ROW_NUMBER, RANK, LAG, LEAD)", "CTEs (WITH clause)", "LATERAL joins", "JSONB querying & operators"] },
+        { "week": 4, "title": "Indexing & Performance", "items": ["B-Tree, Hash, GIN, GiST index types", "EXPLAIN / EXPLAIN ANALYSE", "Partial & expression indexes", "Table partitioning"] },
+        { "week": 5, "title": "Server Programming", "items": ["PL/pgSQL functions & procedures", "Triggers & trigger functions", "Materialized views", "Extensions (pg_trgm, uuid-ossp, pgvector)"] },
+        { "week": 6, "title": "Administration", "items": ["VACUUM & ANALYZE", "Backup & restore (pg_dump, pg_restore)", "Replication (streaming, logical)", "Connection pooling (pgBouncer)"] }
+      ]
+    },
+    "agile-scrum": {
+      "description": "Agile is a software development philosophy; Scrum is its most popular framework. All tech companies use Agile/Scrum to manage projects, ship faster, and respond to change.",
+      "curriculum": [
+        { "week": 1, "title": "Agile Manifesto & Principles", "items": ["4 Agile values", "12 Agile principles", "Waterfall vs Agile", "When Agile works (and when it doesn't)"] },
+        { "week": 2, "title": "Scrum Framework", "items": ["Scrum roles: Product Owner, Scrum Master, Developers", "Scrum events: Sprint, Sprint Planning, Daily Standup, Sprint Review, Retrospective", "Scrum artifacts: Product Backlog, Sprint Backlog, Increment", "Definition of Done"] },
+        { "week": 3, "title": "User Stories & Backlog", "items": ["Writing user stories (As a... I want... So that...)", "Acceptance criteria", "Story points & estimation (Planning Poker)", "Backlog refinement & prioritisation (MoSCoW)"] },
+        { "week": 4, "title": "Sprint Execution", "items": ["Sprint planning — capacity & velocity", "Daily standup anti-patterns", "Burndown & burnup charts", "Handling scope creep"] },
+        { "week": 5, "title": "Kanban & Scaling", "items": ["Kanban vs Scrum", "WIP limits & flow metrics", "SAFe, LeSS, Nexus (scaled Agile)", "Jira / Linear / Notion for Agile teams"] }
+      ]
+    },
+    "rest-api": {
+      "description": "REST (Representational State Transfer) is the architectural style used by virtually all modern web APIs — from Twitter to Stripe to Google Maps. Understanding REST is fundamental to both frontend and backend development.",
+      "curriculum": [
+        { "week": 1, "title": "HTTP & REST Fundamentals", "items": ["HTTP methods (GET, POST, PUT, PATCH, DELETE)", "Status codes (200, 201, 400, 401, 403, 404, 500)", "Headers, body, query params", "Statelessness in REST"] },
+        { "week": 2, "title": "API Design", "items": ["Resource naming conventions (/users/{id}/orders)", "Versioning (v1/v2 in URL vs header)", "Pagination (limit/offset, cursor-based)", "Filtering, sorting, search"] },
+        { "week": 3, "title": "Authentication & Security", "items": ["API keys vs OAuth 2.0 vs JWT", "Bearer token authentication", "CORS — what it is and how to configure", "Rate limiting"] },
+        { "week": 4, "title": "Building APIs", "items": ["FastAPI (Python) / Express (Node.js) basics", "Request validation & serialisation", "Error handling & error response format", "OpenAPI / Swagger documentation"] },
+        { "week": 5, "title": "Consuming APIs", "items": ["Using Postman / curl / HTTPie", "Fetching in JavaScript (fetch, axios)", "Handling errors & retries on client side", "Webhook basics"] }
+      ]
+    },
+    "data-visualization": {
+      "description": "Data visualisation is the art of communicating data insights through charts, graphs, and interactive dashboards. It is a critical skill for data analysts, business analysts, and product managers.",
+      "curriculum": [
+        { "week": 1, "title": "Visualisation Principles", "items": ["Choosing the right chart type", "Data-ink ratio (Edward Tufte)", "Colour theory for data", "Accessibility in charts (colour-blind friendly)"] },
+        { "week": 2, "title": "Charts & Chart Types", "items": ["Bar, column, line, area charts", "Scatter plots & bubble charts", "Histograms & box plots", "Heatmaps & treemaps"] },
+        { "week": 3, "title": "Tools — Matplotlib & Seaborn", "items": ["matplotlib.pyplot basics", "Seaborn for statistical plots", "Subplots & figure layout", "Saving publication-quality charts"] },
+        { "week": 4, "title": "Interactive Dashboards", "items": ["Plotly & Plotly Express", "Streamlit for data apps", "Tableau Public basics", "Power BI visuals"] },
+        { "week": 5, "title": "Storytelling with Data", "items": ["Building a narrative from data", "Dashboard design principles", "Annotations & callouts", "Presenting to non-technical audiences"] }
+      ]
+    },
+    "probability": {
+      "description": "Probability theory is the mathematical study of uncertainty and random events. It is the foundation of statistics, machine learning, and data science — every ML model is built on probabilistic reasoning.",
+      "curriculum": [
+        { "week": 1, "title": "Probability Basics", "items": ["Sample space & events", "Classical, empirical, subjective probability", "Addition rule (P(A∪B))", "Complement rule"] },
+        { "week": 2, "title": "Conditional Probability", "items": ["P(A|B) — conditional probability definition", "Multiplication rule", "Independence of events", "Bayes' Theorem — formula & intuition"] },
+        { "week": 3, "title": "Random Variables", "items": ["Discrete vs continuous random variables", "Probability mass function (PMF)", "Probability density function (PDF)", "Cumulative distribution function (CDF)"] },
+        { "week": 4, "title": "Common Distributions", "items": ["Discrete: Bernoulli, Binomial, Geometric, Poisson", "Continuous: Uniform, Exponential, Normal (Gaussian)", "Parameters & when to use each", "Plotting distributions in Python"] },
+        { "week": 5, "title": "Expectation & Variance", "items": ["Expected value E[X]", "Variance Var(X) & standard deviation", "Linearity of expectation", "Covariance & correlation"] },
+        { "week": 6, "title": "Limit Theorems", "items": ["Law of Large Numbers", "Central Limit Theorem (CLT) — intuition", "Normal approximation to binomial", "Applications in sampling & inference"] }
+      ]
+    },
+    "oop": {
+      "description": "Object-Oriented Programming is a programming paradigm that organises software around objects and classes. It is the dominant paradigm in enterprise software, game development, and backend systems.",
+      "curriculum": [
+        { "week": 1, "title": "OOP Concepts", "items": ["Classes & Objects", "Attributes (instance vs class)", "Methods (instance, class, static)", "Constructor (__init__)"] },
+        { "week": 2, "title": "Encapsulation", "items": ["Public, protected, private attributes/methods", "Getters & setters", "Properties (@property decorator in Python)", "Information hiding"] },
+        { "week": 3, "title": "Inheritance", "items": ["Single & multiple inheritance", "Method overriding", "super() keyword", "Abstract classes & interfaces"] },
+        { "week": 4, "title": "Polymorphism", "items": ["Method overloading (Python default args)", "Duck typing", "isinstance() & type()", "Operator overloading (__add__, __eq__)"] },
+        { "week": 5, "title": "SOLID Principles", "items": ["S — Single Responsibility", "O — Open/Closed", "L — Liskov Substitution", "I/D — Interface Segregation / Dependency Inversion"] },
+        { "week": 6, "title": "Design Patterns", "items": ["Creational: Singleton, Factory", "Structural: Decorator, Adapter", "Behavioural: Observer, Strategy", "When NOT to use patterns"] }
+      ]
+    },
+    "figma": {
+      "description": "Figma is the world's leading collaborative design tool, used by designers at Google, Airbnb, Spotify, and Uber. It is the industry standard for UI/UX design and prototyping.",
+      "curriculum": [
+        { "week": 1, "title": "Figma Basics", "items": ["Interface overview (canvas, layers, properties)", "Frames vs Groups vs Sections", "Shape tools & pen tool", "Text & typography"] },
+        { "week": 2, "title": "Components & Styles", "items": ["Creating components & instances", "Variants — states (hover, active, disabled)", "Component properties & slots", "Colour styles & text styles"] },
+        { "week": 3, "title": "Auto Layout", "items": ["Auto Layout basics (padding, gap, direction)", "Resizing: fixed, fill, hug", "Nested auto layout", "Responsive components"] },
+        { "week": 4, "title": "Prototyping", "items": ["Connecting frames with interactions", "Transition types (smart animate, instant, dissolve)", "Overlay & scroll behaviour", "Sharing & presenting prototypes"] },
+        { "week": 5, "title": "Design Systems", "items": ["Building a component library", "Tokens (spacing, colour, typography scales)", "Documentation frames", "Handoff to developers (Dev Mode, inspect panel)"] }
+      ]
+    },
+    "power-bi": {
+      "description": "Microsoft Power BI is the leading business intelligence tool used by 97% of Fortune 500 companies. It transforms raw data into interactive dashboards and business insights.",
+      "curriculum": [
+        { "week": 1, "title": "Power BI Basics", "items": ["Power BI Desktop vs Service vs Mobile", "Loading data (Excel, CSV, SQL, APIs)", "Data Model overview", "Creating basic visualisations"] },
+        { "week": 2, "title": "Power Query (Data Transformation)", "items": ["Removing & filtering rows/columns", "Data type conversion", "Merging & appending queries", "Custom columns & conditional columns"] },
+        { "week": 3, "title": "Data Modelling", "items": ["Star schema vs snowflake schema", "Relationships (one-to-many, many-to-many)", "Cardinality & cross-filter direction", "Calculated columns vs measures"] },
+        { "week": 4, "title": "DAX (Data Analysis Expressions)", "items": ["Measures vs calculated columns", "CALCULATE — the most important DAX function", "Time intelligence (DATEADD, SAMEPERIODLASTYEAR)", "FILTER, ALL, ALLEXCEPT"] },
+        { "week": 5, "title": "Dashboard Design", "items": ["Visual best practices in Power BI", "Slicers & filters", "Drill-through & drill-down", "Bookmarks & buttons"] },
+        { "week": 6, "title": "Publishing & Sharing", "items": ["Publishing to Power BI Service", "Scheduled refresh", "Row-Level Security (RLS)", "Sharing reports & workspaces"] }
+      ]
+    }
+  }
+}

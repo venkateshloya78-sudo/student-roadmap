@@ -1,4 +1,6 @@
+import json
 import math
+from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select
@@ -10,6 +12,15 @@ from app.models.resource import Resource
 from app.schemas.skill import PaginatedSkills, SkillOut, SkillDetailOut, SkillBase
 
 router = APIRouter(prefix="/skills", tags=["skills"])
+
+# Load curriculum topics once at startup
+_TOPICS_FILE = Path(__file__).parent.parent.parent.parent.parent / "data" / "seeds" / "06-skill-topics.json"
+try:
+    _TOPICS: dict = json.loads(_TOPICS_FILE.read_text(encoding="utf-8")).get("topics", {})
+except Exception:
+    _TOPICS = {}
+
+
 
 
 @router.get("", response_model=PaginatedSkills)
@@ -34,7 +45,25 @@ async def list_skills(
     )
 
 
+@router.get("/{slug}/topics")
+async def get_skill_topics(slug: str, db: AsyncSession = Depends(get_db)):
+    """Return the week-by-week curriculum for a skill."""
+    result = await db.execute(select(Skill).where(Skill.slug == slug))
+    skill = result.scalar_one_or_none()
+    if not skill:
+        raise HTTPException(status_code=404, detail="Skill not found")
+
+    topic_data = _TOPICS.get(slug, {})
+    return {
+        "skill": {"name": skill.name, "slug": skill.slug, "difficulty": str(skill.difficulty.value if hasattr(skill.difficulty, "value") else skill.difficulty)},
+        "description": topic_data.get("description", skill.description or f"Learn {skill.name} — a key skill for your career."),
+        "curriculum": topic_data.get("curriculum", []),
+        "has_full_curriculum": slug in _TOPICS,
+    }
+
+
 @router.get("/{slug}/resources")
+
 async def get_skill_resources(slug: str, db: AsyncSession = Depends(get_db)):
     """Return all free learning resources for a skill (Wikipedia, courses, PDFs)."""
     skill_res = await db.execute(select(Skill).where(Skill.slug == slug))

@@ -10,7 +10,9 @@ import CareerDetail from './pages/CareerDetail'
 import Roadmap from './pages/Roadmap'
 import RoadmapsList from './pages/RoadmapsList'
 import Profile from './pages/Profile'
+import SkillDoc from './pages/SkillDoc'
 import { isLoggedIn } from './lib/auth'
+
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 30_000 } },
@@ -36,6 +38,7 @@ export default function App() {
           <Route path="/careers/:slug" element={<PrivateRoute><CareerDetail /></PrivateRoute>} />
           <Route path="/roadmaps" element={<PrivateRoute><RoadmapsList /></PrivateRoute>} />
           <Route path="/roadmaps/:id" element={<PrivateRoute><Roadmap /></PrivateRoute>} />
+          <Route path="/skills/:slug" element={<PrivateRoute><SkillDoc /></PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 
           {/* Fallback */}
