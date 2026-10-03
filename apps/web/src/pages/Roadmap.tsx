@@ -3,30 +3,25 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
+import { getRoadmapStageMeta, RoadmapStageMeta } from '../utils/roadmapStageHelpers'
+import { 
+  CheckCircle2, 
+  Circle, 
+  PlayCircle, 
+  Clock, 
+  ArrowRight, 
+  BookOpen, 
+  ExternalLink, 
+  Layers, 
+  Sparkles,
+  Compass,
+  AlertCircle
+} from 'lucide-react'
 
-const statusConfig: Record<string, { label: string; color: string; dot: string }> = {
-  not_started: { label: 'Not started', color: 'text-slate-400', dot: 'bg-slate-300' },
-  in_progress:  { label: 'In progress',  color: 'text-blue-600',  dot: 'bg-blue-400 animate-pulse' },
-  completed:    { label: 'Completed',    color: 'text-emerald-600', dot: 'bg-emerald-500' },
-  verified:     { label: 'Verified',     color: 'text-indigo-600', dot: 'bg-indigo-500' },
-}
-
-const typeIcon: Record<string, string> = {
-  documentation: '📖',
-  video: '🎬',
-  course: '🎓',
-  book: '📚',
-  tutorial: '🛠️',
-  other: '🔗',
-}
-
-const typeBadge: Record<string, string> = {
-  documentation: 'bg-blue-50 text-blue-700',
-  video: 'bg-red-50 text-red-700',
-  course: 'bg-purple-50 text-purple-700',
-  book: 'bg-amber-50 text-amber-700',
-  tutorial: 'bg-emerald-50 text-emerald-700',
-  other: 'bg-slate-50 text-slate-600',
+const difficultyBadge: Record<string, string> = {
+  beginner: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  intermediate: 'bg-amber-50 text-amber-700 border-amber-200',
+  advanced: 'bg-rose-50 text-rose-700 border-rose-200',
 }
 
 function ResourcePanel({ skillSlug, skillName }: { skillSlug: string; skillName: string }) {
@@ -39,296 +34,225 @@ function ResourcePanel({ skillSlug, skillName }: { skillSlug: string; skillName:
 
   if (isLoading) {
     return (
-      <div className="mt-3 p-3 bg-slate-50 rounded-lg animate-pulse">
+      <div className="mt-3 p-3 bg-slate-50 rounded-xl animate-pulse">
         <div className="h-3 bg-slate-200 rounded w-1/3 mb-2" />
         <div className="h-3 bg-slate-200 rounded w-2/3" />
       </div>
     )
   }
 
-  if (isError) {
+  if (isError || !data?.resources || data.resources.length === 0) {
     return (
-      <div className="mt-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
-        <p className="text-xs text-amber-700">⚠️ No resources available yet for <strong>{skillName}</strong>.</p>
-      </div>
-    )
-  }
-
-  const resources = data?.resources || []
-  if (resources.length === 0) {
-    return (
-      <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-        <p className="text-xs text-slate-500">📭 No resources added yet for <strong>{skillName}</strong>.</p>
+      <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <p className="text-xs text-slate-500">
+          No external documentation links added yet for <strong>{skillName}</strong>. Use the official interactive course above!
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-slate-100 bg-white">
-        <p className="text-xs font-semibold text-slate-600">
-          📚 Free learning resources for <span className="text-indigo-600">{skillName}</span>
+    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
+      <div className="px-4 py-2 border-b border-slate-200 bg-white">
+        <p className="text-xs font-semibold text-slate-700">
+          📚 Supplementary External References for <span className="text-indigo-600">{skillName}</span>
         </p>
       </div>
       <div className="divide-y divide-slate-100">
-        {resources.map((r: any) => {
-          const isCompleted = localStorage.getItem('srm_progress') ? JSON.parse(localStorage.getItem('srm_progress') || '{}')[r.id]?.completed : false;
-          return (
-          <div
-            key={r.id}
-            className="flex items-center group px-4 py-2.5 hover:bg-white transition-colors border-b border-slate-100 last:border-0"
-          >
-            <Link to={`/learn/${r.id}`} className="flex-1 flex items-start gap-3 min-w-0">
-              <span className="text-base flex-shrink-0 mt-0.5">{r.icon}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-slate-700 group-hover:text-indigo-600 transition-colors font-medium leading-snug flex items-center gap-2">
-                  {r.title}
-                  {isCompleted && <span className="inline-flex items-center text-xs text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-200">✓ Done</span>}
-                </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`badge text-xs ${typeBadge[r.type] || typeBadge.other}`}>
-                    {r.type}
-                  </span>
-                  {r.is_free && (
-                    <span className="badge bg-emerald-50 text-emerald-700 text-xs">Free</span>
-                  )}
-                  <span className="text-xs text-slate-400 truncate">{r.url.replace(/^https?:\/\//, '').split('/')[0]}</span>
-                </div>
-              </div>
+        {data.resources.slice(0, 4).map((r: any) => (
+          <div key={r.id} className="flex items-center justify-between px-4 py-2 hover:bg-white transition-colors">
+            <Link to={`/learn/${r.id}`} className="text-xs text-slate-700 hover:text-indigo-600 font-medium truncate flex-1 mr-2">
+              {r.icon || '🔗'} {r.title}
             </Link>
-            <a href={r.url} target="_blank" rel="noopener noreferrer" className="ml-3 p-1.5 text-slate-300 hover:text-indigo-500 transition-colors rounded-full hover:bg-indigo-50 flex-shrink-0" title="External link">
-              <svg className="w-3.5 h-3.5 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
+            <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-indigo-600">
+              <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
-        )})}
+        ))}
       </div>
     </div>
   )
 }
 
-function LearningGuidePanel({ skillSlug, skillName }: { skillSlug: string; skillName: string }) {
-  const { data, isLoading } = useQuery({
-    queryKey: ['skill-topics', skillSlug],
-    queryFn: () => api.get(`/skills/${skillSlug}/topics`).then(r => r.data),
-    staleTime: 300_000,
-    retry: false,
-  })
-
-  if (isLoading) {
-    return (
-      <div className="mt-3 p-4 bg-indigo-50/50 rounded-xl border border-indigo-100 animate-pulse space-y-2">
-        <div className="h-4 bg-indigo-200 rounded w-1/3" />
-        <div className="h-3 bg-indigo-100 rounded w-3/4" />
-        <div className="h-3 bg-indigo-100 rounded w-1/2" />
-      </div>
-    )
-  }
-
-  const firstWeek = data?.curriculum?.[0]
-  const firstItem = firstWeek?.items?.[0]
-
-  const guide = {
-    why: firstItem?.why_learning || `Essential foundational capability for ${skillName} required across industry production stacks.`,
-    meaning: firstItem?.meaning || `Conceptual methodology and toolset used to build, manage, and scale ${skillName} systems.`,
-    whatToLearn: firstItem?.what_to_learn || `Syntax, architecture, configuration, standard patterns, and production reliability.`,
-    practice: firstItem?.how_to_practice || `Implement isolated exercises and build test scenarios verifying input and output validity.`,
-    example: firstItem?.example || `# Getting started with ${skillName}\nprint('Initialising ${skillName} environment...')`,
-    build: firstItem?.what_to_build || `A modular utility or baseline component demonstrating clean fundamentals in ${skillName}.`,
-    career: firstItem?.career_uses || `Software Engineers, Backend Architects, and Tech Specialists worldwide.`,
-    next: firstItem?.next_steps || `Advanced concepts, architectural design, and system-wide integration.`,
-  }
-
-  return (
-    <div className="mt-3 rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50/60 to-white overflow-hidden shadow-xs">
-      <div className="px-4 py-3 border-b border-indigo-100 bg-white/80 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-base">💡</span>
-          <p className="text-xs font-bold text-slate-800">
-            7-Pillar Learning Guide for <span className="text-indigo-600">{skillName}</span>
-          </p>
-        </div>
-        <Link
-          to={`/skills/${skillSlug}`}
-          className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
-        >
-          View Full Curriculum →
-        </Link>
-      </div>
-
-      <div className="p-4 space-y-3 text-xs text-slate-700">
-        {/* 1. Why am I learning this? */}
-        <div className="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
-          <div className="font-bold text-indigo-900 mb-1 flex items-center gap-1.5">
-            <span>🎯</span> 1. Why am I learning this?
-          </div>
-          <p className="leading-relaxed">{guide.why}</p>
-        </div>
-
-        {/* 2. What does it mean? */}
-        <div className="bg-white p-3 rounded-lg border border-sky-100 shadow-2xs">
-          <div className="font-bold text-sky-900 mb-1 flex items-center gap-1.5">
-            <span>💡</span> 2. What does it mean?
-          </div>
-          <p className="leading-relaxed">{guide.meaning}</p>
-        </div>
-
-        {/* 3. What should I learn? */}
-        <div className="bg-white p-3 rounded-lg border border-purple-100 shadow-2xs">
-          <div className="font-bold text-purple-900 mb-1 flex items-center gap-1.5">
-            <span>📘</span> 3. What should I learn?
-          </div>
-          <p className="leading-relaxed">{guide.whatToLearn}</p>
-        </div>
-
-        {/* 4. How do I practice it? */}
-        <div className="bg-white p-3 rounded-lg border border-emerald-100 shadow-2xs">
-          <div className="font-bold text-emerald-900 mb-1 flex items-center gap-1.5">
-            <span>✍️</span> 4. How do I practice it?
-          </div>
-          <p className="leading-relaxed mb-2">{guide.practice}</p>
-          {guide.example && (
-            <div className="bg-slate-900 text-emerald-300 p-2.5 rounded font-mono text-[11px] overflow-x-auto whitespace-pre-wrap">
-              <code>{guide.example}</code>
-            </div>
-          )}
-        </div>
-
-        {/* 5. What can I build? */}
-        <div className="bg-white p-3 rounded-lg border border-amber-100 shadow-2xs">
-          <div className="font-bold text-amber-900 mb-1 flex items-center gap-1.5">
-            <span>🛠️</span> 5. What can I build?
-          </div>
-          <p className="leading-relaxed">{guide.build}</p>
-        </div>
-
-        {/* 6. Which career uses it? */}
-        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-2xs">
-          <div className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
-            <span>💼</span> 6. Which career uses it?
-          </div>
-          <p className="leading-relaxed font-medium text-slate-800">{guide.career}</p>
-        </div>
-
-        {/* 7. What should I learn next? */}
-        <div className="bg-white p-3 rounded-lg border border-teal-100 shadow-2xs">
-          <div className="font-bold text-teal-900 mb-1 flex items-center gap-1.5">
-            <span>🚀</span> 7. What should I learn next?
-          </div>
-          <p className="leading-relaxed">{guide.next}</p>
-        </div>
-
-        {/* Quick actions */}
-        <div className="pt-2 flex flex-wrap gap-2">
-          <Link
-            to={`/skills/${skillSlug}`}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
-          >
-            📖 Open In-Depth Skill Page
-          </Link>
-          <Link
-            to="/courses"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-lg font-medium transition-colors"
-          >
-            🎓 Practice in Interactive Courses
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
+interface RoadmapStageCardProps {
+  item: any;
+  stageNumber: number;
+  totalStages: number;
+  nextStageTitle?: string;
+  onStatusChange: (id: string, status: string) => void;
 }
 
-function RoadmapItemRow({ item, onToggle }: { item: any; onToggle: (id: string, status: string) => void }) {
-  const [activePanel, setActivePanel] = useState<'resources' | 'guide' | null>(null)
-  const done = item.status === 'completed' || item.status === 'verified'
-  const cfg = statusConfig[item.status] || statusConfig.not_started
-
-  // Use the actual skill_slug from API response — fallback to deriving from title
+function RoadmapStageCard({
+  item,
+  stageNumber,
+  totalStages,
+  nextStageTitle,
+  onStatusChange,
+}: RoadmapStageCardProps) {
+  const [showResources, setShowResources] = useState(false)
   const skillSlug = item.skill_slug
-    || item.title.replace(/^Learn\s+/i, '').toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    || item.title.replace(/^Learn\s+/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
   const skillName = item.title.replace(/^Learn\s+/i, '')
 
-  return (
-    <div className={`border-b border-slate-50 last:border-0 transition-colors ${activePanel ? 'bg-indigo-50/20' : ''}`}>
-      <div className="px-5 py-3 flex items-center gap-3">
-        {/* Checkbox */}
-        <button
-          onClick={() => onToggle(item.id, done ? 'not_started' : 'completed')}
-          className={`w-5 h-5 rounded flex-shrink-0 border-2 flex items-center justify-center transition-all
-            ${done
-              ? 'bg-emerald-500 border-emerald-500 text-white'
-              : item.status === 'in_progress'
-              ? 'border-blue-400 bg-blue-50'
-              : 'border-slate-200 hover:border-indigo-400'}`}
-        >
-          {done && (
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          )}
-        </button>
+  const meta: RoadmapStageMeta = getRoadmapStageMeta(item.title, skillSlug)
 
-        {/* Title */}
-        <div className="flex-1 min-w-0">
-          <Link
-            to={`/skills/${skillSlug}`}
-            className={`text-sm font-medium hover:text-indigo-600 transition-colors
-              ${done ? 'line-through text-slate-400' : 'text-slate-800'}`}
-          >
-            {item.title}
-          </Link>
+  const isCompleted = item.status === 'completed' || item.status === 'verified'
+  const isInProgress = item.status === 'in_progress'
+  const isNotStarted = !isCompleted && !isInProgress
+
+  return (
+    <div className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+      isCompleted
+        ? 'bg-white border-emerald-200 shadow-xs'
+        : isInProgress
+        ? 'bg-white border-blue-400 shadow-md ring-1 ring-blue-400/30'
+        : 'bg-white border-slate-200 shadow-xs hover:border-slate-300'
+    }`}>
+      {/* Top Banner with Stage # and Status Badge */}
+      <div className={`px-5 py-3 border-b flex flex-wrap items-center justify-between gap-3 ${
+        isCompleted
+          ? 'bg-emerald-50/70 border-emerald-100'
+          : isInProgress
+          ? 'bg-blue-50/70 border-blue-100'
+          : 'bg-slate-50 border-slate-100'
+      }`}>
+        <div className="flex items-center gap-2.5">
+          <span className={`px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase tracking-wider ${
+            isCompleted
+              ? 'bg-emerald-600 text-white'
+              : isInProgress
+              ? 'bg-blue-600 text-white'
+              : 'bg-slate-200 text-slate-700'
+          }`}>
+            Stage {stageNumber} of {totalStages}
+          </span>
+          <span className={`text-xs px-2.5 py-0.5 rounded-full border font-semibold capitalize ${
+            difficultyBadge[meta.difficulty] || difficultyBadge.beginner
+          }`}>
+            {meta.difficulty}
+          </span>
         </div>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-          {item.estimated_hours && (
-            <span className="text-xs text-slate-400 hidden sm:inline">{item.estimated_hours}h</span>
-          )}
-          <span className={`flex items-center gap-1.5 text-xs font-medium ${cfg.color}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
-            <span className="hidden md:inline">{cfg.label}</span>
-          </span>
-
-          {/* Guide toggle */}
+        {/* Visual Status Switcher */}
+        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
           <button
-            onClick={() => setActivePanel(activePanel === 'guide' ? null : 'guide')}
-            title="Show 7-pillar learning guide"
-            className={`text-xs px-2.5 py-1 rounded-full font-medium transition-all border
-              ${activePanel === 'guide'
-                ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
-                : 'bg-white text-indigo-700 border-indigo-200 hover:bg-indigo-50'}`}
+            onClick={() => onStatusChange(item.id, 'not_started')}
+            title="Mark Not Started"
+            className={`px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${
+              isNotStarted ? 'bg-slate-800 text-white shadow-xs' : 'text-slate-500 hover:text-slate-900'
+            }`}
           >
-            💡 Guide
+            <Circle className="w-3 h-3" />
+            <span>Not Started</span>
           </button>
 
-          {/* Resources toggle */}
           <button
-            onClick={() => setActivePanel(activePanel === 'resources' ? null : 'resources')}
-            title="Show learning resources"
-            className={`text-xs px-2.5 py-1 rounded-full font-medium transition-all border
-              ${activePanel === 'resources'
-                ? 'bg-slate-800 text-white border-slate-800 shadow-2xs'
-                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-800'}`}
+            onClick={() => onStatusChange(item.id, 'in_progress')}
+            title="Mark In Progress"
+            className={`px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${
+              isInProgress ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-500 hover:text-slate-900'
+            }`}
           >
-            📚 Resources
+            <PlayCircle className="w-3 h-3" />
+            <span>In Progress</span>
+          </button>
+
+          <button
+            onClick={() => onStatusChange(item.id, 'completed')}
+            title="Mark Completed"
+            className={`px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all ${
+              isCompleted ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-500 hover:text-slate-900'
+            }`}
+          >
+            <CheckCircle2 className="w-3 h-3" />
+            <span>Completed</span>
           </button>
         </div>
       </div>
 
-      {/* Panels */}
-      {activePanel === 'guide' && (
-        <div className="px-5 pb-4">
-          <LearningGuidePanel skillSlug={skillSlug} skillName={skillName} />
-        </div>
-      )}
+      {/* Main Stage Content */}
+      <div className="p-5 sm:p-6">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
+          <div>
+            <h3 className={`text-lg sm:text-xl font-bold transition-colors ${
+              isCompleted ? 'text-slate-900' : 'text-slate-900'
+            }`}>
+              {skillName}
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 font-medium">
+              <Clock className="w-3.5 h-3.5 text-indigo-500" />
+              <span>Recommended Duration: <strong>{meta.duration}</strong></span>
+              <span>·</span>
+              <span>Order: <strong>Step {stageNumber}</strong></span>
+            </p>
+          </div>
 
-      {activePanel === 'resources' && (
-        <div className="px-5 pb-4">
-          <ResourcePanel skillSlug={skillSlug} skillName={skillName} />
+          {/* Primary CTA: START / CONTINUE COURSE */}
+          <div className="flex-shrink-0 flex items-center gap-2">
+            <Link
+              to={`/courses/${meta.courseSlug}`}
+              className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm active:scale-95 ${
+                isCompleted
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100'
+                  : isInProgress
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/20'
+                  : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-500/20'
+              }`}
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>{isCompleted ? 'Review Course' : isInProgress ? 'Continue Course' : 'Start Course'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
-      )}
+
+        {/* Structured Stage Information: Why Required & Prerequisites */}
+        <div className="grid sm:grid-cols-2 gap-3 mb-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+          <div>
+            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+              <span>🎯</span> Why this is required
+            </div>
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+              {meta.whyRequired}
+            </p>
+          </div>
+
+          <div>
+            <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+              <span>🔑</span> Prerequisites
+            </div>
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">
+              {meta.prerequisites}
+            </p>
+          </div>
+        </div>
+
+        {/* Next Step & Quick Links Footer */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
+          <div className="text-slate-500 flex items-center gap-1.5">
+            <span className="font-semibold text-slate-700">Next Stage:</span>
+            {nextStageTitle ? (
+              <span className="text-indigo-600 font-medium truncate max-w-xs">{nextStageTitle}</span>
+            ) : (
+              <span className="text-emerald-600 font-medium">Final Stage (Portfolio & Interview Prep)</span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowResources(!showResources)}
+              className="text-xs text-slate-500 hover:text-indigo-600 font-medium inline-flex items-center gap-1 transition-colors"
+            >
+              <span>{showResources ? 'Hide external links' : '📚 Extra references'}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Optional Collapsible Resources */}
+        {showResources && (
+          <ResourcePanel skillSlug={skillSlug} skillName={skillName} />
+        )}
+      </div>
     </div>
   )
 }
@@ -341,7 +265,7 @@ export default function RoadmapView() {
   const { data: roadmap, isLoading } = useQuery({
     queryKey: ['roadmap', id],
     queryFn: () => api.get(`/roadmaps/${id}`).then(r => r.data),
-    staleTime: 0,      // always fetch fresh so skill_slug is up to date
+    staleTime: 0,
     gcTime: 60_000,
   })
 
@@ -354,9 +278,12 @@ export default function RoadmapView() {
   if (isLoading) {
     return (
       <AppShell>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 animate-pulse space-y-4">
-          <div className="h-7 bg-slate-100 rounded w-1/2" />
-          {Array(3).fill(0).map((_, i) => <div key={i} className="card p-6 h-32 bg-slate-50" />)}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 animate-pulse space-y-6">
+          <div className="h-6 bg-slate-100 rounded w-1/4" />
+          <div className="h-28 bg-slate-100 rounded-3xl" />
+          {Array(4).fill(0).map((_, i) => (
+            <div key={i} className="h-44 bg-slate-100 rounded-2xl" />
+          ))}
         </div>
       </AppShell>
     )
@@ -367,115 +294,145 @@ export default function RoadmapView() {
       <AppShell>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
           <div className="text-4xl mb-3">🗺️</div>
-          <h2 className="font-semibold text-slate-900 mb-2">Roadmap not found</h2>
-          <Link to="/careers" className="btn-primary">Browse careers</Link>
+          <h2 className="font-bold text-slate-900 mb-2 text-xl">Roadmap not found</h2>
+          <p className="text-slate-500 text-sm mb-6">Explore career profiles and initialize your personalized learning sequence.</p>
+          <Link to="/careers" className="btn-primary">Browse Careers</Link>
         </div>
       </AppShell>
     )
   }
 
-  const totalItems = roadmap.phases?.reduce((s: number, p: any) => s + (p.items?.length || 0), 0) || 0
-  const completedItems = roadmap.phases?.reduce((s: number, p: any) =>
-    s + (p.items?.filter((i: any) => i.status === 'completed' || i.status === 'verified').length || 0), 0) || 0
-  const pct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0
+  // Flatten all items across phases to establish clear sequence: 1, 2, 3...
+  const allStages: Array<{ item: any; phase: any; overallIndex: number }> = []
+  let stageCounter = 1
+  for (const phase of (roadmap.phases || [])) {
+    for (const item of (phase.items || [])) {
+      allStages.push({
+        item,
+        phase,
+        overallIndex: stageCounter++,
+      })
+    }
+  }
+
+  const totalStages = allStages.length
+  const completedCount = allStages.filter(s => s.item.status === 'completed' || s.item.status === 'verified').length
+  const inProgressCount = allStages.filter(s => s.item.status === 'in_progress').length
+  const notStartedCount = totalStages - completedCount - inProgressCount
+  const pct = totalStages > 0 ? Math.round((completedCount / totalStages) * 100) : 0
 
   return (
     <AppShell>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-        {/* Header */}
-        <button onClick={() => navigate(-1)} className="text-xs text-slate-400 hover:text-slate-600 mb-4 flex items-center gap-1">
-          ← Back
-        </button>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        {/* Navigation Breadcrumb */}
+        <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
+          <Link to="/careers" className="hover:text-slate-600 transition-colors">Careers</Link>
+          <span>/</span>
+          <span className="text-slate-700 font-semibold">{roadmap.career_role_title || 'Roadmap'}</span>
+          <span>/</span>
+          <span className="text-indigo-600 font-semibold">Structured Roadmap</span>
+        </div>
 
-        <div className="flex items-start justify-between mb-2">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">
-              {roadmap.career_role_title || 'Your Roadmap'}
-            </h1>
-            <p className="text-sm text-slate-500 mt-1">
-              {roadmap.phases?.length} phases · {totalItems} skills · {roadmap.weekly_hours_committed}h/week
-            </p>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <div className={`text-2xl font-black ${pct >= 60 ? 'text-emerald-600' : pct >= 30 ? 'text-amber-600' : 'text-indigo-600'}`}>
-              {pct}%
+        {/* Roadmap Goal Banner */}
+        <div className="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 mb-8 shadow-xl border border-slate-800 relative overflow-hidden">
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-xs font-semibold mb-3 border border-indigo-400/30">
+              <Compass className="w-3.5 h-3.5" />
+              <span>ROADMAP SERVICE · STRUCTURED LEARNING SEQUENCE</span>
             </div>
-            <div className="text-xs text-slate-400">complete</div>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="w-full bg-slate-100 rounded-full h-2 mb-2">
-          <div className="bg-indigo-600 h-2 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
-        </div>
-        <div className="flex justify-between text-xs text-slate-400 mb-8">
-          <span>{completedItems} of {totalItems} completed</span>
-          <span>Click 📚 Resources on any item to see learning materials</span>
-        </div>
-
-        {/* Legend */}
-        <div className="flex items-center gap-4 mb-5 text-xs text-slate-500 bg-indigo-50 rounded-xl px-4 py-2.5">
-          <span>💡 Click</span>
-          <span className="badge bg-indigo-100 text-indigo-700">📚 Resources</span>
-          <span>on any skill to open free Wikipedia, courses, and PDFs</span>
-        </div>
-
-        {/* Phases */}
-        <div className="space-y-4">
-          {(roadmap.phases || []).map((phase: any, pi: number) => {
-            const phaseComplete = phase.items?.every((i: any) => i.status === 'completed' || i.status === 'verified')
-            const phasePct = phase.items?.length
-              ? Math.round((phase.items.filter((i: any) => i.status === 'completed' || i.status === 'verified').length / phase.items.length) * 100)
-              : 0
-
-            return (
-              <div key={phase.id} className="card overflow-hidden">
-                {/* Phase header */}
-                <div className={`px-5 py-3.5 flex items-center justify-between border-b border-slate-50
-                  ${phaseComplete ? 'bg-emerald-50' : pi === 0 ? 'bg-indigo-50' : 'bg-white'}`}>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0
-                      ${phaseComplete ? 'bg-emerald-500 text-white' : pi === 0 ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-600'}`}>
-                      {phaseComplete ? '✓' : phase.phase_number}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{phase.title}</p>
-                      <p className="text-xs text-slate-400">~{phase.estimated_hours}h estimated</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-20 bg-slate-200 rounded-full h-1.5 hidden sm:block">
-                      <div className={`h-1.5 rounded-full transition-all ${phaseComplete ? 'bg-emerald-500' : 'bg-indigo-500'}`}
-                        style={{ width: `${phasePct}%` }} />
-                    </div>
-                    <span className={`badge text-xs ${phaseComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
-                      {phaseComplete ? '✓ Done' : `${phasePct}%`}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Items */}
-                <div>
-                  {(phase.items || []).map((item: any) => (
-                    <RoadmapItemRow
-                      key={item.id}
-                      item={item}
-                      onToggle={(itemId, status) => updateItem.mutate({ itemId, status })}
-                    />
-                  ))}
-                </div>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  {roadmap.career_role_title || 'Your Career'} Learning Path
+                </h1>
+                <p className="text-indigo-200 text-sm mt-1">
+                  Sequential order of skills to master · {roadmap.weekly_hours_committed || 10}h/week study commitment
+                </p>
               </div>
+
+              <div className="text-right flex-shrink-0 bg-white/10 backdrop-blur px-5 py-3 rounded-2xl border border-white/10">
+                <div className={`text-3xl font-black ${pct >= 60 ? 'text-emerald-400' : pct >= 30 ? 'text-amber-300' : 'text-indigo-300'}`}>
+                  {pct}%
+                </div>
+                <div className="text-[11px] text-slate-300 font-medium">Roadmap Progress</div>
+              </div>
+            </div>
+
+            {/* Overall Progress Bar */}
+            <div className="w-full bg-white/20 rounded-full h-2.5 overflow-hidden mb-4">
+              <div
+                className="bg-gradient-to-r from-indigo-400 to-emerald-400 h-2.5 rounded-full transition-all duration-500"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+
+            {/* Visual Status Count Pills */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-2 sm:p-2.5">
+                <div className="text-base sm:text-lg font-bold text-slate-300">{notStartedCount}</div>
+                <div className="text-[10px] sm:text-xs text-slate-400">Not Started</div>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-2 sm:p-2.5">
+                <div className="text-base sm:text-lg font-bold text-blue-300">{inProgressCount}</div>
+                <div className="text-[10px] sm:text-xs text-blue-200">In Progress</div>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-2 sm:p-2.5">
+                <div className="text-base sm:text-lg font-bold text-emerald-400">{completedCount}</div>
+                <div className="text-[10px] sm:text-xs text-emerald-200">Completed</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative shapes */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+        </div>
+
+        {/* Information Architecture Clarification Notice */}
+        <div className="mb-6 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between text-xs text-slate-600">
+          <div className="flex items-center gap-2">
+            <Layers className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+            <span>
+              <strong>Information Architecture:</strong> Career page shows job info → Roadmap shows sequence & order → Course provides interactive lessons & practice.
+            </span>
+          </div>
+          <Link to="/courses" className="text-indigo-600 hover:text-indigo-700 font-semibold underline whitespace-nowrap hidden sm:inline">
+            Browse All Courses →
+          </Link>
+        </div>
+
+        {/* Stage-by-Stage Sequential List */}
+        <div className="space-y-5">
+          {allStages.map((stageObj, idx) => {
+            const nextObj = allStages[idx + 1]
+            return (
+              <RoadmapStageCard
+                key={stageObj.item.id}
+                item={stageObj.item}
+                stageNumber={stageObj.overallIndex}
+                totalStages={totalStages}
+                nextStageTitle={nextObj ? nextObj.item.title.replace(/^Learn\s+/i, '') : undefined}
+                onStatusChange={(itemId, status) => updateItem.mutate({ itemId, status })}
+              />
             )
           })}
         </div>
 
-        {/* Done state */}
+        {/* Celebration Banner when 100% complete */}
         {pct === 100 && (
-          <div className="mt-6 card p-8 text-center bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-100">
-            <div className="text-5xl mb-3">🎉</div>
-            <h2 className="font-bold text-slate-900 mb-2 text-xl">Roadmap complete!</h2>
-            <p className="text-slate-500 text-sm mb-5">You've completed all phases. Time to apply!</p>
-            <Link to="/careers" className="btn-primary">Explore next career →</Link>
+          <div className="mt-8 card p-8 sm:p-10 text-center bg-gradient-to-br from-emerald-50 via-teal-50 to-white border-2 border-emerald-300 shadow-lg">
+            <div className="text-5xl mb-3">🎓</div>
+            <h2 className="font-extrabold text-slate-900 mb-2 text-2xl">Roadmap Fully Completed!</h2>
+            <p className="text-slate-600 text-sm max-w-md mx-auto mb-6">
+              You've completed every stage in your {roadmap.career_role_title || 'career'} learning roadmap. You're ready to build capstone projects and apply for roles!
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link to="/courses" className="btn-primary">
+                Explore More Skills & Courses
+              </Link>
+              <Link to="/careers" className="btn-secondary">
+                View Career Details
+              </Link>
+            </div>
           </div>
         )}
       </div>
