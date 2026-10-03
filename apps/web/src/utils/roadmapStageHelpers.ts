@@ -160,12 +160,162 @@ const SKILL_STAGE_METAS: Record<string, Partial<RoadmapStageMeta>> = {
     duration: '3 weeks (~25 hours)',
   },
   'git': {
-    courseSlug: 'web-development',
-    courseTitle: 'Web Development Fundamentals (Git & Workflows)',
+    courseSlug: 'git-github',
+    courseTitle: 'Git & GitHub Mastery',
     whyRequired: 'Track changes, collaborate with engineering squads, and manage release branches safely.',
     prerequisites: 'Basic terminal navigation',
     difficulty: 'beginner',
-    duration: '1 week (~8 hours)',
+    duration: '2 weeks (~15 hours)',
+  },
+  'git-github': {
+    courseSlug: 'git-github',
+    courseTitle: 'Git & GitHub Mastery',
+    whyRequired: 'Professional distributed version control, pull requests, code reviews, and CI automation.',
+    prerequisites: 'Terminal navigation',
+    difficulty: 'beginner',
+    duration: '4 weeks (~20 hours)',
+  },
+
+  // Data Structures & Algorithms
+  'data-structures-algorithms': {
+    courseSlug: 'data-structures-algorithms',
+    courseTitle: 'Data Structures & Algorithms',
+    whyRequired: 'Build high-performance, optimal software and conquer technical problem-solving interviews.',
+    prerequisites: 'Programming fundamentals',
+    difficulty: 'intermediate',
+    duration: '8 weeks (~40 hours)',
+  },
+  'dsa': {
+    courseSlug: 'data-structures-algorithms',
+    courseTitle: 'Data Structures & Algorithms',
+    whyRequired: 'Master time-space complexity, trees, graphs, and dynamic programming.',
+    prerequisites: 'Programming fundamentals',
+    difficulty: 'intermediate',
+    duration: '8 weeks (~40 hours)',
+  },
+  'algorithms': {
+    courseSlug: 'data-structures-algorithms',
+    courseTitle: 'Data Structures & Algorithms',
+    whyRequired: 'Formulate optimal computational logic and asymptotic time bounds.',
+    prerequisites: 'Basic programming & math',
+    difficulty: 'intermediate',
+    duration: '4 weeks (~25 hours)',
+  },
+
+  // Cloud Computing
+  'cloud-computing': {
+    courseSlug: 'cloud-computing',
+    courseTitle: 'Cloud Computing Fundamentals',
+    whyRequired: 'Deploy, scale, and secure virtualized infrastructure on AWS, Azure, and GCP.',
+    prerequisites: 'Networking fundamentals & command line basics',
+    difficulty: 'beginner',
+    duration: '6 weeks (~30 hours)',
+  },
+  'aws': {
+    courseSlug: 'cloud-computing',
+    courseTitle: 'Cloud Computing Fundamentals',
+    whyRequired: 'Provision compute, S3 object storage, VPC networks, and serverless backends.',
+    prerequisites: 'Operating systems & networking',
+    difficulty: 'intermediate',
+    duration: '4 weeks (~25 hours)',
+  },
+
+  // Linux & System Administration
+  'linux': {
+    courseSlug: 'linux-system-administration',
+    courseTitle: 'Linux & System Administration',
+    whyRequired: 'The ubiquitous foundation of cloud servers, containers, and deployment infrastructure.',
+    prerequisites: 'Basic computer literacy',
+    difficulty: 'beginner',
+    duration: '4 weeks (~20 hours)',
+  },
+  'linux-system-administration': {
+    courseSlug: 'linux-system-administration',
+    courseTitle: 'Linux & System Administration',
+    whyRequired: 'Manage processes, file permissions, shell automation, and secure remote SSH hosts.',
+    prerequisites: 'Basic computer literacy',
+    difficulty: 'beginner',
+    duration: '5 weeks (~25 hours)',
+  },
+
+  // DevOps & CI/CD
+  'devops': {
+    courseSlug: 'devops-engineering',
+    courseTitle: 'DevOps & CI/CD Engineering',
+    whyRequired: 'Automate build, test, and release pipelines with Docker and Kubernetes.',
+    prerequisites: 'Git & Linux fundamentals',
+    difficulty: 'intermediate',
+    duration: '6 weeks (~30 hours)',
+  },
+  'devops-engineering': {
+    courseSlug: 'devops-engineering',
+    courseTitle: 'DevOps & CI/CD Engineering',
+    whyRequired: 'Construct scalable GitOps delivery pipelines and container orchestration clusters.',
+    prerequisites: 'Linux & Git basics',
+    difficulty: 'intermediate',
+    duration: '7 weeks (~35 hours)',
+  },
+  'docker': {
+    courseSlug: 'devops-engineering',
+    courseTitle: 'DevOps & CI/CD Engineering (Docker & Containers)',
+    whyRequired: 'Package software into immutable, reproducible container environments.',
+    prerequisites: 'Linux basics',
+    difficulty: 'intermediate',
+    duration: '3 weeks (~18 hours)',
+  },
+  'kubernetes': {
+    courseSlug: 'devops-engineering',
+    courseTitle: 'DevOps & CI/CD Engineering (Kubernetes)',
+    whyRequired: 'Orchestrate distributed container fleets with auto-scaling and zero downtime.',
+    prerequisites: 'Docker & networking',
+    difficulty: 'advanced',
+    duration: '4 weeks (~25 hours)',
+  },
+
+  // Cybersecurity
+  'cybersecurity': {
+    courseSlug: 'cybersecurity-fundamentals',
+    courseTitle: 'Cybersecurity Fundamentals',
+    whyRequired: 'Protect organizational networks, applications, and customer data from breaches.',
+    prerequisites: 'Networking and web fundamentals',
+    difficulty: 'beginner',
+    duration: '6 weeks (~30 hours)',
+  },
+  'cybersecurity-fundamentals': {
+    courseSlug: 'cybersecurity-fundamentals',
+    courseTitle: 'Cybersecurity Fundamentals',
+    whyRequired: 'Master threat modeling, OWASP Top 10 vulnerabilities, cryptography, and SOC response.',
+    prerequisites: 'Networking basics',
+    difficulty: 'beginner',
+    duration: '6 weeks (~30 hours)',
+  },
+
+  // Software Engineering & System Design
+  'software-engineering': {
+    courseSlug: 'software-engineering',
+    courseTitle: 'Software Engineering & System Design',
+    whyRequired: 'Architect maintainable, scalable software following SOLID principles and Agile practices.',
+    prerequisites: 'Object-oriented programming proficiency',
+    difficulty: 'intermediate',
+    duration: '6 weeks (~30 hours)',
+  },
+
+  // Mobile App Development
+  'mobile-app-development': {
+    courseSlug: 'mobile-app-development',
+    courseTitle: 'Mobile App Development',
+    whyRequired: 'Build responsive, cross-platform Android and iOS apps with local persistence and APIs.',
+    prerequisites: 'JavaScript or modern programming basics',
+    difficulty: 'beginner',
+    duration: '7 weeks (~35 hours)',
+  },
+  'mobile': {
+    courseSlug: 'mobile-app-development',
+    courseTitle: 'Mobile App Development',
+    whyRequired: 'Construct touch-friendly mobile layouts, offline storage, and push notifications.',
+    prerequisites: 'Programming basics',
+    difficulty: 'beginner',
+    duration: '5 weeks (~25 hours)',
   },
 };
 

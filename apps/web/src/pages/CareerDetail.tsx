@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
 import { getCareerProfile, CareerProfile } from '../data/careerProfiles'
+import { getRecommendedCoursesForCareer } from '../data/careerCoursesMap'
 import { useLanguage } from '../i18n/LanguageContext'
 import { 
   Briefcase, 
@@ -17,11 +18,12 @@ import {
   ArrowRight, 
   Clock, 
   Users, 
-  Sparkles,
-  Layers,
-  Award,
-  ChevronRight,
-  Target
+  Sparkles, 
+  Layers, 
+  Award, 
+  ChevronRight, 
+  Target,
+  BookOpen
 } from 'lucide-react'
 
 const difficultyColor: Record<string, string> = {
@@ -64,6 +66,15 @@ export default function CareerDetail() {
     queryFn: () => api.get(`/careers/${slug}/skill-gap`).then(r => r.data),
     retry: false,
   })
+
+  const { data: allCourses = [] } = useQuery({
+    queryKey: ['courses'],
+    queryFn: () => api.get('/courses').then(r => r.data),
+    staleTime: 60_000,
+  })
+
+  const recommendedCourseSlugs = getRecommendedCoursesForCareer(slug)
+  const matchedCourses = (allCourses as any[]).filter(c => recommendedCourseSlugs.includes(c.slug))
 
   const handleGenerate = async () => {
     setGenerating(true)
@@ -343,6 +354,58 @@ export default function CareerDetail() {
                 </div>
               )}
             </div>
+
+            {/* RECOMMENDED COURSES: CAREER -> RECOMMENDED COURSES -> ROADMAP */}
+            {matchedCourses.length > 0 && (
+              <div className="card p-6 sm:p-7 shadow-xs border-indigo-100 bg-gradient-to-br from-indigo-50/20 via-white to-white">
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                  <div className="flex items-center gap-2.5 text-slate-900 font-bold text-lg">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <h2>Recommended Career Courses</h2>
+                  </div>
+                  <Link to="/courses" className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                    <span>View All {allCourses.length} Courses</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+                <p className="text-xs text-slate-500 mb-5 leading-relaxed">
+                  Study these dedicated, structured courses to master the practical skills demanded for <strong>{careerTitle}</strong> roles. Completed lessons update your career progress.
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-3.5">
+                  {matchedCourses.map((mc: any) => (
+                    <Link
+                      key={mc.id}
+                      to={`/courses/${mc.slug}`}
+                      className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-400 hover:shadow-md transition-all group flex flex-col justify-between bg-white"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                            {mc.category}
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-semibold">
+                            {mc.duration_weeks} wks · {mc.num_lessons} lessons
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-slate-900 text-sm group-hover:text-indigo-600 transition-colors mb-1 line-clamp-1">
+                          {mc.title}
+                        </h3>
+                        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-3">
+                          {mc.description}
+                        </p>
+                      </div>
+                      <div className="text-xs font-bold text-indigo-600 flex items-center justify-between pt-2 border-t border-slate-100">
+                        <span>Start Learning Course</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* 5. Tools and Technologies Used */}
             {profile?.toolsAndTechnologies && (
