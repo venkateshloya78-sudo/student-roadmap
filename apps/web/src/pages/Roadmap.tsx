@@ -56,34 +56,38 @@ function ResourcePanel({ skillSlug, skillName }: { skillSlug: string; skillName:
         </p>
       </div>
       <div className="divide-y divide-slate-100">
-        {resources.map((r: any) => (
-          <a
+        {resources.map((r: any) => {
+          const isCompleted = localStorage.getItem('srm_progress') ? JSON.parse(localStorage.getItem('srm_progress') || '{}')[r.id]?.completed : false;
+          return (
+          <div
             key={r.id}
-            href={r.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-start gap-3 px-4 py-2.5 hover:bg-white transition-colors group"
+            className="flex items-center group px-4 py-2.5 hover:bg-white transition-colors border-b border-slate-100 last:border-0"
           >
-            <span className="text-base flex-shrink-0 mt-0.5">{r.icon}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm text-slate-700 group-hover:text-indigo-600 transition-colors font-medium leading-snug">
-                {r.title}
-              </p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className={`badge text-xs ${typeBadge[r.type] || typeBadge.other}`}>
-                  {r.type}
-                </span>
-                {r.is_free && (
-                  <span className="badge bg-emerald-50 text-emerald-700 text-xs">Free</span>
-                )}
-                <span className="text-xs text-slate-400 truncate">{r.url.replace(/^https?:\/\//, '').split('/')[0]}</span>
+            <Link to={`/learn/${r.id}`} className="flex-1 flex items-start gap-3 min-w-0">
+              <span className="text-base flex-shrink-0 mt-0.5">{r.icon}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-slate-700 group-hover:text-indigo-600 transition-colors font-medium leading-snug flex items-center gap-2">
+                  {r.title}
+                  {isCompleted && <span className="inline-flex items-center text-xs text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-200">✓ Done</span>}
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className={`badge text-xs ${typeBadge[r.type] || typeBadge.other}`}>
+                    {r.type}
+                  </span>
+                  {r.is_free && (
+                    <span className="badge bg-emerald-50 text-emerald-700 text-xs">Free</span>
+                  )}
+                  <span className="text-xs text-slate-400 truncate">{r.url.replace(/^https?:\/\//, '').split('/')[0]}</span>
+                </div>
               </div>
-            </div>
-            <svg className="w-3.5 h-3.5 text-slate-300 group-hover:text-indigo-400 transition-colors flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        ))}
+            </Link>
+            <a href={r.url} target="_blank" rel="noopener noreferrer" className="ml-3 p-1.5 text-slate-300 hover:text-indigo-500 transition-colors rounded-full hover:bg-indigo-50 flex-shrink-0" title="External link">
+              <svg className="w-3.5 h-3.5 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        )})}
       </div>
     </div>
   )

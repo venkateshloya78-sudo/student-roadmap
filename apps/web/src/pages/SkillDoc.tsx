@@ -297,30 +297,33 @@ export default function SkillDoc() {
                     </div>
                     <div className="divide-y divide-slate-50">
                       {items.map((r: any) => (
-                        <a key={r.id} href={r.url} target="_blank" rel="noopener noreferrer"
-                          className="flex items-start gap-4 px-5 py-4 hover:bg-slate-50 transition-colors group">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-800 group-hover:text-indigo-600 transition-colors leading-snug mb-1">
-                              {r.title}
-                            </p>
-                            <div className="flex items-center gap-2">
-                              {r.is_free && (
-                                <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
-                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                  </svg>
-                                  Free
+                        <div key={r.id} className="flex items-center group px-5 py-4 hover:bg-slate-50 transition-colors">
+                          <Link to={`/learn/${r.id}`} className="flex-1 flex items-start gap-4 cursor-pointer min-w-0">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-slate-800 group-hover:text-indigo-600 transition-colors leading-snug mb-1">
+                                {r.title}
+                              </p>
+                              <div className="flex items-center gap-2">
+                                {r.is_free && (
+                                  <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    Free
+                                  </span>
+                                )}
+                                <span className="text-xs text-slate-400">
+                                  {r.url.replace(/^https?:\/\//, '').split('/')[0]}
                                 </span>
-                              )}
-                              <span className="text-xs text-slate-400">
-                                {r.url.replace(/^https?:\/\//, '').split('/')[0]}
-                              </span>
+                              </div>
                             </div>
-                          </div>
-                          <svg className="w-4 h-4 text-slate-300 group-hover:text-indigo-400 transition-colors flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </a>
+                          </Link>
+                          <a href={r.url} target="_blank" rel="noopener noreferrer" className="ml-4 p-2 text-slate-300 hover:text-indigo-500 transition-colors rounded-full hover:bg-indigo-50" title="External link">
+                            <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
                       ))}
                     </div>
                   </div>

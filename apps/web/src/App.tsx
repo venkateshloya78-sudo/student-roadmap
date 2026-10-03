@@ -11,6 +11,7 @@ import Roadmap from './pages/Roadmap'
 import RoadmapsList from './pages/RoadmapsList'
 import Profile from './pages/Profile'
 import SkillDoc from './pages/SkillDoc'
+import ResourceLearn from './pages/ResourceLearn'
 import { isLoggedIn } from './lib/auth'
 
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/roadmaps" element={<PrivateRoute><RoadmapsList /></PrivateRoute>} />
           <Route path="/roadmaps/:id" element={<PrivateRoute><Roadmap /></PrivateRoute>} />
           <Route path="/skills/:slug" element={<PrivateRoute><SkillDoc /></PrivateRoute>} />
+          <Route path="/learn/:resourceId" element={<PrivateRoute><ResourceLearn /></PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 
           {/* Fallback */}

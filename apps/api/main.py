@@ -11,6 +11,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import create_all_tables
 from app.routers import auth, careers, skills, roadmaps, progress, profile
+try:
+    from app.routers import resources_api as resources_router
+    _has_resources = True
+except ImportError:
+    _has_resources = False
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -50,6 +55,8 @@ app.include_router(skills.router, prefix=API_PREFIX)
 app.include_router(roadmaps.router, prefix=API_PREFIX)
 app.include_router(progress.router, prefix=API_PREFIX)
 app.include_router(profile.router, prefix=API_PREFIX)
+if _has_resources:
+    app.include_router(resources_router.router, prefix=API_PREFIX)
 
 
 # ── Health check ─────────────────────────────────────────────────────────────
