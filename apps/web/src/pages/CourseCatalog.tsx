@@ -61,7 +61,7 @@ export default function CourseCatalog() {
 
   const { data: courses = [], isLoading } = useQuery<CourseOut[]>({
     queryKey: ['courses'],
-    queryFn: () => api.get('/courses').then(r => r.data),
+    queryFn: () => api.get('/courses/').then(r => r.data),
     staleTime: 60_000,
   });
 
