@@ -14,10 +14,11 @@ import LessonFlashcards from '../components/Course/LessonFlashcards';
 import ExportNotesModal from '../components/Course/ExportNotesModal';
 import AIDeepDiveBar from '../components/Course/AIDeepDiveBar';
 import LessonVoicePlayer from '../components/Course/LessonVoicePlayer';
-import { Menu, BookOpen, Terminal, Building2, Award, Sparkles, Download, Bookmark, Volume2 } from 'lucide-react';
+import CourseVideoPlayer from '../components/Course/CourseVideoPlayer';
+import { Menu, BookOpen, Terminal, Building2, Award, Sparkles, Download, Bookmark, Volume2, Video } from 'lucide-react';
 import { FloatingAssistantWidget } from '../components/Assistant/FloatingAssistantWidget';
 
-type TabType = 'notes' | 'playground' | 'casestudies' | 'interview' | 'flashcards' | 'export';
+type TabType = 'notes' | 'video' | 'playground' | 'casestudies' | 'interview' | 'flashcards' | 'export';
 
 export default function LessonPage() {
   const { slug, lessonId } = useParams<{ slug: string, lessonId: string }>();
@@ -193,6 +194,14 @@ export default function LessonPage() {
                     <span className="flex items-center gap-1">🎓 {course.title}</span>
                     <span>•</span>
                     <span className="flex items-center gap-1">✨ Comprehensive Mastery Mode</span>
+                    <span>•</span>
+                    <button
+                      onClick={() => setActiveTab('video')}
+                      className="flex items-center gap-1.5 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-0.5 rounded-full font-bold text-xs transition-colors border border-red-200"
+                    >
+                      <Video size={13} />
+                      <span>🎥 Video Class Available</span>
+                    </button>
                   </div>
                 </div>
 
@@ -220,6 +229,18 @@ export default function LessonPage() {
                   >
                     <BookOpen size={16} />
                     <span>📖 Deep Notes</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('video')}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all ${
+                      activeTab === 'video'
+                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
+                        : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Video size={16} className={activeTab === 'video' ? 'text-white' : 'text-red-500'} />
+                    <span>🎥 Video Class</span>
                   </button>
 
                   <button
@@ -292,6 +313,14 @@ export default function LessonPage() {
                     {/* Core Lesson Content Blocks */}
                     <LessonContent blocks={lesson.content_blocks} />
                   </div>
+                )}
+
+                {activeTab === 'video' && (
+                  <CourseVideoPlayer
+                    courseSlug={slug!}
+                    lessonTitle={lesson.title}
+                    courseTitle={course.title}
+                  />
                 )}
 
                 {activeTab === 'playground' && (

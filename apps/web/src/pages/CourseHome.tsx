@@ -1,10 +1,10 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import AppShell from '../components/Layout/AppShell';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../lib/api';
 import { CourseDetailOut } from '../types/course';
-import { Clock, BookOpen, Target, CheckCircle2, PlayCircle, ChevronDown, Award } from 'lucide-react';
+import { Clock, BookOpen, Target, CheckCircle2, PlayCircle, ChevronDown, Award, Video } from 'lucide-react';
 import BreadcrumbNav from '../components/Course/BreadcrumbNav';
 import ProgressBar from '../components/Course/ProgressBar';
 
@@ -93,6 +93,10 @@ export default function CourseHome() {
                 <div className="flex items-center gap-2">
                   <BookOpen className="text-indigo-500" size={18} />
                   {course.num_modules} modules, {course.num_lessons} lessons
+                </div>
+                <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200/70 px-3 py-1 rounded-xl text-xs font-bold">
+                  <Video className="text-red-500" size={16} />
+                  <span>🎬 Video Classes Included</span>
                 </div>
               </div>
 
