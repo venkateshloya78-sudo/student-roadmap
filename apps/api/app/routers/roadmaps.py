@@ -37,6 +37,28 @@ async def generate_roadmap(
     if not role:
         raise HTTPException(status_code=404, detail="Career role not found")
 
+    # If student already has an active roadmap for this career, reuse it rather than creating duplicates
+    existing_res = await db.execute(
+        select(Roadmap)
+        .options(
+            selectinload(Roadmap.career_role),
+            selectinload(Roadmap.phases).selectinload(RoadmapPhase.items),
+        )
+        .where(
+            Roadmap.student_id == str(profile.id),
+            Roadmap.career_role_id == str(role.id),
+            Roadmap.status == "active",
+        )
+        .order_by(Roadmap.created_at.desc())
+    )
+    existing = existing_res.scalars().first()
+    if existing:
+        if body.weekly_hours:
+            existing.weekly_hours_committed = body.weekly_hours
+            await db.commit()
+        slug_map = await _get_skill_slug_map(db, [existing])
+        return await _build_roadmap_response(existing, slug_map)
+
     # 2. Student's existing skills
     ss_res = await db.execute(select(StudentSkill).where(StudentSkill.student_id == str(profile.id)))
     student_skills = {str(ss.skill_id): ss.competency_score for ss in ss_res.scalars().all()}
@@ -302,3 +324,30 @@ async def update_item_status(
         raise HTTPException(status_code=422, detail=f"Invalid status '{body.status}'")
     await db.commit()
     return {"id": str(item.id), "status": item.status.value if hasattr(item.status, 'value') else str(item.status)}
+
+
+@router.delete("/{id}")
+async def delete_roadmap(
+    id: str,
+    profile: StudentProfile = Depends(get_current_profile),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a roadmap and all its associated phases and items."""
+    res = await db.execute(
+        select(Roadmap)
+        .options(
+            selectinload(Roadmap.phases).selectinload(RoadmapPhase.items),
+        )
+        .where(Roadmap.id == id, Roadmap.student_id == str(profile.id))
+    )
+    rm = res.scalar_one_or_none()
+    if not rm:
+        raise HTTPException(status_code=404, detail="Roadmap not found")
+
+    for phase in rm.phases:
+        for item in phase.items:
+            await db.delete(item)
+        await db.delete(phase)
+    await db.delete(rm)
+    await db.commit()
+    return {"status": "deleted", "id": id}
