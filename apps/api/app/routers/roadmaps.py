@@ -162,16 +162,80 @@ async def generate_roadmap(
             db.add(item)
             await db.flush([item])
 
-
-
     await db.commit()
 
+    # Re-fetch with relationships for response
     result = await db.execute(
         select(Roadmap)
-        .options(selectinload(Roadmap.phases).selectinload(RoadmapPhase.items))
+        .options(
+            selectinload(Roadmap.career_role),
+            selectinload(Roadmap.phases).selectinload(RoadmapPhase.items),
+        )
         .where(Roadmap.id == str(roadmap.id))
     )
-    return result.scalar_one()
+    rm = result.scalar_one()
+    slug_map = await _get_skill_slug_map(db, [rm])
+    return await _build_roadmap_response(rm, slug_map)
+
+
+async def _build_roadmap_response(rm: Roadmap, skill_slug_map: dict) -> dict:
+    """Build the full roadmap response dict, injecting skill_slug on each item."""
+    career_role_title = None
+    if hasattr(rm, "career_role") and rm.career_role:
+        career_role_title = rm.career_role.title
+
+    phases_out = []
+    for phase in sorted(rm.phases, key=lambda p: p.phase_number):
+        items_out = []
+        for item in sorted(phase.items, key=lambda i: i.order_index):
+            items_out.append({
+                "id": item.id,
+                "type": item.type.value if hasattr(item.type, "value") else str(item.type),
+                "reference_id": item.reference_id,
+                "title": item.title,
+                "description": item.description,
+                "estimated_hours": item.estimated_hours,
+                "order_index": item.order_index,
+                "status": item.status.value if hasattr(item.status, "value") else str(item.status),
+                "skill_slug": skill_slug_map.get(str(item.reference_id)) if item.reference_id else None,
+            })
+        phases_out.append({
+            "id": phase.id,
+            "phase_number": phase.phase_number,
+            "title": phase.title,
+            "description": phase.description,
+            "estimated_hours": phase.estimated_hours,
+            "status": phase.status.value if hasattr(phase.status, "value") else str(phase.status),
+            "items": items_out,
+        })
+
+    return {
+        "id": rm.id,
+        "student_id": rm.student_id,
+        "career_role_id": rm.career_role_id,
+        "career_role_title": career_role_title,
+        "version": rm.version,
+        "status": rm.status.value if hasattr(rm.status, "value") else str(rm.status),
+        "weekly_hours_committed": rm.weekly_hours_committed,
+        "phases": phases_out,
+    }
+
+
+async def _get_skill_slug_map(db: AsyncSession, roadmaps_list: list) -> dict:
+    """Fetch skill slugs for all reference_ids across all roadmaps in one query."""
+    all_ref_ids = list({
+        str(item.reference_id)
+        for rm in roadmaps_list
+        for phase in rm.phases
+        for item in phase.items
+        if item.reference_id and (item.type.value if hasattr(item.type, "value") else str(item.type)) == "skill"
+    })
+    slug_map: dict = {}
+    if all_ref_ids:
+        skill_res = await db.execute(select(Skill).where(Skill.id.in_(all_ref_ids)))
+        for skill in skill_res.scalars().all():
+            slug_map[str(skill.id)] = skill.slug
+    return slug_map
 
 
 @router.get("/", response_model=dict)
@@ -181,15 +245,20 @@ async def list_roadmaps(
 ):
     res = await db.execute(
         select(Roadmap)
-        .options(selectinload(Roadmap.phases).selectinload(RoadmapPhase.items))
+        .options(
+            selectinload(Roadmap.career_role),
+            selectinload(Roadmap.phases).selectinload(RoadmapPhase.items),
+        )
         .where(Roadmap.student_id == str(profile.id))
         .order_by(Roadmap.created_at.desc())
     )
-    items = res.scalars().all()
-    return {"items": [RoadmapOut.model_validate(r) for r in items], "total": len(items)}
+    roadmaps = res.scalars().all()
+    slug_map = await _get_skill_slug_map(db, roadmaps)
+    items = [await _build_roadmap_response(rm, slug_map) for rm in roadmaps]
+    return {"items": items, "total": len(items)}
 
 
-@router.get("/{id}", response_model=RoadmapOut)
+@router.get("/{id}")
 async def get_roadmap(
     id: str,
     profile: StudentProfile = Depends(get_current_profile),
@@ -197,13 +266,18 @@ async def get_roadmap(
 ):
     res = await db.execute(
         select(Roadmap)
-        .options(selectinload(Roadmap.phases).selectinload(RoadmapPhase.items))
+        .options(
+            selectinload(Roadmap.career_role),
+            selectinload(Roadmap.phases).selectinload(RoadmapPhase.items),
+        )
         .where(Roadmap.id == id, Roadmap.student_id == str(profile.id))
     )
     rm = res.scalar_one_or_none()
     if not rm:
         raise HTTPException(status_code=404, detail="Roadmap not found")
-    return rm
+
+    slug_map = await _get_skill_slug_map(db, [rm])
+    return await _build_roadmap_response(rm, slug_map)
 
 
 class ItemStatusUpdate(BaseModel):

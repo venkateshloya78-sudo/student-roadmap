@@ -7,3 +7,4 @@ from app.models.skill import Skill, StudentSkill  # noqa: F401
 from app.models.career import Industry, CareerPath, CareerRole, CareerRoleSkill  # noqa: F401
 from app.models.resource import Resource  # noqa: F401
 from app.models.roadmap import Roadmap, RoadmapPhase, RoadmapItem, StudentProgress  # noqa: F401
+from app.models.course import Course, CourseModule, Lesson, QuizQuestion, Project, LessonProgress, QuizAttempt, CourseEnrollment  # noqa: F401

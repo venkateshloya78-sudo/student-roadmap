@@ -45,6 +45,13 @@ async def list_skills(
     )
 
 
+def get_all_topics() -> dict:
+    try:
+        return json.loads(_TOPICS_FILE.read_text(encoding="utf-8")).get("topics", {})
+    except Exception:
+        return {}
+
+
 @router.get("/{slug}/topics")
 async def get_skill_topics(slug: str, db: AsyncSession = Depends(get_db)):
     """Return the week-by-week curriculum for a skill."""
@@ -53,23 +60,52 @@ async def get_skill_topics(slug: str, db: AsyncSession = Depends(get_db)):
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
 
-    topic_data = _TOPICS.get(slug, {})
+    all_topics = get_all_topics()
+    topic_data = all_topics.get(slug, {})
     return {
         "skill": {"name": skill.name, "slug": skill.slug, "difficulty": str(skill.difficulty.value if hasattr(skill.difficulty, "value") else skill.difficulty)},
         "description": topic_data.get("description", skill.description or f"Learn {skill.name} — a key skill for your career."),
         "curriculum": topic_data.get("curriculum", []),
-        "has_full_curriculum": slug in _TOPICS,
+        "has_full_curriculum": slug in all_topics,
     }
 
 
 @router.get("/{slug}/resources")
-
 async def get_skill_resources(slug: str, db: AsyncSession = Depends(get_db)):
-    """Return all free learning resources for a skill (Wikipedia, courses, PDFs)."""
+    """Return all free learning resources for a skill.
+    Falls back to name-based search if slug not found directly.
+    """
+    # First: exact slug match
     skill_res = await db.execute(select(Skill).where(Skill.slug == slug))
     skill = skill_res.scalar_one_or_none()
+
+    # Fallback 1: normalize both slug and skill name → strip ALL non-alphanumeric chars
+    # "data-structures-algorithms" → "datastructuresalgorithms"
+    # "Data Structures & Algorithms" → "datastructuresalgorithms"  ← matches!
     if not skill:
-        raise HTTPException(status_code=404, detail="Skill not found")
+        import re
+        slug_normalized = re.sub(r'[^a-z0-9]', '', slug.lower())
+
+        all_skills_res = await db.execute(select(Skill))
+        all_skills = all_skills_res.scalars().all()
+        for s in all_skills:
+            name_normalized = re.sub(r'[^a-z0-9]', '', s.name.lower())
+            if slug_normalized == name_normalized or slug_normalized in name_normalized:
+                skill = s
+                break
+
+    # Fallback 2: keyword search — find skill whose name contains the first long word from slug
+    if not skill:
+        import re
+        words = [w for w in re.sub(r'[-_]', ' ', slug).split() if len(w) > 3]
+        if words:
+            skill_res3 = await db.execute(
+                select(Skill).where(Skill.name.ilike(f"%{words[0]}%"))
+            )
+            skill = skill_res3.scalar_one_or_none()
+
+    if not skill:
+        raise HTTPException(status_code=404, detail=f"Skill '{slug}' not found")
 
     res = await db.execute(
         select(Resource).where(Resource.skill_id == str(skill.id)).order_by(Resource.type)

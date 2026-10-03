@@ -3,13 +3,17 @@ import { useQuery } from '@tanstack/react-query'
 import api from '../../lib/api'
 import { clearToken, isLoggedIn } from '../../lib/auth'
 import { useEffect } from 'react'
+import { FloatingAssistantWidget } from '../Assistant/FloatingAssistantWidget'
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: '⊞' },
   { label: 'Careers', href: '/careers', icon: '🎯' },
   { label: 'My Roadmap', href: '/roadmaps', icon: '🗺️' },
+  { label: 'Courses', href: '/courses', icon: '📚' },
+  { label: 'AI Assistant', href: '/assistant', icon: '✨' },
   { label: 'Profile', href: '/profile', icon: '👤' },
 ]
+
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
@@ -92,6 +96,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1 md:ml-60 pt-14 md:pt-0 pb-20 md:pb-0">
         {children}
       </main>
+
+      {/* Floating Gemini Assistant */}
+      <FloatingAssistantWidget />
     </div>
   )
 }
+

@@ -1,5 +1,6 @@
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
 
@@ -14,7 +15,6 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
 }
 
 export default function Dashboard() {
-  const navigate = useNavigate()
   const { data: me, isLoading } = useQuery({
     queryKey: ['me'],
     queryFn: () => api.get('/auth/me').then(r => r.data),
@@ -24,16 +24,44 @@ export default function Dashboard() {
     queryFn: () => api.get('/roadmaps/').then(r => r.data),
     retry: false,
   })
+  const { data: courses } = useQuery({
+    queryKey: ['courses-list'],
+    queryFn: () => api.get('/courses/').then(r => r.data),
+    retry: false,
+    staleTime: 300_000,
+  })
 
   const profile = me?.profile
   const profileComplete = profile?.degree && profile?.branch && profile?.year
 
+  const enrolledCourses = (courses || []).filter((c: any) => c.enrolled)
+  const inProgressCourse = enrolledCourses.find((c: any) => c.progress_pct > 0 && c.progress_pct < 100)
+
+  // Compute study progress stats from localStorage
+  const { studiedTopics, myNotesTotal } = useMemo(() => {
+    let studied = 0
+    let notes = 0
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith('srm_studied_')) {
+        try { studied += JSON.parse(localStorage.getItem(key) || '[]').length } catch {}
+      }
+      if (key.startsWith('srm_mynotes_')) {
+        try { notes += Object.keys(JSON.parse(localStorage.getItem(key) || '{}')).length } catch {}
+      }
+    }
+    return { studiedTopics: studied, myNotesTotal: notes }
+  }, [])
+
+  const hasRoadmap = (roadmaps?.items?.length ?? 0) > 0
+  const activeRoadmap = hasRoadmap ? roadmaps.items[0] : null
+
   return (
     <AppShell>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+
         {/* Header */}
         <div className="mb-8">
-          <p className="text-sm text-slate-500 mb-1">Welcome back</p>
+          <p className="text-sm text-slate-500 mb-1">Welcome back 👋</p>
           <h1 className="text-2xl font-bold text-slate-900">
             {isLoading ? 'Loading...' : me?.user?.email?.split('@')[0] || 'Student'}
           </h1>
@@ -42,7 +70,7 @@ export default function Dashboard() {
         {/* Profile incomplete banner */}
         {!isLoading && !profileComplete && (
           <div className="mb-6 flex items-center gap-4 p-4 bg-amber-50 border border-amber-100 rounded-xl">
-            <div className="text-2xl">👋</div>
+            <div className="text-2xl">⚠️</div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-amber-800">Complete your profile to get started</p>
               <p className="text-xs text-amber-600 mt-0.5">Add your degree, branch, and year to unlock roadmap generation.</p>
@@ -53,36 +81,96 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* Continue learning banner — if mid-course */}
+        {inProgressCourse && (
+          <div className="mb-6 flex items-center gap-4 p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+            <div className="text-2xl">📖</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-indigo-900">Continue where you left off</p>
+              <p className="text-xs text-indigo-600 mt-0.5 truncate">{inProgressCourse.title} — {Math.round(inProgressCourse.progress_pct)}% complete</p>
+            </div>
+            <Link to={`/courses/${inProgressCourse.slug}`} className="btn-primary text-xs py-2 px-3 whitespace-nowrap">
+              Continue →
+            </Link>
+          </div>
+        )}
+
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          <StatCard label="Career Path" value={roadmaps?.items?.length > 0 ? '1' : '—'} sub={roadmaps?.items?.length > 0 ? 'roadmap active' : 'not started'} color="text-indigo-600" />
-          <StatCard label="Skills Declared" value={String(me?.profile?.skills_count || '0')} sub="self-rated" color="text-emerald-600" />
-          <StatCard label="Phases Done" value="0" sub="of your roadmap" color="text-purple-600" />
-          <StatCard label="Readiness" value="—" sub="run gap analysis" color="text-rose-500" />
+          <StatCard
+            label="Career Path"
+            value={hasRoadmap ? '1' : '—'}
+            sub={hasRoadmap ? 'roadmap active' : 'not started'}
+            color="text-indigo-600"
+          />
+          <StatCard
+            label="Courses"
+            value={String(enrolledCourses.length || (courses?.length ?? 0))}
+            sub={enrolledCourses.length > 0 ? `${enrolledCourses.length} enrolled` : 'available'}
+            color="text-purple-600"
+          />
+          <StatCard
+            label="Topics Studied"
+            value={studiedTopics > 0 ? String(studiedTopics) : '0'}
+            sub={studiedTopics > 0 ? 'topics marked done' : 'start studying'}
+            color="text-emerald-600"
+          />
+          <StatCard
+            label="My Notes"
+            value={myNotesTotal > 0 ? String(myNotesTotal) : '0'}
+            sub={myNotesTotal > 0 ? 'personal notes' : 'add your first'}
+            color="text-rose-500"
+          />
         </div>
 
         {/* Quick actions */}
-        <div className="grid sm:grid-cols-2 gap-4 mb-8">
-          <div className="card p-6">
-            <div className="text-2xl mb-3">🎯</div>
-            <h3 className="font-semibold text-slate-900 mb-1">Choose a career path</h3>
-            <p className="text-sm text-slate-500 mb-4">Browse 12 roles and see the skills required for each.</p>
-            <Link to="/careers" className="btn-secondary text-sm">Browse careers →</Link>
-          </div>
+        <div className="grid sm:grid-cols-3 gap-4 mb-8">
+
+          {/* Roadmap card */}
           <div className="card p-6">
             <div className="text-2xl mb-3">🗺️</div>
             <h3 className="font-semibold text-slate-900 mb-1">
-              {roadmaps?.items?.length > 0 ? 'Continue your roadmap' : 'Generate your roadmap'}
+              {hasRoadmap ? 'Continue your roadmap' : 'Generate your roadmap'}
             </h3>
             <p className="text-sm text-slate-500 mb-4">
-              {roadmaps?.items?.length > 0
-                ? 'Pick up where you left off.'
+              {hasRoadmap
+                ? `${activeRoadmap?.career_role_title || 'Career'} — pick up where you left off.`
                 : 'Select a career and get a personalised learning plan.'}
             </p>
-            {roadmaps?.items?.length > 0
-              ? <Link to={`/roadmaps/${roadmaps.items[0].id}`} className="btn-primary text-sm">View roadmap →</Link>
+            {hasRoadmap
+              ? <Link to={`/roadmaps/${activeRoadmap.id}`} className="btn-primary text-sm">View roadmap →</Link>
               : <Link to="/careers" className="btn-primary text-sm">Get started →</Link>}
           </div>
+
+          {/* Courses card */}
+          <div className="card p-6">
+            <div className="text-2xl mb-3">📚</div>
+            <h3 className="font-semibold text-slate-900 mb-1">
+              {inProgressCourse ? 'Resume learning' : 'Start a course'}
+            </h3>
+            <p className="text-sm text-slate-500 mb-4">
+              {inProgressCourse
+                ? `${inProgressCourse.title} · ${Math.round(inProgressCourse.progress_pct)}% done`
+                : '4 courses available — Python, SQL, Web Dev, Data Analytics.'}
+            </p>
+            <Link
+              to={inProgressCourse ? `/courses/${inProgressCourse.slug}` : '/courses'}
+              className="btn-primary text-sm"
+            >
+              {inProgressCourse ? 'Resume →' : 'Browse courses →'}
+            </Link>
+          </div>
+
+          {/* Skills / Explore card */}
+          <div className="card p-6">
+            <div className="text-2xl mb-3">🎯</div>
+            <h3 className="font-semibold text-slate-900 mb-1">Explore careers</h3>
+            <p className="text-sm text-slate-500 mb-4">
+              Browse 12 career roles. See required skills, salaries, and growth paths.
+            </p>
+            <Link to="/careers" className="btn-secondary text-sm">Browse careers →</Link>
+          </div>
+
         </div>
 
         {/* Profile summary */}
@@ -107,6 +195,7 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
+
       </div>
     </AppShell>
   )

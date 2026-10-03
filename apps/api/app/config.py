@@ -21,5 +21,12 @@ class Settings(BaseSettings):
     app_name: str = "StudentRoadmap AI"
     debug: bool = False
 
+    # AI Provider Settings
+    ai_provider: str = "gemini"
+    gemini_api_key: str | None = None
+    openai_api_key: str | None = None
+    default_ai_model: str = "gemini-2.0-flash"
+
 
 settings = Settings()
+

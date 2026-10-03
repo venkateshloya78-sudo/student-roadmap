@@ -16,6 +16,7 @@ class RoadmapItemOut(BaseModel):
     estimated_hours: int | None
     order_index: int
     status: str
+    skill_slug: str | None = None   # actual skill slug for resource fetching
 
     model_config = {"from_attributes": True}
 

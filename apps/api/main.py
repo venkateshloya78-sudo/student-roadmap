@@ -10,12 +10,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import create_all_tables
-from app.routers import auth, careers, skills, roadmaps, progress, profile
+from app.routers import auth, careers, skills, roadmaps, progress, profile, assistant, courses
 try:
     from app.routers import resources_api as resources_router
     _has_resources = True
 except ImportError:
     _has_resources = False
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -40,7 +41,8 @@ app = FastAPI(
 # ── CORS ────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=["*"],
+    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,8 +57,11 @@ app.include_router(skills.router, prefix=API_PREFIX)
 app.include_router(roadmaps.router, prefix=API_PREFIX)
 app.include_router(progress.router, prefix=API_PREFIX)
 app.include_router(profile.router, prefix=API_PREFIX)
+app.include_router(assistant.router, prefix=API_PREFIX)
+app.include_router(courses.router, prefix=API_PREFIX)
 if _has_resources:
     app.include_router(resources_router.router, prefix=API_PREFIX)
+
 
 
 # ── Health check ─────────────────────────────────────────────────────────────

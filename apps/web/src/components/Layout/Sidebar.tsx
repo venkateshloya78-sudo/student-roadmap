@@ -1,18 +1,21 @@
 import { NavLink, Link } from 'react-router-dom';
 import {
   LayoutDashboard, Map, BookOpen, TrendingUp, User,
-  LogOut, GraduationCap,
+  LogOut, GraduationCap, Sparkles, Library,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import clsx from 'clsx';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/roadmap',   icon: Map,             label: 'My Roadmap' },
-  { to: '/careers',   icon: BookOpen,         label: 'Careers' },
+  { to: '/roadmaps',  icon: Map,             label: 'My Roadmap' },
+  { to: '/careers',   icon: BookOpen,         label: 'Careers & Skills' },
+  { to: '/courses',   icon: Library,          label: 'Courses' },
+  { to: '/assistant', icon: Sparkles,         label: 'AI Assistant' },
   { to: '/progress',  icon: TrendingUp,       label: 'Progress' },
   { to: '/profile',   icon: User,             label: 'Profile' },
 ];
+
 
 export const Sidebar = () => {
   const { user, logout } = useAuth();

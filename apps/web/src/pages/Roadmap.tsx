@@ -30,10 +30,11 @@ const typeBadge: Record<string, string> = {
 }
 
 function ResourcePanel({ skillSlug, skillName }: { skillSlug: string; skillName: string }) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['resources', skillSlug],
     queryFn: () => api.get(`/skills/${skillSlug}/resources`).then(r => r.data),
     staleTime: 300_000,
+    retry: false,
   })
 
   if (isLoading) {
@@ -45,8 +46,22 @@ function ResourcePanel({ skillSlug, skillName }: { skillSlug: string; skillName:
     )
   }
 
+  if (isError) {
+    return (
+      <div className="mt-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
+        <p className="text-xs text-amber-700">⚠️ No resources available yet for <strong>{skillName}</strong>.</p>
+      </div>
+    )
+  }
+
   const resources = data?.resources || []
-  if (resources.length === 0) return null
+  if (resources.length === 0) {
+    return (
+      <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+        <p className="text-xs text-slate-500">📭 No resources added yet for <strong>{skillName}</strong>.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 overflow-hidden">
@@ -93,18 +108,150 @@ function ResourcePanel({ skillSlug, skillName }: { skillSlug: string; skillName:
   )
 }
 
+function LearningGuidePanel({ skillSlug, skillName }: { skillSlug: string; skillName: string }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['skill-topics', skillSlug],
+    queryFn: () => api.get(`/skills/${skillSlug}/topics`).then(r => r.data),
+    staleTime: 300_000,
+    retry: false,
+  })
+
+  if (isLoading) {
+    return (
+      <div className="mt-3 p-4 bg-indigo-50/50 rounded-xl border border-indigo-100 animate-pulse space-y-2">
+        <div className="h-4 bg-indigo-200 rounded w-1/3" />
+        <div className="h-3 bg-indigo-100 rounded w-3/4" />
+        <div className="h-3 bg-indigo-100 rounded w-1/2" />
+      </div>
+    )
+  }
+
+  const firstWeek = data?.curriculum?.[0]
+  const firstItem = firstWeek?.items?.[0]
+
+  const guide = {
+    why: firstItem?.why_learning || `Essential foundational capability for ${skillName} required across industry production stacks.`,
+    meaning: firstItem?.meaning || `Conceptual methodology and toolset used to build, manage, and scale ${skillName} systems.`,
+    whatToLearn: firstItem?.what_to_learn || `Syntax, architecture, configuration, standard patterns, and production reliability.`,
+    practice: firstItem?.how_to_practice || `Implement isolated exercises and build test scenarios verifying input and output validity.`,
+    example: firstItem?.example || `# Getting started with ${skillName}\nprint('Initialising ${skillName} environment...')`,
+    build: firstItem?.what_to_build || `A modular utility or baseline component demonstrating clean fundamentals in ${skillName}.`,
+    career: firstItem?.career_uses || `Software Engineers, Backend Architects, and Tech Specialists worldwide.`,
+    next: firstItem?.next_steps || `Advanced concepts, architectural design, and system-wide integration.`,
+  }
+
+  return (
+    <div className="mt-3 rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50/60 to-white overflow-hidden shadow-xs">
+      <div className="px-4 py-3 border-b border-indigo-100 bg-white/80 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-base">💡</span>
+          <p className="text-xs font-bold text-slate-800">
+            7-Pillar Learning Guide for <span className="text-indigo-600">{skillName}</span>
+          </p>
+        </div>
+        <Link
+          to={`/skills/${skillSlug}`}
+          className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+        >
+          View Full Curriculum →
+        </Link>
+      </div>
+
+      <div className="p-4 space-y-3 text-xs text-slate-700">
+        {/* 1. Why am I learning this? */}
+        <div className="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+          <div className="font-bold text-indigo-900 mb-1 flex items-center gap-1.5">
+            <span>🎯</span> 1. Why am I learning this?
+          </div>
+          <p className="leading-relaxed">{guide.why}</p>
+        </div>
+
+        {/* 2. What does it mean? */}
+        <div className="bg-white p-3 rounded-lg border border-sky-100 shadow-2xs">
+          <div className="font-bold text-sky-900 mb-1 flex items-center gap-1.5">
+            <span>💡</span> 2. What does it mean?
+          </div>
+          <p className="leading-relaxed">{guide.meaning}</p>
+        </div>
+
+        {/* 3. What should I learn? */}
+        <div className="bg-white p-3 rounded-lg border border-purple-100 shadow-2xs">
+          <div className="font-bold text-purple-900 mb-1 flex items-center gap-1.5">
+            <span>📘</span> 3. What should I learn?
+          </div>
+          <p className="leading-relaxed">{guide.whatToLearn}</p>
+        </div>
+
+        {/* 4. How do I practice it? */}
+        <div className="bg-white p-3 rounded-lg border border-emerald-100 shadow-2xs">
+          <div className="font-bold text-emerald-900 mb-1 flex items-center gap-1.5">
+            <span>✍️</span> 4. How do I practice it?
+          </div>
+          <p className="leading-relaxed mb-2">{guide.practice}</p>
+          {guide.example && (
+            <div className="bg-slate-900 text-emerald-300 p-2.5 rounded font-mono text-[11px] overflow-x-auto whitespace-pre-wrap">
+              <code>{guide.example}</code>
+            </div>
+          )}
+        </div>
+
+        {/* 5. What can I build? */}
+        <div className="bg-white p-3 rounded-lg border border-amber-100 shadow-2xs">
+          <div className="font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+            <span>🛠️</span> 5. What can I build?
+          </div>
+          <p className="leading-relaxed">{guide.build}</p>
+        </div>
+
+        {/* 6. Which career uses it? */}
+        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-2xs">
+          <div className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+            <span>💼</span> 6. Which career uses it?
+          </div>
+          <p className="leading-relaxed font-medium text-slate-800">{guide.career}</p>
+        </div>
+
+        {/* 7. What should I learn next? */}
+        <div className="bg-white p-3 rounded-lg border border-teal-100 shadow-2xs">
+          <div className="font-bold text-teal-900 mb-1 flex items-center gap-1.5">
+            <span>🚀</span> 7. What should I learn next?
+          </div>
+          <p className="leading-relaxed">{guide.next}</p>
+        </div>
+
+        {/* Quick actions */}
+        <div className="pt-2 flex flex-wrap gap-2">
+          <Link
+            to={`/skills/${skillSlug}`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+          >
+            📖 Open In-Depth Skill Page
+          </Link>
+          <Link
+            to="/courses"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-lg font-medium transition-colors"
+          >
+            🎓 Practice in Interactive Courses
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function RoadmapItemRow({ item, onToggle }: { item: any; onToggle: (id: string, status: string) => void }) {
-  const [expanded, setExpanded] = useState(false)
+  const [activePanel, setActivePanel] = useState<'resources' | 'guide' | null>(null)
   const done = item.status === 'completed' || item.status === 'verified'
   const cfg = statusConfig[item.status] || statusConfig.not_started
 
-  // Extract skill slug from title e.g. "Learn Python" → "python"
-  const skillSlug = item.title.replace(/^Learn\s+/i, '').toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  // Use the actual skill_slug from API response — fallback to deriving from title
+  const skillSlug = item.skill_slug
+    || item.title.replace(/^Learn\s+/i, '').toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
   const skillName = item.title.replace(/^Learn\s+/i, '')
 
   return (
-    <div className={`border-b border-slate-50 last:border-0 transition-colors ${expanded ? 'bg-indigo-50/30' : ''}`}>
+    <div className={`border-b border-slate-50 last:border-0 transition-colors ${activePanel ? 'bg-indigo-50/20' : ''}`}>
       <div className="px-5 py-3 flex items-center gap-3">
         {/* Checkbox */}
         <button
@@ -135,30 +282,49 @@ function RoadmapItemRow({ item, onToggle }: { item: any; onToggle: (id: string, 
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           {item.estimated_hours && (
-            <span className="text-xs text-slate-400">{item.estimated_hours}h</span>
+            <span className="text-xs text-slate-400 hidden sm:inline">{item.estimated_hours}h</span>
           )}
           <span className={`flex items-center gap-1.5 text-xs font-medium ${cfg.color}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
-            <span className="hidden sm:inline">{cfg.label}</span>
+            <span className="hidden md:inline">{cfg.label}</span>
           </span>
+
+          {/* Guide toggle */}
+          <button
+            onClick={() => setActivePanel(activePanel === 'guide' ? null : 'guide')}
+            title="Show 7-pillar learning guide"
+            className={`text-xs px-2.5 py-1 rounded-full font-medium transition-all border
+              ${activePanel === 'guide'
+                ? 'bg-indigo-600 text-white border-indigo-600 shadow-2xs'
+                : 'bg-white text-indigo-700 border-indigo-200 hover:bg-indigo-50'}`}
+          >
+            💡 Guide
+          </button>
+
           {/* Resources toggle */}
           <button
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => setActivePanel(activePanel === 'resources' ? null : 'resources')}
             title="Show learning resources"
-            className={`text-xs px-2 py-0.5 rounded-full font-medium transition-all
-              ${expanded
-                ? 'bg-indigo-100 text-indigo-700'
-                : 'bg-slate-100 text-slate-500 hover:bg-indigo-50 hover:text-indigo-600'}`}
+            className={`text-xs px-2.5 py-1 rounded-full font-medium transition-all border
+              ${activePanel === 'resources'
+                ? 'bg-slate-800 text-white border-slate-800 shadow-2xs'
+                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-800'}`}
           >
-            {expanded ? '▲ Resources' : '📚 Resources'}
+            📚 Resources
           </button>
         </div>
       </div>
 
-      {/* Resources panel */}
-      {expanded && (
+      {/* Panels */}
+      {activePanel === 'guide' && (
+        <div className="px-5 pb-4">
+          <LearningGuidePanel skillSlug={skillSlug} skillName={skillName} />
+        </div>
+      )}
+
+      {activePanel === 'resources' && (
         <div className="px-5 pb-4">
           <ResourcePanel skillSlug={skillSlug} skillName={skillName} />
         </div>
@@ -175,6 +341,8 @@ export default function RoadmapView() {
   const { data: roadmap, isLoading } = useQuery({
     queryKey: ['roadmap', id],
     queryFn: () => api.get(`/roadmaps/${id}`).then(r => r.data),
+    staleTime: 0,      // always fetch fresh so skill_slug is up to date
+    gcTime: 60_000,
   })
 
   const updateItem = useMutation({
