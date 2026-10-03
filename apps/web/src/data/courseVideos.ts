@@ -1,7 +1,7 @@
 /**
  * courseVideos.ts
  * Curated high-definition video service for course lessons.
- * Provides embedded video tutorials, channel credits, chapters, and key takeaways.
+ * Provides embedded video tutorials, channel credits, chapters, and key takeaways for all 12 courses.
  */
 
 export interface VideoChapter {
@@ -26,7 +26,7 @@ export interface CourseVideoData {
   }[];
 }
 
-const DEFAULT_PYTHON_VIDEO: CourseVideoData = {
+export const DEFAULT_PYTHON_VIDEO: CourseVideoData = {
   youtubeId: 'kqtD5dpn9C8',
   title: 'Python Tutorial for Beginners - Full In-Depth Lecture',
   channel: 'Programming with Mosh',
@@ -63,7 +63,7 @@ const DEFAULT_PYTHON_VIDEO: CourseVideoData = {
   ]
 };
 
-const DEFAULT_SQL_VIDEO: CourseVideoData = {
+export const DEFAULT_SQL_VIDEO: CourseVideoData = {
   youtubeId: 'HXV3zeQKqGY',
   title: 'SQL Tutorial - Full Database Course for Beginners',
   channel: 'freeCodeCamp.org',
@@ -99,248 +99,356 @@ const DEFAULT_SQL_VIDEO: CourseVideoData = {
   ]
 };
 
-const DEFAULT_WEB_VIDEO: CourseVideoData = {
-  youtubeId: 'mU6anWqZJcc',
-  title: 'HTML & CSS Full Course - Modern Web Development',
-  channel: 'freeCodeCamp.org',
-  duration: '2 hr 15 min',
-  description: 'Learn HTML5 semantic structure, modern CSS layouts (Flexbox and Grid), and responsive design principles.',
+export const DEFAULT_ANALYTICS_VIDEO: CourseVideoData = {
+  youtubeId: 'r-uOLxNrNk8',
+  title: 'Data Analyst Portfolio Project & Workflow Walkthrough',
+  channel: 'Alex The Analyst',
+  duration: '1 hr 18 min',
+  description: 'End-to-end data analytics workflow: data gathering, cleaning in Excel/Pandas, SQL exploration, and dashboard reporting.',
   chapters: [
-    { timeSeconds: 0, timeLabel: '00:00', title: 'HTML Document Structure & Head Tags' },
-    { timeSeconds: 540, timeLabel: '09:00', title: 'Semantic Tags: Header, Nav, Main, Footer' },
-    { timeSeconds: 1500, timeLabel: '25:00', title: 'Forms, Inputs, and Accessible Attributes' },
-    { timeSeconds: 2700, timeLabel: '45:00', title: 'CSS Box Model: Margin, Border, Padding' },
-    { timeSeconds: 4200, timeLabel: '1:10:00', title: 'CSS Flexbox Layout Mastery' },
-    { timeSeconds: 5700, timeLabel: '1:35:00', title: 'Responsive Media Queries & Mobile First' },
+    { timeSeconds: 0, timeLabel: '00:00', title: 'Overview of the Analytics Workflow' },
+    { timeSeconds: 450, timeLabel: '07:30', title: 'Data Extraction & Cleaning Foundations' },
+    { timeSeconds: 1350, timeLabel: '22:30', title: 'Exploratory Analysis & Statistical Outliers' },
+    { timeSeconds: 2400, timeLabel: '40:00', title: 'Aggregation & Pivot Metrics' },
+    { timeSeconds: 3600, timeLabel: '1:00:00', title: 'Building Interactive Executive Dashboards' },
   ],
   keyTakeaways: [
-    'How the browser DOM tree is constructed from HTML elements',
-    'Responsive mobile-first styling using CSS Flexbox and Grid',
-    'Writing accessible, SEO-friendly semantic markup',
-    'Structuring clean UI components without CSS overflow bugs'
+    'How professional analysts separate raw transactional data from transformed metrics',
+    'Standard data cleaning heuristics to eliminate nulls and invalid data types',
+    'Designing visual stories that guide business stakeholder decisions'
   ],
   alternativeVideos: [
     {
-      youtubeId: 'PkZNo7MFNFg',
-      title: 'JavaScript Tutorial for Beginners',
-      channel: 'freeCodeCamp.org',
-      duration: '3 hr 26 min'
-    },
+      youtubeId: 'ua-CiDNNj30',
+      title: 'Learn Data Analytics in 2024 - Complete Roadmap',
+      channel: 'Ken Jee',
+      duration: '22 min 10 sec'
+    }
+  ]
+};
+
+export const DEFAULT_WEB_VIDEO: CourseVideoData = {
+  youtubeId: 'nu_pCVPKzTk',
+  title: 'Full Stack Web Development for Beginners - HTML, CSS, JavaScript',
+  channel: 'freeCodeCamp.org',
+  duration: '11 hr 30 min',
+  description: 'Complete hands-on modern web development bootcamp teaching responsive design, DOM manipulation, APIs, and modern frameworks.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'How the Web Works & HTTP Protocol' },
+    { timeSeconds: 1800, timeLabel: '30:00', title: 'HTML5 Semantic Layouts' },
+    { timeSeconds: 5400, timeLabel: '1:30:00', title: 'CSS3 Styling & Box Model' },
+    { timeSeconds: 10800, timeLabel: '3:00:00', title: 'Responsive Flexbox & CSS Grid' },
+    { timeSeconds: 18000, timeLabel: '5:00:00', title: 'JavaScript ES6+, DOM Events & Fetch API' },
+  ],
+  keyTakeaways: [
+    'How browsers fetch, parse HTML, construct DOM trees, and render CSS layouts',
+    'Modern responsive layouts using Flexbox and CSS Grid without media query bloat',
+    'Connecting frontends to backend APIs using async/await and JSON data formats'
+  ],
+  alternativeVideos: [
     {
       youtubeId: 'bMknfKXIFA8',
-      title: 'React Course 2024 - Learn Modern React with Projects',
+      title: 'React.js Complete Course for Beginners',
       channel: 'freeCodeCamp.org',
-      duration: '5 hr 10 min'
+      duration: '5 hr 12 min'
     }
   ]
 };
 
-const DEFAULT_ANALYTICS_VIDEO: CourseVideoData = {
-  youtubeId: 'vmEHCJofslg',
-  title: 'Pandas & Python for Data Analytics - Complete Crash Course',
-  channel: 'Keith Galli',
-  duration: '1 hr 00 min',
-  description: 'Learn real-world data analysis with Python, Pandas DataFrames, data cleaning, and statistical visualizations.',
+// ─── 8 NEW COURSE VIDEO DATASETS ───────────────────────────────────────────
+
+export const DEFAULT_DSA_VIDEO: CourseVideoData = {
+  youtubeId: '8hly31xKLI0',
+  title: 'Data Structures and Algorithms for Beginners - Full Course',
+  channel: 'freeCodeCamp.org',
+  duration: '8 hr 15 min',
+  description: 'Master Big-O notation, linear structures (Arrays, Linked Lists, Stacks, Queues), Hash Tables, Trees, Graphs, and Dynamic Programming.',
   chapters: [
-    { timeSeconds: 0, timeLabel: '00:00', title: 'Introduction to Data Analytics & Pandas' },
-    { timeSeconds: 300, timeLabel: '05:00', title: 'Loading CSV, Excel and JSON Data' },
-    { timeSeconds: 780, timeLabel: '13:00', title: 'Reading Data, Filtering Rows & Columns' },
-    { timeSeconds: 1560, timeLabel: '26:00', title: 'Sorting, Describing & Statistical Summaries' },
-    { timeSeconds: 2280, timeLabel: '38:00', title: 'Grouping & Aggregating with GroupBy' },
-    { timeSeconds: 3000, timeLabel: '50:00', title: 'Exporting Cleaned Datasets & Visualizing' },
+    { timeSeconds: 0, timeLabel: '00:00', title: 'Introduction & Asymptotic Big-O Analysis' },
+    { timeSeconds: 2700, timeLabel: '45:00', title: 'Arrays & Two-Pointer Strategies' },
+    { timeSeconds: 5400, timeLabel: '1:30:00', title: 'Singly and Doubly Linked Lists' },
+    { timeSeconds: 9000, timeLabel: '2:30:00', title: 'Stacks, Queues & Monotonic Patterns' },
+    { timeSeconds: 12600, timeLabel: '3:30:00', title: 'Hash Tables & Collision Resolution' },
+    { timeSeconds: 16200, timeLabel: '4:30:00', title: 'Binary Trees & Traversals (DFS/BFS)' },
+    { timeSeconds: 21600, timeLabel: '6:00:00', title: 'Graphs, BFS, DFS & Dijkstra Algorithm' },
+    { timeSeconds: 25200, timeLabel: '7:00:00', title: 'Dynamic Programming & Memoization' },
   ],
   keyTakeaways: [
-    'The end-to-end data analytics lifecycle: ingestion, cleaning, transformation, and reporting',
-    'Handling missing values, duplicates, and inconsistent data formats',
-    'High-performance data manipulation with Pandas Series and DataFrames',
-    'Transforming raw numbers into actionable business insights'
+    'Understanding asymptotic trade-offs between Time and Auxiliary Space complexity',
+    'Choosing the optimal data structure based on read vs write frequencies',
+    'Solving technical coding interview questions systematically using pattern recognition'
   ],
   alternativeVideos: [
     {
-      youtubeId: 'xxpc-HPKN28',
-      title: 'Statistics for Data Science - Full Course',
-      channel: 'freeCodeCamp.org',
-      duration: '2 hr 45 min'
-    },
-    {
-      youtubeId: 'zyGfECfJ9BY',
-      title: 'Data Analysis with Python - Full 10-Hour Course',
-      channel: 'freeCodeCamp.org',
-      duration: '9 hr 56 min'
+      youtubeId: 'BBpAmxU_NQo',
+      title: 'NeetCode Roadmap - Core Data Structures',
+      channel: 'NeetCode',
+      duration: '1 hr 12 min'
     }
   ]
 };
 
-// Specialized video lookups for specific lessons or courses
-export function getLessonVideoData(courseSlug: string, lessonTitle?: string): CourseVideoData {
-  const normTitle = (lessonTitle || '').toLowerCase();
-  const slug = (courseSlug || '').toLowerCase();
+export const DEFAULT_GIT_VIDEO: CourseVideoData = {
+  youtubeId: 'RGOj5yH7evk',
+  title: 'Git and GitHub for Beginners - Crash Course',
+  channel: 'freeCodeCamp.org',
+  duration: '1 hr 08 min',
+  description: 'Understand distributed version control: working directory, staging index, commit DAG trees, branches, merge conflicts, and GitHub pull requests.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'Why Version Control Matters' },
+    { timeSeconds: 420, timeLabel: '07:00', title: 'Git Architecture: Working Tree, Index & HEAD' },
+    { timeSeconds: 1200, timeLabel: '20:00', title: 'git add, git commit & Semantic Commit Messages' },
+    { timeSeconds: 2100, timeLabel: '35:00', title: 'Branching Workflows & Merging' },
+    { timeSeconds: 2700, timeLabel: '45:00', title: 'Resolving Merge Conflicts Confidently' },
+    { timeSeconds: 3300, timeLabel: '55:00', title: 'Pushing to GitHub & Opening Pull Requests' },
+  ],
+  keyTakeaways: [
+    'How Git represents history as an immutable directed acyclic graph (DAG) of commit snapshots',
+    'Safe branching workflows that isolate feature developments from production',
+    'Handling and resolving merge conflicts step-by-step without losing work'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: 'DVRQoVRzMIY',
+      title: 'Git Tutorial for Beginners: Command-line Mastery',
+      channel: 'Programming with Mosh',
+      duration: '1 hr 09 min'
+    }
+  ]
+};
 
-  // Python specific topics
+export const DEFAULT_CLOUD_VIDEO: CourseVideoData = {
+  youtubeId: 'SOTamWNgDKc',
+  title: 'AWS Certified Cloud Practitioner - Complete Cloud Bootcamp',
+  channel: 'freeCodeCamp.org',
+  duration: '13 hr 50 min',
+  description: 'Learn cloud computing architecture, IaaS/PaaS/SaaS models, virtual private clouds (VPC), EC2 compute, S3 object storage, and IAM security.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'Cloud Computing Fundamentals & Value Proposition' },
+    { timeSeconds: 3600, timeLabel: '1:00:00', title: 'Global Cloud Infrastructure: Regions & AZs' },
+    { timeSeconds: 7200, timeLabel: '2:00:00', title: 'IAM: Users, Groups, Roles & Policies' },
+    { timeSeconds: 14400, timeLabel: '4:00:00', title: 'Compute Services: EC2, Lambda & Elastic Beanstalk' },
+    { timeSeconds: 21600, timeLabel: '6:00:00', title: 'Cloud Storage: S3, EBS & Glacier Lifecycle' },
+    { timeSeconds: 28800, timeLabel: '8:00:00', title: 'Networking: VPCs, Subnets, Gateways & Security Groups' },
+  ],
+  keyTakeaways: [
+    'The Shared Responsibility Model between cloud provider and customer',
+    'Designing highly available multi-region and multi-AZ fault-tolerant topologies',
+    'Enforcing least privilege access control with IAM policies'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: '2LaAJq1lB1Q',
+      title: 'Cloud Computing in 10 Minutes',
+      channel: 'Simplilearn',
+      duration: '10 min 20 sec'
+    }
+  ]
+};
+
+export const DEFAULT_LINUX_VIDEO: CourseVideoData = {
+  youtubeId: 'sWbANNj4j_0',
+  title: 'Linux for Beginners - Full In-Depth Course',
+  channel: 'freeCodeCamp.org',
+  duration: '5 hr 50 min',
+  description: 'Master the Linux terminal, filesystem hierarchy, POSIX permissions, user/group management, process signals, systemd, and server administration.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'Linux Kernel & Distribution Ecosystem' },
+    { timeSeconds: 1800, timeLabel: '30:00', title: 'Filesystem Hierarchy: /etc, /var, /usr' },
+    { timeSeconds: 5400, timeLabel: '1:30:00', title: 'Pipes, Redirections & Text Processing (grep, awk, sed)' },
+    { timeSeconds: 9000, timeLabel: '2:30:00', title: 'File Permissions (chmod, chown, octal bits)' },
+    { timeSeconds: 12600, timeLabel: '3:30:00', title: 'Process Management: ps, top, kill, systemctl' },
+    { timeSeconds: 16200, timeLabel: '4:30:00', title: 'Bash Shell Scripting & Automation' },
+  ],
+  keyTakeaways: [
+    'Everything in Linux is represented as a file or stream',
+    'Managing process lifecycles and background services using systemd',
+    'Securing remote SSH servers with public key authentication and firewall rules'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: 'V1y-mbWM3B8',
+      title: 'You need to learn Linux RIGHT NOW!',
+      channel: 'NetworkChuck',
+      duration: '18 min 45 sec'
+    }
+  ]
+};
+
+export const DEFAULT_DEVOPS_VIDEO: CourseVideoData = {
+  youtubeId: 'j5Zsa_eOXeY',
+  title: 'DevOps Course for Beginners - Docker, Kubernetes, CI/CD',
+  channel: 'freeCodeCamp.org',
+  duration: '2 hr 15 min',
+  description: 'Understand DevOps culture, continuous delivery lifecycles, Docker containerization, Kubernetes cluster orchestration, and infrastructure automation.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'What is DevOps & Engineering Velocity' },
+    { timeSeconds: 1200, timeLabel: '20:00', title: 'CI/CD Pipelines: Automating Build & Test Gates' },
+    { timeSeconds: 2700, timeLabel: '45:00', title: 'Docker: Images, Containers & Multi-Stage Builds' },
+    { timeSeconds: 4500, timeLabel: '1:15:00', title: 'Kubernetes: Pods, Deployments, Services & Ingress' },
+    { timeSeconds: 6300, timeLabel: '1:45:00', title: 'Infrastructure as Code (Terraform) & Observability' },
+  ],
+  keyTakeaways: [
+    'Eliminating operational silos through automated continuous deployment pipelines',
+    'Package once, run anywhere consistency with lightweight Docker images',
+    'Self-healing and auto-scaling container fleets using Kubernetes declarations'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: '9pZ2xmsSDdo',
+      title: 'DevOps Roadmap & Core Skills Walkthrough',
+      channel: 'TechWorld with Nana',
+      duration: '24 min 30 sec'
+    }
+  ]
+};
+
+export const DEFAULT_CYBERSECURITY_VIDEO: CourseVideoData = {
+  youtubeId: 'U_P23SqJaDc',
+  title: 'Cybersecurity for Beginners - Full Crash Course',
+  channel: 'freeCodeCamp.org',
+  duration: '1 hr 55 min',
+  description: 'Understand the CIA Triad, threat modeling, malware vectors, cryptography (symmetric/asymmetric), OWASP Top 10 vulnerabilities, and SOC incident response.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'The CIA Security Triad & Threat Landscapes' },
+    { timeSeconds: 900, timeLabel: '15:00', title: 'Common Attack Vectors: Phishing, Ransomware, Man-in-the-Middle' },
+    { timeSeconds: 2400, timeLabel: '40:00', title: 'Cryptography: Hashing, Symmetric AES & Public Key RSA' },
+    { timeSeconds: 3900, timeLabel: '1:05:00', title: 'Web App Security: SQL Injection & Cross-Site Scripting (XSS)' },
+    { timeSeconds: 5400, timeLabel: '1:30:00', title: 'SOC Operations, SIEM Monitoring & Incident Remediation' },
+  ],
+  keyTakeaways: [
+    'Balancing security measures against system usability and business velocity',
+    'Treating untrusted user input with zero trust via parameterized queries and sanitization',
+    'Detecting, isolating, and reporting security incidents before systemic compromise'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: 'inWWhr5tnEA',
+      title: 'How Hackers Exploit Networks',
+      channel: 'NetworkChuck',
+      duration: '16 min 10 sec'
+    }
+  ]
+};
+
+export const DEFAULT_SOFTWARE_ENGINEERING_VIDEO: CourseVideoData = {
+  youtubeId: 'ZgdS0EUmn70',
+  title: 'Software Engineering Principles & System Design Bootcamp',
+  channel: 'freeCodeCamp.org',
+  duration: '3 hr 45 min',
+  description: 'Master SDLC phases, Agile/Scrum ceremonies, Robert C. Martin SOLID principles, design patterns, microservices architecture, and automated testing.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'The Software Development Lifecycle (SDLC)' },
+    { timeSeconds: 1800, timeLabel: '30:00', title: 'Agile & Scrum: Sprints, Epics, Stories & Retrospectives' },
+    { timeSeconds: 4500, timeLabel: '1:15:00', title: 'The SOLID Principles with Real Code Walkthroughs' },
+    { timeSeconds: 8100, timeLabel: '2:15:00', title: 'Design Patterns: Factory, Singleton, Strategy, Observer' },
+    { timeSeconds: 10800, timeLabel: '3:00:00', title: 'Automated Testing: Unit, Integration & End-to-End' },
+  ],
+  keyTakeaways: [
+    'Writing maintainable code that is easy to extend without altering existing tested modules',
+    'Managing technical debt and communicating architectural decisions clearly',
+    'Structuring Agile sprints to deliver incremental working value continuously'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: 'M3_p2wZ5F1E',
+      title: 'System Design for Beginners',
+      channel: 'Gaurav Sen',
+      duration: '19 min 40 sec'
+    }
+  ]
+};
+
+export const DEFAULT_MOBILE_VIDEO: CourseVideoData = {
+  youtubeId: '0-S5a0eXPoc',
+  title: 'React Native Full Course 2024 - Cross-Platform Mobile Development',
+  channel: 'freeCodeCamp.org',
+  duration: '5 hr 30 min',
+  description: 'Build native iOS and Android apps using React Native. Covers flexbox mobile layouts, touch gestures, navigation stacks, offline persistence, and deployment.',
+  chapters: [
+    { timeSeconds: 0, timeLabel: '00:00', title: 'Mobile App Architecture & Native Bridges' },
+    { timeSeconds: 2400, timeLabel: '40:00', title: 'Mobile Layouts with Flexbox & Safe Area Views' },
+    { timeSeconds: 6000, timeLabel: '1:40:00', title: 'Touch Handlers, ScrollView & FlatList Optimization' },
+    { timeSeconds: 10800, timeLabel: '3:00:00', title: 'Navigation Stacks & Bottom Tab Navigators' },
+    { timeSeconds: 14400, timeLabel: '4:00:00', title: 'Offline Storage, REST APIs & App Store Preparation' },
+  ],
+  keyTakeaways: [
+    'Understanding mobile lifecycle constraints and aggressive OS memory reclamation',
+    'Optimizing long lists using FlatList windowing to prevent UI stutter',
+    'Creating offline-first user experiences with local storage caching'
+  ],
+  alternativeVideos: [
+    {
+      youtubeId: 'VozPNrt-LfE',
+      title: 'React Native Tutorial for Beginners',
+      channel: 'Programming with Mosh',
+      duration: '2 hr 02 min'
+    }
+  ]
+};
+
+// ─── HELPER DISPATCHER ──────────────────────────────────────────────────────
+
+export function getCourseVideoData(courseSlug: string = '', lessonTitle: string = ''): CourseVideoData {
+  const slug = courseSlug.toLowerCase();
+  const normTitle = lessonTitle.toLowerCase();
+
+  // 1. Data Structures & Algorithms
+  if (slug.includes('structures') || slug.includes('algorithm') || slug.includes('dsa')) {
+    return DEFAULT_DSA_VIDEO;
+  }
+
+  // 2. Git & GitHub
+  if (slug.includes('git')) {
+    return DEFAULT_GIT_VIDEO;
+  }
+
+  // 3. Cloud Computing
+  if (slug.includes('cloud') || slug.includes('aws') || slug.includes('azure')) {
+    return DEFAULT_CLOUD_VIDEO;
+  }
+
+  // 4. Linux & Systems
+  if (slug.includes('linux') || slug.includes('system-admin')) {
+    return DEFAULT_LINUX_VIDEO;
+  }
+
+  // 5. DevOps
+  if (slug.includes('devops') || slug.includes('docker') || slug.includes('kubernetes')) {
+    return DEFAULT_DEVOPS_VIDEO;
+  }
+
+  // 6. Cybersecurity
+  if (slug.includes('security') || slug.includes('cyber')) {
+    return DEFAULT_CYBERSECURITY_VIDEO;
+  }
+
+  // 7. Software Engineering
+  if (slug.includes('software-engineering') || slug.includes('system-design')) {
+    return DEFAULT_SOFTWARE_ENGINEERING_VIDEO;
+  }
+
+  // 8. Mobile Development
+  if (slug.includes('mobile') || slug.includes('android') || slug.includes('react-native') || slug.includes('ios')) {
+    return DEFAULT_MOBILE_VIDEO;
+  }
+
+  // 9. Python
   if (slug.includes('python')) {
-    if (normTitle.includes('variable') || normTitle.includes('data type')) {
-      return {
-        youtubeId: 'cQT33yu9pY8',
-        title: 'Python Variables, Memory Addresses and Data Types',
-        channel: 'Corey Schafer',
-        duration: '12 min 40 sec',
-        description: 'Understand how variables work behind the scenes in Python, dynamic typing, and primitive types.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'Introduction to Variables' },
-          { timeSeconds: 150, timeLabel: '02:30', title: 'Naming Rules and Conventions' },
-          { timeSeconds: 320, timeLabel: '05:20', title: 'Dynamic Typing and id() Memory Check' },
-          { timeSeconds: 540, timeLabel: '09:00', title: 'Type Conversions: int(), float(), str()' },
-          { timeSeconds: 700, timeLabel: '11:40', title: 'Summary & Best Practices' },
-        ],
-        keyTakeaways: [
-          'Variables in Python are references pointing to objects in memory',
-          'Python uses dynamic typing—you do not need to declare types explicitly',
-          'Use type() to inspect the runtime class and int()/float() to safely cast types'
-        ],
-        alternativeVideos: DEFAULT_PYTHON_VIDEO.alternativeVideos
-      };
-    }
-    if (normTitle.includes('loop') || normTitle.includes('while') || normTitle.includes('for')) {
-      return {
-        youtubeId: '6iF8Xb7Z3wQ',
-        title: 'Python Loops and Iterations: For/While Loops Tutorial',
-        channel: 'Corey Schafer',
-        duration: '10 min 12 sec',
-        description: 'Learn how to iterate over ranges, lists, strings with for and while loops, including break and continue.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'The For Loop & range() Function' },
-          { timeSeconds: 190, timeLabel: '03:10', title: 'Break and Continue Statements' },
-          { timeSeconds: 360, timeLabel: '06:00', title: 'Nested Loops Explained' },
-          { timeSeconds: 480, timeLabel: '08:00', title: 'While Loops and Avoiding Infinite Loops' },
-        ],
-        keyTakeaways: [
-          'Use for loops when iterating over a known sequence or collection',
-          'Use while loops when repeating until a dynamic condition becomes false',
-          'Use break to terminate loops immediately and continue to skip to the next iteration'
-        ],
-        alternativeVideos: DEFAULT_PYTHON_VIDEO.alternativeVideos
-      };
-    }
-    if (normTitle.includes('function') || normTitle.includes('parameter') || normTitle.includes('argument')) {
-      return {
-        youtubeId: '9Os0o3wzS_I',
-        title: 'Python Functions - Complete Guide & Best Practices',
-        channel: 'Corey Schafer',
-        duration: '21 min 05 sec',
-        description: 'A comprehensive guide to defining functions, parameters, return statements, and docstrings.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'Defining Functions with def Keyword' },
-          { timeSeconds: 300, timeLabel: '05:00', title: 'Return Values vs Print Statements' },
-          { timeSeconds: 620, timeLabel: '10:20', title: 'Positional and Keyword Arguments' },
-          { timeSeconds: 900, timeLabel: '15:00', title: '*args and **kwargs Explained' },
-        ],
-        keyTakeaways: [
-          'Functions promote DRY (Don\'t Repeat Yourself) modular architecture',
-          'Return statements send values back to the caller; unreturned functions yield None',
-          'Parameters allow flexible, reusable logic across large applications'
-        ],
-        alternativeVideos: DEFAULT_PYTHON_VIDEO.alternativeVideos
-      };
-    }
-    if (normTitle.includes('object') || normTitle.includes('class') || normTitle.includes('oop')) {
-      return {
-        youtubeId: 'ZDa-Z5JzLYM',
-        title: 'Python OOP Tutorial 1: Classes and Instances',
-        channel: 'Corey Schafer',
-        duration: '15 min 45 sec',
-        description: 'Master Object-Oriented Programming: classes, instances, __init__ constructor, and self parameter.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'Why Object-Oriented Programming?' },
-          { timeSeconds: 210, timeLabel: '03:30', title: 'Creating Your First Class' },
-          { timeSeconds: 420, timeLabel: '07:00', title: 'The __init__ Constructor and self' },
-          { timeSeconds: 680, timeLabel: '11:20', title: 'Instance Methods vs Class Methods' },
-        ],
-        keyTakeaways: [
-          'Classes act as blueprints; objects are live instances created from those blueprints',
-          '__init__ is the initializer that configures instance attributes upon creation',
-          'self refers to the specific instance calling the method'
-        ],
-        alternativeVideos: DEFAULT_PYTHON_VIDEO.alternativeVideos
-      };
-    }
     return DEFAULT_PYTHON_VIDEO;
   }
 
-  // SQL specific
+  // 10. SQL & Databases
   if (slug.includes('sql') || slug.includes('database')) {
-    if (normTitle.includes('join')) {
-      return {
-        youtubeId: '9yeOJ0ZMUYw',
-        title: 'SQL JOINs Tutorial - Visual Explanation',
-        channel: 'Alex The Analyst',
-        duration: '14 min 30 sec',
-        description: 'Visual walkthrough of INNER JOIN, LEFT OUTER JOIN, RIGHT JOIN, and FULL JOIN with clear examples.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'Introduction to Joins' },
-          { timeSeconds: 180, timeLabel: '03:00', title: 'Inner Join Explained' },
-          { timeSeconds: 380, timeLabel: '06:20', title: 'Left vs Right Outer Joins' },
-          { timeSeconds: 610, timeLabel: '10:10', title: 'Full Outer Join and Null Matching' },
-        ],
-        keyTakeaways: [
-          'INNER JOIN returns only matching records from both tables',
-          'LEFT JOIN returns all rows from the left table and matched rows from the right table',
-          'Always join on primary and foreign key indexed columns for top query performance'
-        ],
-        alternativeVideos: DEFAULT_SQL_VIDEO.alternativeVideos
-      };
-    }
     return DEFAULT_SQL_VIDEO;
   }
 
-  // Web Development
+  // 11. Web Development
   if (slug.includes('web') || slug.includes('react') || slug.includes('js')) {
-    if (normTitle.includes('react')) {
-      return {
-        youtubeId: 'bMknfKXIFA8',
-        title: 'React.js Complete Course for Beginners',
-        channel: 'freeCodeCamp.org',
-        duration: '5 hr 12 min',
-        description: 'Comprehensive modern React course covering JSX, components, props, state with useState, and hooks.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'What is React & Component Architecture' },
-          { timeSeconds: 900, timeLabel: '15:00', title: 'JSX Syntax Rules & Rendering Elements' },
-          { timeSeconds: 2400, timeLabel: '40:00', title: 'Props: Passing Data to Components' },
-          { timeSeconds: 4200, timeLabel: '1:10:00', title: 'useState Hook & Reactive UI Updates' },
-          { timeSeconds: 6600, timeLabel: '1:50:00', title: 'Handling Events & Controlled Forms' },
-        ],
-        keyTakeaways: [
-          'React uses a virtual DOM to perform lightning-fast UI reconciliations',
-          'Components should be pure functions that render UI based on incoming props and local state',
-          'useState triggers re-renders whenever state changes occur'
-        ],
-        alternativeVideos: DEFAULT_WEB_VIDEO.alternativeVideos
-      };
-    }
-    if (normTitle.includes('javascript') || normTitle.includes('js')) {
-      return {
-        youtubeId: 'W6NZfCO5SIk',
-        title: 'JavaScript Tutorial for Beginners: Learn JavaScript in 1 Hour',
-        channel: 'Programming with Mosh',
-        duration: '48 min 15 sec',
-        description: 'Understand core JavaScript concepts: variables, constants, primitive types, functions, and arrays.',
-        chapters: [
-          { timeSeconds: 0, timeLabel: '00:00', title: 'What is JavaScript?' },
-          { timeSeconds: 270, timeLabel: '04:30', title: 'Variables & Constants (let vs const)' },
-          { timeSeconds: 750, timeLabel: '12:30', title: 'Primitive Types vs Reference Objects' },
-          { timeSeconds: 1450, timeLabel: '24:10', title: 'Functions & Parameter Passing' },
-        ],
-        keyTakeaways: [
-          'JavaScript provides dynamic interactivity to web applications',
-          'Use const by default and let only when variables need to be reassigned',
-          'Functions are first-class citizens that can be stored in variables or passed as arguments'
-        ],
-        alternativeVideos: DEFAULT_WEB_VIDEO.alternativeVideos
-      };
-    }
     return DEFAULT_WEB_VIDEO;
   }
 
-  // Data Analytics
+  // 12. Data Analytics
   if (slug.includes('analytics') || slug.includes('data')) {
     return DEFAULT_ANALYTICS_VIDEO;
   }
@@ -348,3 +456,6 @@ export function getLessonVideoData(courseSlug: string, lessonTitle?: string): Co
   // Default fallback
   return DEFAULT_PYTHON_VIDEO;
 }
+
+export const getLessonVideoData = getCourseVideoData;
+

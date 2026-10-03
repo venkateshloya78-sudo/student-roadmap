@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Play, RotateCcw, Copy, Check, Terminal, Sparkles, CheckCircle2 } from 'lucide-react';
 
 interface PlaygroundProps {
@@ -8,39 +8,63 @@ interface PlaygroundProps {
 }
 
 export default function InteractivePlayground({ initialCode, language = 'python', lessonTitle }: PlaygroundProps) {
-  // Default code snippets based on lesson/language
-  const defaultSnippet = initialCode || (language === 'sql' 
-    ? `-- SQL Interactive Console\nSELECT id, name, email, department, salary\nFROM employees\nWHERE salary > 65000\nORDER BY salary DESC\nLIMIT 5;`
-    : language === 'javascript' || language === 'js'
-    ? `// JavaScript Interactive Playground\nfunction analyzePerformance(metrics) {\n  const average = metrics.reduce((a, b) => a + b, 0) / metrics.length;\n  console.log("Processed " + metrics.length + " benchmarks");\n  return { average: average.toFixed(2), passed: average > 80 };\n}\n\nconst result = analyzePerformance([85, 92, 78, 96, 88]);\nconsole.log("Result:", JSON.stringify(result, null, 2));`
-    : `# Python Interactive Playground - ${lessonTitle}\ndef demonstrate_concept():\n    data = [10, 25, 30, 45, 50, 65, 80, 95]\n    filtered = [x * 2 for x in data if x % 2 == 0]\n    \n    print(f"Original items: {len(data)}")\n    print(f"Processed results: {filtered}")\n    return sum(filtered)\n\ntotal = demonstrate_concept()\nprint(f"Total calculated: {total}")`
-  );
+  const normLang = language.toLowerCase();
+  const isBash = normLang === 'bash' || normLang === 'sh' || normLang === 'shell' || normLang === 'terminal' || normLang === 'zsh';
+  const isSQL = normLang === 'sql';
+  const isJS = normLang === 'javascript' || normLang === 'js';
 
-  const [code, setCode] = useState(defaultSnippet);
+  // Compute default code snippet based on lesson and language
+  const getDefaultSnippet = () => {
+    if (initialCode) return initialCode;
+    if (isBash) {
+      return `# Linux & DevOps CLI Sandbox - ${lessonTitle}\necho "=== System Diagnostic Pipeline ==="\nuptime\ndf -h | grep -E "^/dev/"\ndocker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"\ngit status -s`;
+    }
+    if (isSQL) {
+      return `-- SQL Interactive Console - ${lessonTitle}\nSELECT id, name, email, department, salary\nFROM employees\nWHERE salary > 65000\nORDER BY salary DESC\nLIMIT 5;`;
+    }
+    if (isJS) {
+      return `// JavaScript Interactive Playground - ${lessonTitle}\nfunction analyzePerformance(metrics) {\n  const average = metrics.reduce((a, b) => a + b, 0) / metrics.length;\n  console.log("Processed " + metrics.length + " benchmarks");\n  return { average: average.toFixed(2), passed: average > 80 };\n}\n\nconst result = analyzePerformance([85, 92, 78, 96, 88]);\nconsole.log("Result:", JSON.stringify(result, null, 2));`;
+    }
+    return `# Python Interactive Playground - ${lessonTitle}\ndef demonstrate_concept():\n    data = [10, 25, 30, 45, 50, 65, 80, 95]\n    filtered = [x * 2 for x in data if x % 2 == 0]\n    \n    print(f"Original items: {len(data)}")\n    print(f"Processed results: {filtered}")\n    return sum(filtered)\n\ntotal = demonstrate_concept()\nprint(f"Total calculated: {total}")`;
+  };
+
+  const [code, setCode] = useState(getDefaultSnippet());
   const [output, setOutput] = useState<string>('');
   const [isRunning, setIsRunning] = useState(false);
   const [copied, setCopied] = useState(false);
   const [activePreset, setActivePreset] = useState<number>(0);
 
+  // Sync state if lesson changes
+  useEffect(() => {
+    const fresh = getDefaultSnippet();
+    setCode(fresh);
+    setOutput('');
+    setActivePreset(0);
+  }, [initialCode, language, lessonTitle]);
+
   // Preset exercises for quick exploration
   const presets = [
     {
       title: "Core Demonstration",
-      code: defaultSnippet
+      code: getDefaultSnippet()
     },
     {
       title: "Edge Case & Error Handling",
-      code: language === 'sql'
+      code: isBash
+        ? `# Test exit codes, permissions & directory checks\nset -e\nif [ ! -d "/var/log/app" ]; then\n  echo "[WARN] Directory /var/log/app missing; initializing fallback..."\n  mkdir -p /tmp/app_fallback\nfi\necho "[SUCCESS] Environment validation passed with exit code 0."`
+        : isSQL
         ? `-- Test NULL handling & Coalesce\nSELECT name, COALESCE(bonus, 0) AS safe_bonus,\n       salary + COALESCE(bonus, 0) AS total_comp\nFROM employees\nWHERE department IS NOT NULL;`
-        : language === 'javascript' || language === 'js'
+        : isJS
         ? `// Test edge cases with null/empty inputs\nfunction safeExecute(data) {\n  if (!data || data.length === 0) {\n    return { success: false, error: "Empty dataset" };\n  }\n  return { success: true, count: data.length };\n}\n\nconsole.log(safeExecute([]));\nconsole.log(safeExecute(["Alice", "Bob"]));`
         : `# Test edge cases and exception handling\ndef safe_divider(numbers, divisor):\n    results = []\n    for n in numbers:\n        try:\n            results.append(round(n / divisor, 2))\n        except ZeroDivisionError:\n            results.append("ERR_ZERO")\n    return results\n\nprint("Result:", safe_divider([100, 50, 20], 4))\nprint("Zero Div:", safe_divider([100, 50], 0))`
     },
     {
       title: "Performance Benchmark",
-      code: language === 'sql'
+      code: isBash
+        ? `# Benchmark shell pipeline and process execution\ntime {\n  seq 1 10000 | grep -E "7$" | awk '{sum += $1} END {print "Filtered Sum:", sum}'\n}`
+        : isSQL
         ? `-- Index Scan vs Sequence Scan Simulation\nEXPLAIN QUERY PLAN\nSELECT * FROM orders\nWHERE customer_id = 4501 AND order_date >= '2025-01-01';`
-        : language === 'javascript' || language === 'js'
+        : isJS
         ? `// Benchmark Execution Time\nconsole.time("Array Transformation");\nconst largeArray = Array.from({ length: 50000 }, (_, i) => i * 2);\nconst sum = largeArray.reduce((acc, val) => acc + val, 0);\nconsole.timeEnd("Array Transformation");\nconsole.log("Calculated Sum:", sum);`
         : `# Benchmark Execution & Memory\nimport time\n\nstart = time.perf_counter()\nnums = [i ** 2 for i in range(50000)]\nelapsed = (time.perf_counter() - start) * 1000\n\nprint(f"Computed {len(nums)} items in {elapsed:.2f} ms")\nprint(f"Sample: {nums[:5]} ... {nums[-5:]}")`
     }
@@ -52,8 +76,7 @@ export default function InteractivePlayground({ initialCode, language = 'python'
 
     setTimeout(() => {
       try {
-        // Safe JavaScript evaluation or mock Python/SQL execution simulation
-        if (language === 'javascript' || language === 'js') {
+        if (isJS) {
           const logs: string[] = [];
           const customConsole = {
             log: (...args: any[]) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
@@ -64,19 +87,48 @@ export default function InteractivePlayground({ initialCode, language = 'python'
           const runner = new Function('console', code);
           runner(customConsole);
           setOutput(logs.length > 0 ? logs.join('\n') : '✓ Code executed successfully (no output logged).');
-        } else if (language === 'sql') {
+        } else if (isSQL) {
           setOutput(`[SQL Query Plan: 0.14ms]\n┌──────────┬──────────────┬───────────────────┬────────────┐\n│ id       │ name         │ department        │ salary     │\n├──────────┼──────────────┼───────────────────┼────────────┤\n│ 1042     │ Sarah Chen   │ Data Platform     │ $125,000   │\n│ 1089     │ Marcus Vance │ Cloud Inf         │ $118,000   │\n│ 1120     │ Priya Patel  │ Machine Learning  │ $134,000   │\n│ 1005     │ Alex Rivera  │ Backend Services  │ $98,000    │\n│ 1074     │ David Kim    │ DevOps            │ $105,000   │\n└──────────┴──────────────┴───────────────────┴────────────┘\n✓ 5 rows returned in 1.84ms.`);
+        } else if (isBash) {
+          const lines = code.split('\n');
+          const terminalLogs: string[] = [];
+          terminalLogs.push('$ /bin/bash execution:');
+
+          lines.forEach(l => {
+            const trimmed = l.trim();
+            if (!trimmed || trimmed.startsWith('#')) return;
+
+            if (trimmed.startsWith('echo ')) {
+              terminalLogs.push(trimmed.substring(5).replace(/^["']|["']$/g, ''));
+            } else if (trimmed === 'uptime') {
+              terminalLogs.push(' 01:15:32 up 14 days, 3:28, 2 users, load average: 0.12, 0.08, 0.05');
+            } else if (trimmed.includes('df -h')) {
+              terminalLogs.push('/dev/sda1        50G   14G   34G  30% /\n/dev/sdb1       200G   42G  148G  23% /data');
+            } else if (trimmed.includes('docker ps')) {
+              terminalLogs.push('NAMES              STATUS          PORTS\napi-service        Up 4 hours      0.0.0.0:8001->8001/tcp\npostgres-cluster   Up 2 days       0.0.0.0:5432->5432/tcp\nredis-cache        Up 2 days       0.0.0.0:6379->6379/tcp');
+            } else if (trimmed.includes('git status')) {
+              terminalLogs.push(' M src/controllers/user.ts\n?? tests/auth.spec.ts\nAll changes tracked in git index.');
+            } else if (trimmed.includes('seq ') || trimmed.includes('awk')) {
+              terminalLogs.push('Filtered Sum: 5000500\nreal    0m0.012s\nuser    0m0.008s\nsys     0m0.004s');
+            } else if (trimmed.includes('mkdir')) {
+              terminalLogs.push('[INFO] Created directory node in virtual filesystem.');
+            } else {
+              terminalLogs.push(`Executed: ${trimmed}`);
+            }
+          });
+
+          terminalLogs.push('\n[Process completed with exit code 0]');
+          setOutput(terminalLogs.join('\n'));
         } else {
           // Python execution simulator
           const lines = code.split('\n');
           const printStatements: string[] = [];
-          
+
           lines.forEach(l => {
             const trimmed = l.trim();
             if (trimmed.startsWith('print(')) {
               const inside = trimmed.substring(6, trimmed.length - 1);
               if (inside.startsWith('f"') || inside.startsWith("f'")) {
-                // simple template simulation
                 printStatements.push(inside.replace(/^f["']|["']$/g, '').replace(/\{.*?\}/g, '→ [evaluated value]'));
               } else {
                 printStatements.push(inside.replace(/^["']|["']$/g, ''));
@@ -91,7 +143,7 @@ export default function InteractivePlayground({ initialCode, language = 'python'
           }
         }
       } catch (err: any) {
-        setOutput(`Traceback (most recent call last):\n  File "main.py", line 1, in <module>\nRuntimeError: ${err.message}`);
+        setOutput(`Traceback / Runtime Error:\n${err.message}`);
       } finally {
         setIsRunning(false);
       }
@@ -103,6 +155,8 @@ export default function InteractivePlayground({ initialCode, language = 'python'
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const editorLanguageLabel = isBash ? 'BASH / SHELL' : isSQL ? 'SQL' : isJS ? 'JAVASCRIPT' : 'PYTHON';
 
   return (
     <div className="space-y-6">
@@ -149,7 +203,7 @@ export default function InteractivePlayground({ initialCode, language = 'python'
                 <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
               </div>
               <span className="text-xs font-mono font-semibold text-slate-300 ml-2 uppercase tracking-wider">
-                {language.toUpperCase()} Editor
+                {editorLanguageLabel} Editor
               </span>
             </div>
 
@@ -164,7 +218,7 @@ export default function InteractivePlayground({ initialCode, language = 'python'
               </button>
               <button
                 onClick={() => {
-                  setCode(defaultSnippet);
+                  setCode(getDefaultSnippet());
                   setOutput('');
                 }}
                 className="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 transition-colors"

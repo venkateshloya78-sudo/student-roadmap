@@ -95,7 +95,12 @@ export default function LessonPage() {
   // Extract initial code snippet from content blocks if available
   const codeBlock = lesson?.content_blocks.find(b => b.type === 'code');
   const codeSnippet = codeBlock ? (Array.isArray(codeBlock.content) ? codeBlock.content.join('\n') : codeBlock.content) : undefined;
-  const codeLang = codeBlock?.language || (slug?.includes('sql') ? 'sql' : slug?.includes('web') ? 'javascript' : 'python');
+  const codeLang = codeBlock?.language || (
+    slug?.includes('sql') ? 'sql' :
+    slug?.includes('linux') || slug?.includes('devops') || slug?.includes('git') || slug?.includes('cloud') ? 'bash' :
+    slug?.includes('web') || slug?.includes('mobile') ? 'javascript' :
+    'python'
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
