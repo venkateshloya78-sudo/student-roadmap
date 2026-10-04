@@ -35,6 +35,8 @@ import AppShell from '../components/Layout/AppShell'
 import { ChatMarkdown } from '../components/Assistant/ChatMarkdown'
 import { speechService } from '../lib/speechService'
 import api from '../lib/api'
+import { useVoiceToText } from '../hooks/useVoiceToText'
+import { useLanguage } from '../i18n/LanguageContext'
 
 interface Message {
   id: string
@@ -87,8 +89,33 @@ export default function Assistant() {
   )
 
   // ─── Multimedia States (Mic, Camera & Images) ────────────────────────────
-  const [isListening, setIsListening] = useState(false)
-  const [speechError, setSpeechError] = useState<string | null>(null)
+  const { currentLanguage } = useLanguage()
+
+  const {
+    isListening,
+    isProcessing: isVoiceProcessing,
+    speechError,
+    toggleListening,
+    stopListening
+  } = useVoiceToText({
+    lang: currentLanguage,
+    clearOnStart: true,
+    onTranscriptChange: (transcript) => {
+      setInput(transcript)
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto'
+        textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`
+      }
+    },
+    onFinalTranscript: (finalTranscript) => {
+      setInput(finalTranscript)
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto'
+        textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`
+      }
+    }
+  })
+
   const [attachedImage, setAttachedImage] = useState<string | null>(null)
   const [attachedImageName, setAttachedImageName] = useState<string | null>(null)
   const [showCameraModal, setShowCameraModal] = useState(false)
@@ -98,7 +125,6 @@ export default function Assistant() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-  const recognitionRef = useRef<any>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -135,9 +161,6 @@ export default function Assistant() {
       speechService.stop()
       if (cameraStream) {
         cameraStream.getTracks().forEach(track => track.stop())
-      }
-      if (recognitionRef.current) {
-        try { recognitionRef.current.stop() } catch {}
       }
     }
   }, [cameraStream])
@@ -220,76 +243,7 @@ export default function Assistant() {
     localStorage.setItem('srm_autospeak', String(next))
   }
 
-  // ─── Speech Recognition (Mic) ─────────────────────────────────────────────
-  const toggleListening = () => {
-    if (isListening) {
-      stopListening()
-      return
-    }
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechRecognition) {
-      setSpeechError("Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.")
-      setTimeout(() => setSpeechError(null), 4000)
-      return
-    }
-
-    try {
-      const recognition = new SpeechRecognition()
-      recognition.continuous = true
-      recognition.interimResults = true
-      recognition.lang = 'en-US'
-
-      recognition.onstart = () => {
-        setIsListening(true)
-        setSpeechError(null)
-      }
-
-      recognition.onresult = (event: any) => {
-        let transcript = ''
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          transcript += event.results[i][0].transcript
-        }
-        if (transcript) {
-          setInput(prev => (prev ? `${prev.trim()} ${transcript}` : transcript))
-          if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto'
-            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`
-          }
-        }
-      }
-
-      recognition.onerror = (event: any) => {
-        console.warn("Speech recognition error:", event.error)
-        setIsListening(false)
-        if (event.error !== 'no-speech') {
-          setSpeechError(`Microphone notice: ${event.error}. Please grant permission.`)
-          setTimeout(() => setSpeechError(null), 4000)
-        }
-      }
-
-      recognition.onend = () => {
-        setIsListening(false)
-      }
-
-      recognitionRef.current = recognition
-      recognition.start()
-    } catch (err: any) {
-      console.error("Speech recognition initialization error:", err)
-      setIsListening(false)
-      setSpeechError("Microphone initialization failed. Please check device permissions.")
-      setTimeout(() => setSpeechError(null), 4000)
-    }
-  }
-
-  const stopListening = () => {
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.stop()
-      } catch {}
-      setIsListening(false)
-    }
-  }
 
   // ─── Camera Capture ───────────────────────────────────────────────────────
   const openCamera = async () => {
@@ -968,12 +922,21 @@ export default function Assistant() {
               <button
                 type="button"
                 onClick={toggleListening}
+                disabled={isVoiceProcessing}
                 className={`p-2 rounded-xl transition-all flex-shrink-0 ${
                   isListening
                     ? 'bg-rose-600 text-white animate-pulse shadow-md shadow-rose-200'
+                    : isVoiceProcessing
+                    ? 'opacity-60 cursor-not-allowed text-slate-400'
                     : 'text-slate-500 hover:text-indigo-600 hover:bg-slate-200/70'
                 }`}
-                title={isListening ? "Stop Microphone" : "Microphone: Speak prompt aloud"}
+                title={
+                  isListening
+                    ? "Stop recording (Insert final speech text)"
+                    : isVoiceProcessing
+                    ? "Initializing microphone..."
+                    : "Microphone: Speak prompt aloud"
+                }
               >
                 {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
               </button>

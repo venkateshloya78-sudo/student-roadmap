@@ -14,6 +14,8 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { ChatMarkdown } from './ChatMarkdown'
+import { useVoiceToText } from '../../hooks/useVoiceToText'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 interface FloatingMessage {
   id: string
@@ -35,12 +37,28 @@ export const FloatingAssistantWidget: React.FC = () => {
   const [input, setInput] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
   const [speakingId, setSpeakingId] = useState<string | null>(null)
-  const [isListening, setIsListening] = useState(false)
   const [attachedImage, setAttachedImage] = useState<string | null>(null)
+
+  const { currentLanguage } = useLanguage()
+
+  const {
+    isListening,
+    isProcessing: isVoiceProcessing,
+    toggleListening,
+    stopListening
+  } = useVoiceToText({
+    lang: currentLanguage,
+    clearOnStart: true,
+    onTranscriptChange: (transcript) => {
+      setInput(transcript)
+    },
+    onFinalTranscript: (finalTranscript) => {
+      setInput(finalTranscript)
+    }
+  })
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const recognitionRef = useRef<any>(null)
   const location = useLocation()
 
   // Hide the floating bubble if the user is already on the full /assistant page
@@ -54,13 +72,10 @@ export const FloatingAssistantWidget: React.FC = () => {
     }
   }, [messages, isOpen])
 
-  // Cleanup audio & mic on unmount
+  // Cleanup audio on unmount
   useEffect(() => {
     return () => {
       if ('speechSynthesis' in window) window.speechSynthesis.cancel()
-      if (recognitionRef.current) {
-        try { recognitionRef.current.stop() } catch {}
-      }
     }
   }, [])
 
@@ -82,47 +97,7 @@ export const FloatingAssistantWidget: React.FC = () => {
     window.speechSynthesis.speak(utterance)
   }
 
-  // Speech Recognition (Mic)
-  const toggleListening = () => {
-    if (isListening) {
-      if (recognitionRef.current) {
-        try { recognitionRef.current.stop() } catch {}
-      }
-      setIsListening(false)
-      return
-    }
 
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechRecognition) {
-      alert("Speech recognition is not supported in this browser.")
-      return
-    }
-
-    try {
-      const recognition = new SpeechRecognition()
-      recognition.continuous = true
-      recognition.interimResults = true
-      recognition.lang = 'en-US'
-
-      recognition.onstart = () => setIsListening(true)
-      recognition.onresult = (event: any) => {
-        let transcript = ''
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          transcript += event.results[i][0].transcript
-        }
-        if (transcript) {
-          setInput(prev => (prev ? `${prev.trim()} ${transcript}` : transcript))
-        }
-      }
-      recognition.onerror = () => setIsListening(false)
-      recognition.onend = () => setIsListening(false)
-
-      recognitionRef.current = recognition
-      recognition.start()
-    } catch {
-      setIsListening(false)
-    }
-  }
 
   // File select
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,8 +114,7 @@ export const FloatingAssistantWidget: React.FC = () => {
     if ((!text && !attachedImage) || isStreaming) return
 
     if (isListening) {
-      if (recognitionRef.current) try { recognitionRef.current.stop() } catch {}
-      setIsListening(false)
+      stopListening()
     }
 
     const promptText = text || 'Please analyze this attached image.'
@@ -395,8 +369,15 @@ export const FloatingAssistantWidget: React.FC = () => {
               <button
                 type="button"
                 onClick={toggleListening}
-                className={`p-1 transition-colors ${isListening ? 'text-rose-600 animate-pulse' : 'text-slate-400 hover:text-indigo-600'}`}
-                title="Mic voice dictation"
+                disabled={isVoiceProcessing}
+                className={`p-1 transition-colors ${
+                  isListening
+                    ? 'text-rose-600 animate-pulse'
+                    : isVoiceProcessing
+                    ? 'opacity-50 cursor-not-allowed text-slate-300'
+                    : 'text-slate-400 hover:text-indigo-600'
+                }`}
+                title={isListening ? "Stop listening (Done)" : isVoiceProcessing ? "Initializing mic..." : "Mic voice dictation"}
               >
                 {isListening ? <MicOff size={15} /> : <Mic size={15} />}
               </button>
