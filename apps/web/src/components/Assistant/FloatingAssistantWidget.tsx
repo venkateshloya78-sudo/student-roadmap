@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { ChatMarkdown } from './ChatMarkdown'
+import { VoiceAnswer } from '../Common/VoiceAnswer'
 import { useVoiceToText } from '../../hooks/useVoiceToText'
 import { useLanguage } from '../../i18n/LanguageContext'
 
@@ -277,6 +278,11 @@ export const FloatingAssistantWidget: React.FC = () => {
                       className="max-h-36 rounded-lg object-contain border border-indigo-200"
                     />
                   )}
+                  {m.role === 'assistant' && (
+                    <div className="text-[10px] font-bold text-indigo-700 ml-0.5">
+                      AI Answer
+                    </div>
+                  )}
                   <div
                     className={`px-3 py-2 rounded-xl text-xs leading-relaxed ${
                       m.role === 'user'
@@ -298,26 +304,13 @@ export const FloatingAssistantWidget: React.FC = () => {
                   </div>
 
                   {m.role === 'assistant' && m.content && (
-                    <div className="flex items-center gap-1.5 px-1 text-[11px] text-slate-400">
-                      <button
-                        onClick={() => handleSpeak(m.id, m.content)}
-                        className={`inline-flex items-center gap-1 hover:text-indigo-600 transition-colors ${
-                          speakingId === m.id ? 'text-indigo-600 font-bold' : ''
-                        }`}
-                        title="Read aloud"
-                      >
-                        {speakingId === m.id ? (
-                          <>
-                            <VolumeX size={12} className="animate-pulse" />
-                            <span>Stop</span>
-                          </>
-                        ) : (
-                          <>
-                            <Volume2 size={12} />
-                            <span>Loudspeaker 🔊</span>
-                          </>
-                        )}
-                      </button>
+                    <div className="pt-0.5">
+                      <VoiceAnswer
+                        id={m.id}
+                        text={m.content}
+                        compact
+                        autoPlay={m.id === messages[messages.length - 1]?.id}
+                      />
                     </div>
                   )}
                 </div>

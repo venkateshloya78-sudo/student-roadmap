@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Bot, Loader2, ChevronDown, Check, Lightbulb, Zap, HelpCircle } from 'lucide-react';
 import api from '../../lib/api';
+import { VoiceAnswer } from '../Common/VoiceAnswer';
 
 interface AIDeepDiveProps {
   lessonTitle: string;
@@ -119,8 +120,15 @@ export default function AIDeepDiveBar({ lessonTitle, courseTitle }: AIDeepDivePr
               Generating comprehensive study response for {lessonTitle}...
             </div>
           ) : (
-            <div className="text-slate-800 text-sm leading-relaxed whitespace-pre-wrap font-sans">
-              {response}
+            <div className="space-y-4">
+              <div className="text-slate-800 text-sm leading-relaxed whitespace-pre-wrap font-sans">
+                {response}
+              </div>
+              <VoiceAnswer
+                id={`deepdive-${activePrompt}-${lessonTitle}`}
+                text={response || ''}
+                compact
+              />
             </div>
           )}
         </div>

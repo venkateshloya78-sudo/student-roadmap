@@ -6,6 +6,7 @@ import api from '../lib/api';
 import { QuizQuestionOut, QuizResultOut, CourseDetailOut } from '../types/course';
 import { CheckCircle2, XCircle, ArrowRight, RefreshCcw } from 'lucide-react';
 import BreadcrumbNav from '../components/Course/BreadcrumbNav';
+import { VoiceAnswer } from '../components/Common/VoiceAnswer';
 
 export default function ModuleQuiz() {
   const { slug, moduleNum } = useParams<{ slug: string, moduleNum: string }>();
@@ -170,9 +171,21 @@ export default function ModuleQuiz() {
                       )}
 
                       {qr.explanation && (
-                        <div className="mt-4 p-4 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 flex items-start gap-2">
-                          <span className="text-xl">💡</span>
-                          <p>{qr.explanation}</p>
+                        <div className="mt-4 p-4 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 space-y-3 shadow-2xs">
+                          <div className="flex items-start gap-2.5">
+                            <span className="text-xl">💡</span>
+                            <div className="flex-1">
+                              <p className="font-bold text-xs text-indigo-700 uppercase tracking-wider mb-1">
+                                AI Explanation
+                              </p>
+                              <p className="leading-relaxed text-slate-800">{qr.explanation}</p>
+                            </div>
+                          </div>
+                          <VoiceAnswer
+                            id={`quiz-exp-${qr.question_id}`}
+                            text={qr.explanation}
+                            compact
+                          />
                         </div>
                       )}
                     </div>

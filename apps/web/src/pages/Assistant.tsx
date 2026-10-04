@@ -34,8 +34,10 @@ import {
 import AppShell from '../components/Layout/AppShell'
 import { ChatMarkdown } from '../components/Assistant/ChatMarkdown'
 import { speechService } from '../lib/speechService'
+import { VoiceAnswer } from '../components/Common/VoiceAnswer'
 import api from '../lib/api'
 import { useVoiceToText } from '../hooks/useVoiceToText'
+import { useAutoVoice } from '../hooks/useAutoVoice'
 import { useLanguage } from '../i18n/LanguageContext'
 
 interface Message {
@@ -84,9 +86,7 @@ export default function Assistant() {
     total: number
     text: string
   } | null>(null)
-  const [autoSpeakEnabled, setAutoSpeakEnabled] = useState<boolean>(
-    () => localStorage.getItem('srm_autospeak') === 'true'
-  )
+  const { autoVoice: autoSpeakEnabled, toggleAutoVoice: toggleAutoSpeak } = useAutoVoice()
 
   // ─── Multimedia States (Mic, Camera & Images) ────────────────────────────
   const { currentLanguage } = useLanguage()
@@ -189,7 +189,7 @@ export default function Assistant() {
       onStart: () => {
         setIsSpeakingPaused(false)
       },
-      onSentenceChange: (current, total, sentenceText) => {
+      onSentenceChange: (current: number, total: number, sentenceText: string) => {
         setCurrentSentenceProgress({ current, total, text: sentenceText })
       },
       onEnd: () => {
@@ -235,12 +235,6 @@ export default function Assistant() {
         handleToggleSpeak(speakingId, currentMsg.content)
       }
     }
-  }
-
-  const toggleAutoSpeak = () => {
-    const next = !autoSpeakEnabled
-    setAutoSpeakEnabled(next)
-    localStorage.setItem('srm_autospeak', String(next))
   }
 
 
@@ -640,80 +634,66 @@ export default function Assistant() {
                     )}
 
                     {/* Message Bubble */}
-                    <div
-                      className={`px-4 py-3 rounded-2xl ${
-                        m.role === 'user'
-                          ? 'bg-indigo-600 text-white rounded-br-none shadow-sm'
-                          : 'bg-white border border-slate-200 text-slate-800 rounded-bl-none shadow-sm'
-                      }`}
-                    >
-                      {m.role === 'user' ? (
-                        <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.content}</p>
-                      ) : m.content ? (
-                        <ChatMarkdown content={m.content} />
-                      ) : (
-                        <div className="flex items-center gap-1.5 py-1 text-slate-400">
-                          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" />
-                          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce [animation-delay:0.2s]" />
-                          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce [animation-delay:0.4s]" />
+                    <div className="space-y-1">
+                      {m.role === 'assistant' && (
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-700 ml-1 mb-0.5">
+                          <Bot className="w-3.5 h-3.5 text-indigo-600" />
+                          <span>AI Answer</span>
                         </div>
                       )}
+                      <div
+                        className={`px-4 py-3 rounded-2xl ${
+                          m.role === 'user'
+                            ? 'bg-indigo-600 text-white rounded-br-none shadow-sm'
+                            : 'bg-white border border-slate-200 text-slate-800 rounded-bl-none shadow-sm'
+                        }`}
+                      >
+                        {m.role === 'user' ? (
+                          <p className="whitespace-pre-wrap text-sm leading-relaxed">{m.content}</p>
+                        ) : m.content ? (
+                          <ChatMarkdown content={m.content} />
+                        ) : (
+                          <div className="flex items-center gap-1.5 py-1 text-slate-400">
+                            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" />
+                            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce [animation-delay:0.2s]" />
+                            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce [animation-delay:0.4s]" />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    {/* Footer metadata & Action Buttons for Assistant */}
+                    {/* AI Voice Answer Controls & Footer Metadata */}
                     {m.role === 'assistant' && m.content && (
-                      <div className="flex flex-wrap items-center gap-3 mt-2 px-1 text-slate-400 text-xs">
-                        <span>{m.timestamp}</span>
-                        <span>•</span>
+                      <div className="mt-2 space-y-2">
+                        <VoiceAnswer
+                          id={m.id}
+                          text={m.content}
+                          autoPlay={m.id === messages[messages.length - 1]?.id}
+                        />
 
-                        {/* Copy Button */}
-                        <button
-                          onClick={() => handleCopyMessage(m.id, m.content)}
-                          className="hover:text-slate-700 flex items-center gap-1 transition-colors"
-                          title="Copy response"
-                        >
-                          {copiedId === m.id ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-500" />
-                              <span className="text-emerald-600 font-medium">Copied</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5" />
-                              <span>Copy</span>
-                            </>
-                          )}
-                        </button>
+                        <div className="flex items-center gap-3 px-1 text-slate-400 text-xs">
+                          <span>{m.timestamp}</span>
+                          <span>•</span>
 
-                        <span>•</span>
-
-                        {/* 📢 PROMINENT VOICE ASSISTANT SPEAKER BUTTON */}
-                        <button
-                          onClick={() => handleToggleSpeak(m.id, m.content)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-bold text-xs transition-all shadow-2xs border ${
-                            speakingId === m.id
-                              ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/20 animate-pulse'
-                              : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200'
-                          }`}
-                          title="Click to have AI Voice Assistant read all the matter aloud"
-                        >
-                          {speakingId === m.id ? (
-                            <>
-                              <VolumeX className="w-4 h-4 text-white" />
-                              <span>Stop Voice</span>
-                              {currentSentenceProgress && (
-                                <span className="bg-white/20 px-1.5 py-0.2 rounded text-[10px] ml-1">
-                                  {currentSentenceProgress.current}/{currentSentenceProgress.total}
-                                </span>
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              <Volume2 className="w-4 h-4 text-indigo-600" />
-                              <span>🔊 Read All Matter Aloud</span>
-                            </>
-                          )}
-                        </button>
+                          {/* Copy Button */}
+                          <button
+                            onClick={() => handleCopyMessage(m.id, m.content)}
+                            className="hover:text-slate-700 flex items-center gap-1 transition-colors"
+                            title="Copy response"
+                          >
+                            {copiedId === m.id ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                <span className="text-emerald-600 font-medium">Copied</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5" />
+                                <span>Copy text</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>

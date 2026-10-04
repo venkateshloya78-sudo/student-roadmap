@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
 import { useLanguage } from '../i18n/LanguageContext'
+import { useAutoVoice } from '../hooks/useAutoVoice'
 import LanguageSelector from '../components/Common/LanguageSelector'
 
 const degrees = ['btech', 'bsc', 'bcom', 'ba', 'mtech', 'msc', 'other']
@@ -13,6 +14,7 @@ const hours = [5, 10, 15, 20, 25, 30]
 export default function Profile() {
   const qc = useQueryClient()
   const { t } = useLanguage()
+  const { autoVoice, toggleAutoVoice } = useAutoVoice()
   const [saved, setSaved] = useState(false)
   const [form, setForm] = useState<Record<string, any>>({})
 
@@ -139,6 +141,43 @@ export default function Profile() {
               <span>🌐</span> {t('profile.languageSettings', 'Language & Regional Settings')}
             </h2>
             <LanguageSelector variant="profile" />
+          </div>
+
+          {/* AI Voice & Audio Accessibility Settings */}
+          <div className="card p-6">
+            <h2 className="text-sm font-semibold text-slate-900 mb-5 flex items-center gap-2">
+              <span>🔊</span> Voice & Audio Accessibility Settings
+            </h2>
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+              <div className="pr-4">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-bold text-slate-900">Auto Voice</p>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    autoVoice ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-600'
+                  }`}>
+                    {autoVoice ? 'Enabled' : 'Disabled'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 mt-1 max-w-xl leading-relaxed">
+                  Automatically speaks every new AI answer out loud using natural speech synthesis. When disabled, you can manually click the <strong>🔊 Listen</strong> button on any response.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={toggleAutoVoice}
+                aria-pressed={autoVoice}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  autoVoice ? 'bg-indigo-600' : 'bg-slate-300'
+                }`}
+                title="Toggle Auto Voice"
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    autoVoice ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Goal */}

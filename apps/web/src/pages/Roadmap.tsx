@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '../lib/api'
 import AppShell from '../components/Layout/AppShell'
 import { getRoadmapStageMeta, RoadmapStageMeta } from '../utils/roadmapStageHelpers'
+import { VoiceAnswer } from '../components/Common/VoiceAnswer'
 import { 
   CheckCircle2, 
   Circle, 
@@ -225,6 +226,15 @@ function RoadmapStageCard({
               {meta.prerequisites}
             </p>
           </div>
+        </div>
+
+        {/* Voice Audio Guidance */}
+        <div className="mb-4">
+          <VoiceAnswer
+            id={`roadmap-stage-${item.id}`}
+            text={`Stage ${stageNumber}: ${item.title}. Why required: ${meta.whyRequired}. Prerequisites: ${meta.prerequisites}`}
+            compact
+          />
         </div>
 
         {/* Next Step & Quick Links Footer */}

@@ -6,6 +6,7 @@ import AppShell from '../components/Layout/AppShell'
 import { getCareerProfile, CareerProfile } from '../data/careerProfiles'
 import { getRecommendedCoursesForCareer } from '../data/careerCoursesMap'
 import { useLanguage } from '../i18n/LanguageContext'
+import { VoiceAnswer } from '../components/Common/VoiceAnswer'
 import { 
   Briefcase, 
   Building2, 
@@ -140,9 +141,18 @@ export default function CareerDetail() {
                     {profile.tagline}
                   </p>
                 )}
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
                   {careerOverview}
                 </p>
+
+                {/* AI Audio Summary */}
+                <div className="bg-slate-900/60 rounded-xl p-1 border border-white/10 max-w-lg">
+                  <VoiceAnswer
+                    id={`career-overview-${slug}`}
+                    text={`${careerTitle}. ${profile?.tagline || ''}. ${careerOverview}`}
+                    compact
+                  />
+                </div>
               </div>
 
               {/* Quick Readiness or Action Card */}
