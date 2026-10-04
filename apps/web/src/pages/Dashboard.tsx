@@ -148,18 +148,18 @@ export default function Dashboard() {
           <div className="card p-6">
             <div className="text-2xl mb-3">📚</div>
             <h3 className="font-semibold text-slate-900 mb-1">
-              {inProgressCourse ? t('courses.continueCourse', 'Resume learning') : t('courses.startCourse', 'Start a course')}
+              {inProgressCourse ? t('courses.continueCourse', 'Resume learning') : t('courses.startCourse', 'Start Learning')}
             </h3>
             <p className="text-sm text-slate-500 mb-4">
               {inProgressCourse
                 ? `${inProgressCourse.title} · ${Math.round(inProgressCourse.progress_pct)}% done`
-                : '4 courses available — Python, SQL, Web Dev, Data Analytics.'}
+                : `${courses?.length || 12} courses available — Python, DSA, SQL, Web Dev, Cloud, DevOps, Linux, Security & more.`}
             </p>
             <Link
               to={inProgressCourse ? `/courses/${inProgressCourse.slug}` : '/courses'}
               className="btn-primary text-sm"
             >
-              {inProgressCourse ? `${t('courses.continueCourse', 'Resume')} →` : `${t('dashboard.exploreCourses', 'Browse courses')} →`}
+              {inProgressCourse ? `${t('courses.continueCourse', 'Resume')} →` : `${t('dashboard.exploreCourses', 'Browse Courses')} →`}
             </Link>
           </div>
 
