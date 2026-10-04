@@ -13,9 +13,8 @@ import InterviewVault from '../components/Course/InterviewVault';
 import LessonFlashcards from '../components/Course/LessonFlashcards';
 import ExportNotesModal from '../components/Course/ExportNotesModal';
 import AIDeepDiveBar from '../components/Course/AIDeepDiveBar';
-import LessonVoicePlayer from '../components/Course/LessonVoicePlayer';
 import CourseVideoPlayer from '../components/Course/CourseVideoPlayer';
-import { Menu, BookOpen, Terminal, Building2, Award, Sparkles, Download, Bookmark, Volume2, Video } from 'lucide-react';
+import { Menu, BookOpen, Terminal, Building2, Award, Sparkles, Download, Bookmark, Video } from 'lucide-react';
 import { FloatingAssistantWidget } from '../components/Assistant/FloatingAssistantWidget';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from '../components/Common/LanguageSelector';
@@ -231,17 +230,6 @@ export default function LessonPage() {
                   </div>
                 </div>
 
-                {/* Voice Assistant Loudspeaker Player */}
-                <div className="mb-6">
-                  <LessonVoicePlayer
-                    lessonTitle={lesson.title}
-                    courseTitle={course.title}
-                    moduleTitle={moduleInfo?.title}
-                    lessonNumber={lesson.lesson_number}
-                    estimatedMinutes={lesson.estimated_minutes}
-                    blocks={lesson.content_blocks}
-                  />
-                </div>
 
                 {/* Multi-Tab Navigation Bar */}
                 <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-8 border-b border-slate-200 no-scrollbar">
