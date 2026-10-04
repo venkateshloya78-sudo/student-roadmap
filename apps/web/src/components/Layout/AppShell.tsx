@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { FloatingAssistantWidget } from '../Assistant/FloatingAssistantWidget'
 import { useLanguage } from '../../i18n/LanguageContext'
 import LanguageSelector from '../Common/LanguageSelector'
+import Logo from '../Common/Logo'
 import {
   LayoutDashboard,
   Compass,
@@ -65,22 +66,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <aside className="hidden md:flex flex-col w-64 bg-white/95 backdrop-blur-xl border-r border-slate-200/80 fixed inset-y-0 left-0 z-30 shadow-[1px_0_20px_rgba(0,0,0,0.02)]">
         {/* Brand Header */}
         <div className="h-18 px-5 border-b border-slate-100 flex items-center justify-between">
-          <Link to="/dashboard" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-600 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-500/25 ring-2 ring-indigo-400/20 group-hover:scale-105 transition-all duration-300">
-              <GraduationCap className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 text-base tracking-tight group-hover:text-indigo-600 transition-colors">
-                  Student<span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">Roadmap</span>
-                </span>
-                <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60 shadow-xs">
-                  AI
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 font-medium">Career Intelligence</p>
-            </div>
-          </Link>
+          <Logo href="/dashboard" size="md" showTagline={true} />
         </div>
 
         {/* Navigation Items */}
@@ -173,14 +159,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Topbar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 h-15 flex items-center px-4 gap-2 shadow-xs">
-        <Link to="/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shadow-sm">
-            <GraduationCap className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-extrabold text-slate-900 text-sm">
-            Student<span className="text-gradient">Roadmap</span>
-          </span>
-        </Link>
+        <Logo href="/dashboard" size="xs" showTagline={false} />
         <div className="flex-1" />
         <LanguageSelector variant="compact" />
         <button

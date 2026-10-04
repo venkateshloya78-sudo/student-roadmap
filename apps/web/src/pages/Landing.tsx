@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Logo from '../components/Common/Logo'
 import {
   Sparkles,
   ArrowRight,
@@ -113,22 +114,7 @@ export default function Landing() {
       {/* Sleek Floating Glass Nav */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/60 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-600 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-500/25 ring-2 ring-indigo-400/20 group-hover:scale-105 transition-all duration-300">
-              <GraduationCap className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight">
-                  Student<span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">Roadmap</span>
-                </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60 shadow-xs">
-                  AI
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 font-medium hidden sm:block">Career Intelligence Platform</p>
-            </div>
-          </Link>
+          <Logo href="/" size="md" showTagline={true} />
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <a href="#features" className="hover:text-indigo-600 transition-colors">Features</a>
@@ -502,15 +488,7 @@ export default function Landing() {
       <footer className="py-12 border-t border-slate-200/80 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-                <GraduationCap className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-extrabold text-slate-900 text-sm">Student<span className="text-gradient">Roadmap</span></span>
-                <p className="text-[11px] text-slate-400">Evidence-grounded career planning</p>
-              </div>
-            </div>
+            <Logo href="/" size="sm" showTagline={true} />
 
             <div className="flex items-center gap-6 text-xs text-slate-500 font-medium">
               <Link to="/courses" className="hover:text-indigo-600 transition-colors">Courses</Link>

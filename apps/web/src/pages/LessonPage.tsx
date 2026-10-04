@@ -18,6 +18,7 @@ import { Menu, BookOpen, Terminal, Building2, Award, Sparkles, Download, Bookmar
 import { FloatingAssistantWidget } from '../components/Assistant/FloatingAssistantWidget';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from '../components/Common/LanguageSelector';
+import Logo from '../components/Common/Logo';
 
 type TabType = 'notes' | 'video' | 'playground' | 'casestudies' | 'interview' | 'flashcards' | 'export';
 
@@ -112,6 +113,9 @@ export default function LessonPage() {
           >
             <Menu size={20} />
           </button>
+          <div className="hidden lg:flex items-center mr-1">
+            <Logo href="/dashboard" size="xs" showTagline={false} />
+          </div>
           <div className="hidden sm:block">
             <BreadcrumbNav items={[
               { label: 'Home', href: '/' },

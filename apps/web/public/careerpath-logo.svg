@@ -1,0 +1,59 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Top-Left Petal: Blue to Indigo Gradient -->
+    <linearGradient id="cp-grad-tl" x1="6" y1="6" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+
+    <!-- Top-Right Petal: Teal to Emerald Gradient -->
+    <linearGradient id="cp-grad-tr" x1="42" y1="6" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+
+    <!-- Bottom-Right Petal: Purple to Pink Gradient -->
+    <linearGradient id="cp-grad-br" x1="42" y1="42" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+
+    <!-- Bottom-Left Petal: Cyan to Blue Gradient -->
+    <linearGradient id="cp-grad-bl" x1="6" y1="42" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Top-Left Petal -->
+  <path
+    d="M23 7 C14.5 7 8 13.5 8 22 C8 24.5 9 24.5 12 24.5 C18 24.5 23 19.5 23 13.5 Z"
+    fill="url(#cp-grad-tl)"
+    opacity="0.95"
+  />
+
+  <!-- Top-Right Petal -->
+  <path
+    d="M41 23 C41 14.5 34.5 8 26 8 C23.5 8 23.5 9 23.5 12 C23.5 18 28.5 23 34.5 23 Z"
+    fill="url(#cp-grad-tr)"
+    opacity="0.95"
+  />
+
+  <!-- Bottom-Right Petal -->
+  <path
+    d="M25 41 C33.5 41 40 34.5 40 26 C40 23.5 39 23.5 36 23.5 C30 23.5 25 28.5 25 34.5 Z"
+    fill="url(#cp-grad-br)"
+    opacity="0.95"
+  />
+
+  <!-- Bottom-Left Petal -->
+  <path
+    d="M7 25 C7 33.5 13.5 40 22 40 C24.5 40 24.5 39 24.5 36 C24.5 30 19.5 25 13.5 25 Z"
+    fill="url(#cp-grad-bl)"
+    opacity="0.95"
+  />
+
+  <!-- Modern Center Spark -->
+  <circle cx="24" cy="24" r="4.5" fill="#FFFFFF" fill-opacity="0.95" />
+  <circle cx="24" cy="24" r="2.2" fill="#4F46E5" />
+</svg>

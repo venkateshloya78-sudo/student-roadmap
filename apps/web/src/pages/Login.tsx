@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../lib/api'
 import { setToken } from '../lib/auth'
+import Logo from '../components/Common/Logo'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -32,12 +33,7 @@ export default function Login() {
     <div className="min-h-screen bg-slate-50 flex">
       {/* Left panel */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-gradient-to-br from-indigo-600 to-purple-700 p-12 text-white">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-            <span className="text-white text-sm font-bold">SR</span>
-          </div>
-          <span className="font-bold">StudentRoadmap</span>
-        </Link>
+        <Logo href="/" size="lg" variant="dark" showTagline={true} />
         <div>
           <blockquote className="text-2xl font-medium leading-relaxed mb-6">
             "Stop guessing what to learn next. Let the data decide."
@@ -61,11 +57,8 @@ export default function Login() {
       {/* Right panel */}
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-sm font-bold">SR</span>
-            </div>
-            <span className="font-bold text-slate-900">StudentRoadmap</span>
+          <div className="lg:hidden mb-8">
+            <Logo href="/" size="md" showTagline={false} />
           </div>
 
           <h1 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h1>
