@@ -205,7 +205,8 @@ async def get_course_detail(
             estimated_hours=m.estimated_hours,
             lessons=lessons_out,
             quiz_questions_count=len(m.quizzes),
-            is_completed=module_completed if lessons_out else False
+            is_completed=module_completed if lessons_out else False,
+            level=getattr(m, "level", "beginner") or "beginner"
         ))
 
     c_out = CourseDetailOut(
@@ -290,7 +291,8 @@ async def get_module(
         estimated_hours=m.estimated_hours,
         lessons=lessons_out,
         quiz_questions_count=len(m.quizzes),
-        is_completed=module_completed if lessons_out else False
+        is_completed=module_completed if lessons_out else False,
+        level=getattr(m, "level", "beginner") or "beginner"
     )
 
 

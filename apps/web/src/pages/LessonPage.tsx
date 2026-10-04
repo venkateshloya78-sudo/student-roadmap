@@ -191,10 +191,25 @@ export default function LessonPage() {
               <>
                 {/* Lesson Header Banner */}
                 <div className="mb-6">
-                  <div className="flex items-center gap-2 text-sm font-bold text-indigo-600 uppercase tracking-wider mb-2">
-                    <span>Module {moduleInfo?.module_number || 1}</span>
-                    <span>•</span>
-                    <span>Lesson {lesson.lesson_number}</span>
+                  <div className="flex items-center gap-2 flex-wrap mb-2">
+                    <button
+                      onClick={() => navigate(`/courses/${slug}`)}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-indigo-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs mr-2 transition-colors"
+                    >
+                      ← Back to Course
+                    </button>
+                    <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
+                      (moduleInfo?.level || '').toLowerCase() === 'advanced'
+                        ? 'bg-purple-100 text-purple-800'
+                        : (moduleInfo?.level || '').toLowerCase() === 'intermediate'
+                        ? 'bg-indigo-100 text-indigo-800'
+                        : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {(moduleInfo?.level || '').toLowerCase() === 'advanced' ? '🚀 Advanced Level' : (moduleInfo?.level || '').toLowerCase() === 'intermediate' ? '🌿 Intermediate Level' : '🌱 Beginner Level'}
+                    </span>
+                    <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
+                      Module {moduleInfo?.module_number || 1} • Lesson {lesson.lesson_number}
+                    </span>
                   </div>
                   <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3 tracking-tight">
                     {lesson.title}

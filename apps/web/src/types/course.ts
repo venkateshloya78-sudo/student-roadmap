@@ -33,7 +33,7 @@ export interface ContentBlock {
   output?: string;
 }
 export interface LessonOut { id: string; module_id: string; course_id: string; lesson_number: number; title: string; content_blocks: ContentBlock[]; estimated_minutes: number; is_completed: boolean; prev_lesson_id?: string; next_lesson_id?: string; prev_lesson_title?: string; next_lesson_title?: string }
-export interface ModuleOut { id: string; course_id: string; module_number: number; title: string; description: string; estimated_hours: number; lessons: LessonSummary[]; quiz_questions_count: number; is_completed: boolean }
+export interface ModuleOut { id: string; course_id: string; module_number: number; title: string; description: string; estimated_hours: number; lessons: LessonSummary[]; quiz_questions_count: number; is_completed: boolean; level?: 'beginner' | 'intermediate' | 'advanced' | string }
 export interface LessonSummary { id: string; lesson_number: number; title: string; estimated_minutes: number; is_completed: boolean }
 export interface CourseOut { id: string; slug: string; title: string; description: string; difficulty: string; duration_weeks: number; num_modules: number; num_lessons: number; prerequisites_text: string; skills_gained: string[]; category: string; enrolled: boolean; progress_pct: number }
 export interface CourseDetailOut extends CourseOut { modules: ModuleOut[] }

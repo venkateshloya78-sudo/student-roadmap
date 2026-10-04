@@ -35,6 +35,7 @@ class CourseModule(Base):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     estimated_hours = Column(Float, nullable=False)
+    level = Column(String, default="beginner")  # beginner, intermediate, advanced
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     course = relationship("Course", back_populates="modules")

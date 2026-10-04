@@ -37,6 +37,7 @@ class ModuleOut(BaseModel):
     lessons: List[LessonOut] = []
     quiz_questions_count: int = 0
     is_completed: bool = False
+    level: Optional[str] = "beginner"
 
     class Config:
         from_attributes = True

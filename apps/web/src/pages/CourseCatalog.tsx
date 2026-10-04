@@ -337,9 +337,14 @@ export default function CourseCatalog() {
                     <div className="w-14 h-14 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-200">
                       {categoryIcons[course.category] || categoryIcons.default}
                     </div>
-                    <span className={`text-[11px] font-bold px-3 py-1 rounded-full border uppercase tracking-wider ${difficultyColors[course.difficulty.toLowerCase()] || difficultyColors.beginner}`}>
-                      {course.difficulty}
-                    </span>
+                    <div className="flex flex-col items-end gap-1">
+                      <span className={`text-[11px] font-bold px-3 py-1 rounded-full border uppercase tracking-wider ${difficultyColors[course.difficulty.toLowerCase()] || difficultyColors.beginner}`}>
+                        {course.difficulty}
+                      </span>
+                      <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-full">
+                        3 Learning Levels
+                      </span>
+                    </div>
                   </div>
 
                   {/* Course Title & Description */}

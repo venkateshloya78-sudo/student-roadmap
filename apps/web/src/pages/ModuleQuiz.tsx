@@ -72,12 +72,20 @@ export default function ModuleQuiz() {
     return (
       <AppShell>
         <div className="max-w-3xl mx-auto px-4 py-8">
-          <BreadcrumbNav items={[
-            { label: 'Home', href: '/' },
-            { label: course?.title || 'Course', href: `/courses/${slug}` },
-            { label: moduleInfo?.title || 'Module', href: undefined },
-            { label: 'Quiz Results' }
-          ]} />
+          <div className="flex items-center justify-between mb-4">
+            <BreadcrumbNav items={[
+              { label: 'Home', href: '/' },
+              { label: course?.title || 'Course', href: `/courses/${slug}` },
+              { label: moduleInfo?.title || 'Module', href: undefined },
+              { label: 'Quiz Results' }
+            ]} />
+            <button
+              onClick={() => navigate(`/courses/${slug}`)}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-indigo-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs"
+            >
+              ← Back to Course
+            </button>
+          </div>
 
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-8">
             <div className={`p-8 text-center border-b ${result.passed ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-100'}`}>
@@ -185,12 +193,20 @@ export default function ModuleQuiz() {
   return (
     <AppShell>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <BreadcrumbNav items={[
-          { label: 'Home', href: '/' },
-          { label: course?.title || 'Course', href: `/courses/${slug}` },
-          { label: moduleInfo?.title || 'Module', href: undefined },
-          { label: 'Quiz' }
-        ]} />
+        <div className="flex items-center justify-between mb-4">
+          <BreadcrumbNav items={[
+            { label: 'Home', href: '/' },
+            { label: course?.title || 'Course', href: `/courses/${slug}` },
+            { label: moduleInfo?.title || 'Module', href: undefined },
+            { label: 'Quiz' }
+          ]} />
+          <button
+            onClick={() => navigate(`/courses/${slug}`)}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-indigo-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs"
+          >
+            ← Back to Course
+          </button>
+        </div>
 
         <div className="mb-6">
           <div className="flex justify-between items-center text-sm font-bold text-slate-500 mb-2">
